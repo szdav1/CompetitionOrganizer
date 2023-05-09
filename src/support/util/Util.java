@@ -16,7 +16,7 @@ public final class Util {
     public static ImageIcon loadIcon(String path, int ratio) {
         return Util.loadIcon(path, ratio, ratio);
     }
-    
+
     // Load icon with default size
     public static ImageIcon loadIcon(String path) {
         return Util.loadIcon(path, SizeData.FONT_SIZE);
