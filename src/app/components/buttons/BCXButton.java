@@ -56,6 +56,7 @@ public class BCXButton extends AbstractXButton {
         if (source.equals(this.button)) {
             this.button.setContentAreaFilled(false);
             this.setBackground(this.secondaryAppearance.getMainBackground());
+            this.repaintFrame();
         }
     }
 
@@ -65,6 +66,7 @@ public class BCXButton extends AbstractXButton {
         if (source.equals(this.button)) {
             this.button.setContentAreaFilled(true);
             this.setBackground(this.secondaryAppearance.getSecondaryBackground());
+            this.repaintFrame();
         }
     }
 
@@ -73,6 +75,7 @@ public class BCXButton extends AbstractXButton {
         final Object source = e.getSource();
         if (source.equals(this.button)) {
             this.button.setBackground(this.mainAppearance.getSecondaryBackground());
+            this.repaintFrame();
         }
     }
 
@@ -81,6 +84,7 @@ public class BCXButton extends AbstractXButton {
         final Object source = e.getSource();
         if (source.equals(this.button)) {
             this.button.setBackground(this.mainAppearance.getMainBackground());
+            this.repaintFrame();
         }
     }
 

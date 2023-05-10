@@ -23,7 +23,7 @@ public final class SizeData {
     public static final int NARROW_BUTTON_WIDTH = SizeData.WIDTH * 3 / 100;
     public static final int BUTTON_WIDTH = SizeData.WIDTH * 3 / 100;
     public static final int WIDE_BUTTON_WIDTH = SizeData.WIDTH * 3 / 100;
-    public static final int BUTTON_HEIGHT = SizeData.HEIGHT * 3 / 100;
+    public static final int BUTTON_HEIGHT = SizeData.HEIGHT * 4 / 100;
     // Button dimensions
     public static final Dimension NARROW_BUTTON_DIMENSION = new Dimension(SizeData.NARROW_BUTTON_WIDTH, SizeData.BUTTON_HEIGHT);
     public static final Dimension BUTTON_DIMENSION = new Dimension(SizeData.BUTTON_WIDTH, SizeData.BUTTON_HEIGHT);

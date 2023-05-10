@@ -56,6 +56,7 @@ public class FCXButton extends AbstractXButton {
         final Object source = e.getSource();
         if (source.equals(this.button)) {
             this.button.setForeground(this.secondaryAppearance.getSecondaryForeground());
+            this.repaintFrame();
         }
     }
 
@@ -64,6 +65,7 @@ public class FCXButton extends AbstractXButton {
         final Object source = e.getSource();
         if (source.equals(this.button)) {
             this.button.setForeground(this.secondaryAppearance.getMainForeground());
+            this.repaintFrame();
         }
     }
 
@@ -73,6 +75,7 @@ public class FCXButton extends AbstractXButton {
         if (source.equals(this.button)) {
             this.button.setContentAreaFilled(false);
             this.button.setForeground(this.secondaryAppearance.getMainForeground());
+            this.repaintFrame();
         }
     }
 
@@ -82,6 +85,7 @@ public class FCXButton extends AbstractXButton {
         if (source.equals(this.button)) {
             this.button.setContentAreaFilled(true);
             this.button.setForeground(this.mainAppearance.getMainForeground());
+            this.repaintFrame();
         }
     }
 

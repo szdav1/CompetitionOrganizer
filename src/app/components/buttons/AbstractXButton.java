@@ -1,6 +1,7 @@
 package app.components.buttons;
 
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
@@ -100,6 +101,10 @@ public abstract class AbstractXButton extends JPanel implements XComponent, Mous
         this.mainAppearance = button.getAppearance();
         this.secondaryAppearance = button.getSecondaryAppearance();
         this.frame = button.getFrame();
+    }
+
+    public void addActionListener(ActionListener actionListener) {
+        this.button.addActionListener(actionListener);
     }
 
     public JButton getButton() {

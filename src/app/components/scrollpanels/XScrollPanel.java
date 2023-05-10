@@ -67,18 +67,21 @@ public final class XScrollPanel extends AbstractXScrollPanel {
 
         // Add the component
         this.viewPanel.add(component, positionConstants.getzIndex());
+        this.repaintFrame();
     }
 
     @Override
     public void addComponent(JComponent component, String borderLayoutPosition) {
         if (this.getLayout() instanceof BorderLayout) {
             this.viewPanel.add(component, borderLayoutPosition);
+            this.repaintFrame();
         }
     }
 
     @Override
     public void addComponent(JComponent component) {
         this.addComponent(component, PositionConstants.MID_POS);
+        this.repaintFrame();
     }
 
     @Override

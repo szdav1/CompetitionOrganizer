@@ -55,24 +55,37 @@ public class ICXButton extends AbstractXButton {
     @Override
     public void mousePressed(MouseEvent e) {
         final Object source = e.getSource();
+        if (e.getSource().equals(this.button)) {
+            this.button.setIcon(this.mainIcon);
+            this.repaintFrame();
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         final Object source = e.getSource();
+        if (e.getSource().equals(this.button)) {
+            this.button.setIcon(this.secondaryIcon);
+            this.repaintFrame();
+        }
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
         final Object source = e.getSource();
         if (e.getSource().equals(this.button)) {
-            this.button.setIcon(null);
+            this.button.setIcon(this.secondaryIcon);
+            this.repaintFrame();
         }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         final Object source = e.getSource();
+        if (e.getSource().equals(this.button)) {
+            this.button.setIcon(this.mainIcon);
+            this.repaintFrame();
+        }
     }
 
     @Override
