@@ -1,37 +1,30 @@
 package app.components.complex.frameparts;
 
-import java.awt.BorderLayout;
-
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import app.frame.XFrame;
 import support.constants.PositionConstants;
 import support.framework.interfaces.Appearance;
 
-public final class TitleBar extends AbstractTitleBar {
-    public TitleBar(ImageIcon icon, String title, XFrame frame, Appearance appearance) {
-        super(icon, title, frame, appearance);
+public final class CenterPanel extends AbstractCenterPanel {
+    public CenterPanel(XFrame frame, Appearance appearance) {
+        super(frame, appearance);
     }
 
     @Override
     public void addComponent(JComponent component, PositionConstants positionConstants) {
-        this.add(component, positionConstants.getzIndex());
+        this.add(component, positionConstants);
         this.repaintFrame();
     }
 
     @Override
     public void addComponent(JComponent component, String borderLayoutPosition) {
-        if (this.getLayout() instanceof BorderLayout) {
-            this.addComponent(component, borderLayoutPosition);
-            this.repaintFrame();
-        }
+        // The center panel's layout manager is always null.
     }
 
     @Override
     public void addComponent(JComponent component) {
         this.addComponent(component, PositionConstants.MID_POS);
-        this.repaintFrame();
     }
 
     @Override

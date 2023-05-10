@@ -15,14 +15,14 @@ public final class SizeData {
     public static final Dimension HALF_DIMENSION = new Dimension(SizeData.HALF_WIDTH, SizeData.HALF_HEIGHT);
 
     // Border size
-    public static final int BORDER_SIZE = (int) (SizeData.WIDTH * 0.2 / 100);
+    public static final int BORDER_SIZE = (int) (SizeData.WIDTH * 0.1 / 100);
     // Font size
     public static final int FONT_SIZE = SizeData.WIDTH / 100;
 
     // Button sizes
     public static final int NARROW_BUTTON_WIDTH = SizeData.WIDTH * 3 / 100;
-    public static final int BUTTON_WIDTH = SizeData.WIDTH * 3 / 100;
-    public static final int WIDE_BUTTON_WIDTH = SizeData.WIDTH * 3 / 100;
+    public static final int BUTTON_WIDTH = SizeData.WIDTH * 6 / 100;
+    public static final int WIDE_BUTTON_WIDTH = SizeData.WIDTH * 9 / 100;
     public static final int BUTTON_HEIGHT = SizeData.HEIGHT * 4 / 100;
     // Button dimensions
     public static final Dimension NARROW_BUTTON_DIMENSION = new Dimension(SizeData.NARROW_BUTTON_WIDTH, SizeData.BUTTON_HEIGHT);

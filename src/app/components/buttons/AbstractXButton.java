@@ -65,7 +65,7 @@ public abstract class AbstractXButton extends JPanel implements XComponent, Mous
         ComponentFactory.implementAppearance(this, secondaryAppearance)
             .setBounds(x, y, width, height);
         this.setLayout(null);
-        this.setBounds(0, 0, width, height);
+        this.setBounds(x, y, width, height);
 
         this.button = new JButton(text, icon);
         ComponentFactory.implementAppearance(this.button, mainAppearance)
