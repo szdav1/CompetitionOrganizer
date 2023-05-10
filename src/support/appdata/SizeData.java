@@ -35,4 +35,10 @@ public final class SizeData {
     // Scrollbar dimension
     public static final Dimension VERTICAL_SCROLLBAR_DIMENSION = new Dimension(SizeData.SCROLLBAR_WIDTH, SizeData.HEIGHT);
     public static final Dimension HORIZONTAL_SCROLLBAR_DIMENSION = new Dimension(SizeData.WIDTH, SizeData.SCROLLBAR_WIDTH);
+
+    // Dropdown panel size
+    public static final int DROPDOWN_WIDTH = SizeData.BUTTON_WIDTH + (SizeData.BORDER_SIZE * 2);
+    public static final int DROPDOWN_HEIGHT = SizeData.BUTTON_HEIGHT + (SizeData.BORDER_SIZE * 2);
+    // Dropdown panel dimension
+    public static final Dimension DROPDOWN_DIMENSION = new Dimension(SizeData.DROPDOWN_WIDTH, SizeData.DROPDOWN_HEIGHT);
 }

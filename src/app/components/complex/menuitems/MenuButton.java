@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import app.frame.XFrame;
+import support.appdata.SizeData;
 import support.constants.PositionConstants;
 import support.framework.interfaces.Appearance;
 
@@ -22,11 +23,11 @@ public final class MenuButton extends AbstractMenuButton {
         final int overhangY = component.getY() + component.getHeight();
 
         if (overhangX > this.dropdownPanel.getWidth()) {
-            this.dropdownPanel.setSize(overhangX, this.dropdownPanel.getHeight());
+            this.dropdownPanel.setSize(overhangX + SizeData.BORDER_SIZE, this.dropdownPanel.getHeight());
         }
 
         if (overhangY > this.dropdownPanel.getHeight()) {
-            this.dropdownPanel.setSize(this.dropdownPanel.getWidth(), overhangY);
+            this.dropdownPanel.setSize(this.dropdownPanel.getWidth(), overhangY + SizeData.BORDER_SIZE);
         }
 
         this.componentList.add(component);
@@ -61,7 +62,6 @@ public final class MenuButton extends AbstractMenuButton {
     @Override
     public void mouseReleased(MouseEvent e) {
         super.mouseReleased(e); // The button's functionality
-        final Object source = e.getSource();
     }
 
     @Override
@@ -75,7 +75,11 @@ public final class MenuButton extends AbstractMenuButton {
 
     @Override
     public void mouseExited(MouseEvent e) {
-        super.mouseExited(e); // The button's functionality
+        // The button's functionality
+        if (!this.toggled) {
+            super.mouseExited(e);
+        }
+
         final Object source = e.getSource();
         if (source.equals(this.button) && !this.toggled) {
             this.frame.extractComponent(this.dropdownPanel);

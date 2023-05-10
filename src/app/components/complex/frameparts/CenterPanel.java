@@ -1,8 +1,11 @@
 package app.components.complex.frameparts;
 
+import java.awt.*;
+
 import javax.swing.JComponent;
 
 import app.frame.XFrame;
+import support.appdata.SizeData;
 import support.constants.PositionConstants;
 import support.framework.interfaces.Appearance;
 
@@ -49,5 +52,19 @@ public final class CenterPanel extends AbstractCenterPanel {
     @Override
     public XFrame getFrame() {
         return this.frame;
+    }
+
+    @Override
+    public void paintComponent(Graphics graphics) {
+        // Call to the super's paintComponent() to keep everything done before this method call
+        super.paintComponents(graphics);
+
+        // Cast a Graphics2D object and perform the necessary tasks
+        Graphics2D graphics2D = (Graphics2D) graphics;
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // Set a gradient paint to make the line gradient
+        graphics2D.setPaint(new GradientPaint(0, 0, Color.red, this.getWidth(), this.getHeight(), Color.YELLOW));
+        // Paint the top border
+        graphics2D.drawLine(0, 0, this.getWidth(), 0);
     }
 }

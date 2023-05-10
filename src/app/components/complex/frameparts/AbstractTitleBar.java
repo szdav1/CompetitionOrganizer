@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.border.LineBorder;
 
+import app.components.buttons.FCXButton;
 import app.components.buttons.ICXButton;
 import app.components.complex.menuitems.MenuButton;
 import app.components.panels.AbstractXPanel;
@@ -31,6 +32,8 @@ public abstract class AbstractTitleBar extends AbstractXPanel {
 
     // Menu buttons
     protected final MenuButton createMenu;
+
+    // Bottom border
 
     // "Full" constructor
     protected AbstractTitleBar(ImageIcon icon, String title, XFrame frame, Appearance appearance) {
@@ -65,6 +68,8 @@ public abstract class AbstractTitleBar extends AbstractXPanel {
                 .addMainBackground(Color.black)
                 .addBorder(new LineBorder(Color.red, SizeData.BORDER_SIZE))
                 .build());
+        // Fill the createMenu dropdown panel
+        this.addCreateMenuOptions();
 
         // Add components to the innerContainer
         this.innerContainer.addComponent(this.createMenu);
@@ -76,5 +81,24 @@ public abstract class AbstractTitleBar extends AbstractXPanel {
 
         // Add the TitleBar to the frame
         this.frame.addComponent(this, BorderLayout.NORTH);
+    }
+
+    private void addCreateMenuOptions() {
+        final String[] options = {"New Poule", "New Table"};
+
+        for (int i = 0; i < options.length; i++) {
+            final FCXButton optionButton = new FCXButton(SizeData.BORDER_SIZE, SizeData.BORDER_SIZE + (i * SizeData.BUTTON_HEIGHT),
+                SizeData.BUTTON_WIDTH, SizeData.BUTTON_HEIGHT, options[i], this.frame,
+                new CustomAppearanceBuilder()
+                    .addMainForeground(Color.white)
+                    .addSecondaryBackground(Color.red)
+                    .build(),
+                new CustomAppearanceBuilder()
+                    .addMainForeground(Color.red)
+                    .addSecondaryForeground(Color.yellow)
+                    .build());
+
+            this.createMenu.addComponent(optionButton);
+        }
     }
 }

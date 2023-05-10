@@ -1,8 +1,6 @@
 package app.frame;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Image;
+import java.awt.*;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -12,10 +10,12 @@ import support.interfaces.ContainerType;
 
 public abstract class AbstractXFrame extends JFrame implements ContainerType {
     protected final JLayeredPane contentPane;
+    protected XFrameConstants state;
 
     // Default JFrame setup
     protected AbstractXFrame() {
         this.contentPane = new JLayeredPane();
+        this.state = XFrameConstants.NORMAL;
 
         // Basic JFrame setup
         {
@@ -37,4 +37,13 @@ public abstract class AbstractXFrame extends JFrame implements ContainerType {
         this.setIconImage(iconImage);
         this.setTitle(title);
     }
+
+    public XFrameConstants getFrameState() {
+        return this.state;
+    }
+
+    public void setFrameState(XFrameConstants state) {
+        this.state = state;
+    }
+
 }
