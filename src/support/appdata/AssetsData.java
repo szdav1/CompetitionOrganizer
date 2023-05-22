@@ -1,6 +1,10 @@
 package support.appdata;
 
 public final class AssetsData {
+    private AssetsData() {
+
+    }
+
     public static final String ASSETS = "assets/";
     public static final String BACKGROUNDS = AssetsData.ASSETS.concat("backgrounds/");
     public static final String ICONS = AssetsData.ASSETS.concat("icons/");

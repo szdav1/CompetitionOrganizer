@@ -7,6 +7,10 @@ import javax.swing.ImageIcon;
 import support.appdata.SizeData;
 
 public final class Util {
+    private Util() {
+
+    }
+
     // Load icon with the given size
     public static ImageIcon loadIcon(String path, int width, int height) {
         return new ImageIcon(new ImageIcon(path.concat(".png")).getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));

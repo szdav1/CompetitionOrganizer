@@ -7,6 +7,10 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 public final class AppearanceData {
+    private AppearanceData() {
+
+    }
+
     // Colors
     public static final Color OPAQUE = new Color(0.0f, 0.0f, 0.0f, 0.0f);
 

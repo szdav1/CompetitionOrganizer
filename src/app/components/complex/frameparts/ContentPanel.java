@@ -1,28 +1,19 @@
 package app.components.complex.frameparts;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 
-import app.components.labels.XLabel;
 import app.frame.XFrame;
-import support.appdata.AssetsData;
 import support.constants.PositionConstants;
-import support.framework.appearances.BasicAppearance;
 import support.framework.interfaces.Appearance;
-import support.util.Util;
 
-public final class CenterPanel extends AbstractCenterPanel {
-    public CenterPanel(XFrame frame, Appearance appearance) {
+public final class ContentPanel extends AbstractContentPanel {
+    public ContentPanel(XFrame frame, Appearance appearance) {
         super(frame, appearance);
-
-        // Background label
-        final XLabel backgroundLabel = new XLabel(1, 1, this.getWidth() - 1, this.getHeight() - 1,
-            Util.loadIcon(AssetsData.BACKGROUNDS.concat("mainBackground"), this.getWidth(), this.getHeight()), this.frame,
-            BasicAppearance.OPAQUE);
-
-        this.addComponent(backgroundLabel, PositionConstants.BACKGROUND_POS);
-        this.repaintFrame();
     }
 
     @Override
@@ -33,12 +24,16 @@ public final class CenterPanel extends AbstractCenterPanel {
 
     @Override
     public void addComponent(JComponent component, String borderLayoutPosition) {
-        // The center panel's layout manager is always null.
+        if (this.getLayout() instanceof BorderLayout) {
+            this.add(component, borderLayoutPosition);
+            this.repaintFrame();
+        }
     }
 
     @Override
     public void addComponent(JComponent component) {
         this.addComponent(component, PositionConstants.MID_POS);
+        this.repaintFrame();
     }
 
     @Override
@@ -65,17 +60,16 @@ public final class CenterPanel extends AbstractCenterPanel {
         return this.frame;
     }
 
+
     @Override
     public void paintComponent(Graphics graphics) {
-        // Call to the super's paintComponent() to keep everything done before this method call
         super.paintComponents(graphics);
 //
-        // Cast a Graphics2D object and perform the necessary tasks
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        // Set a gradient paint to make the line gradient
-        graphics2D.setPaint(new GradientPaint(0, 0, Color.red, this.getWidth(), this.getHeight(), Color.yellow));
-        // Paint the top border
-        graphics2D.drawLine(0, 0, this.getWidth(), 0);
+//        graphics2D.drawImage(Util.loadIcon(AssetsData.BACKGROUNDS.concat("mainBackground"), this.getWidth(), this.getHeight())
+//                .getImage(), 0, 0, null);
+//        graphics2D.setPaint(new GradientPaint(0, 0, Color.red, this.getWidth(), this.getHeight(), Color.yellow));
+//        graphics2D.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
 }

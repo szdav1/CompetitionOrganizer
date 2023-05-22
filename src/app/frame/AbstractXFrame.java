@@ -20,7 +20,7 @@ public abstract class AbstractXFrame extends JFrame implements ContainerType {
         // Basic JFrame setup
         {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
             this.setContentPane(this.contentPane);
             this.setUndecorated(true);
             this.setBackground(Color.black);

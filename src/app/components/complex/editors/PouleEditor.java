@@ -1,44 +1,44 @@
-package app.components.complex.frameparts;
+package app.components.complex.editors;
 
 import java.awt.BorderLayout;
-import java.awt.event.MouseEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import app.frame.XFrame;
 import support.constants.PositionConstants;
 import support.framework.interfaces.Appearance;
 
-public final class TitleBar extends AbstractTitleBar {
-    public TitleBar(ImageIcon icon, String title, XFrame frame, Appearance appearance) {
-        super(icon, title, frame, appearance);
+public final class PouleEditor extends AbstractEditor {
+    public PouleEditor(XFrame frame, Appearance appearance) {
+        super("Poule Editor", frame, appearance);
     }
 
     @Override
     public void addComponent(JComponent component, PositionConstants positionConstants) {
         this.add(component, positionConstants.getzIndex());
-        this.repaintFrame();
+        this.repaint();
     }
 
     @Override
     public void addComponent(JComponent component, String borderLayoutPosition) {
-        if (this.getLayout() instanceof BorderLayout) {
-            this.addComponent(component, borderLayoutPosition);
-            this.repaintFrame();
+        if (!(this.getLayout() instanceof BorderLayout)) {
+            return;
         }
+
+        this.add(component, borderLayoutPosition);
+        this.repaint();
     }
 
     @Override
     public void addComponent(JComponent component) {
         this.addComponent(component, PositionConstants.MID_POS);
-        this.repaintFrame();
+        this.repaint();
     }
 
     @Override
     public JComponent removeComponent(JComponent component) {
         this.remove(component);
-        this.repaintFrame();
+        this.repaint();
         return component;
     }
 

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -31,7 +32,7 @@ public abstract class AbstractTitleBar extends AbstractXPanel {
     protected final XPanel innerContainer;
 
     // Menu buttons
-    protected final MenuButton createMenu;
+    protected final MenuButton createMenuButton;
 
     // Bottom border
 
@@ -61,18 +62,18 @@ public abstract class AbstractTitleBar extends AbstractXPanel {
             this.getPreferredSize().height), this.getLayout(), this.frame, appearance);
 
         // Menu buttons
-        this.createMenu = new MenuButton(SizeData.NARROW_BUTTON_DIMENSION, 0, 0,
+        this.createMenuButton = new MenuButton(SizeData.NARROW_BUTTON_DIMENSION, 0, 0,
             Util.loadBigIcon(AssetsData.BUTTON_ICONS.concat("menu1")),
             Util.loadBigIcon(AssetsData.BUTTON_ICONS.concat("menu2")), this.frame, BasicAppearance.OPAQUE,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
                 .addBorder(new LineBorder(Color.red, SizeData.BORDER_SIZE))
                 .build());
-        // Fill the createMenu dropdown panel
+        // Fill the createMenuButton's dropdown panel
         this.addCreateMenuOptions();
 
         // Add components to the innerContainer
-        this.innerContainer.addComponent(this.createMenu);
+        this.innerContainer.addComponent(this.createMenuButton);
 
         // Add components to the TitleBar
         this.addComponent(this.innerContainer);
@@ -98,7 +99,7 @@ public abstract class AbstractTitleBar extends AbstractXPanel {
                     .addSecondaryForeground(Color.yellow)
                     .build());
 
-            this.createMenu.addComponent(optionButton);
+            this.createMenuButton.addOption(optionButton);
         }
     }
 }

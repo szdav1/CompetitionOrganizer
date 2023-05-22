@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 public final class SizeData {
+    private SizeData() {
+
+    }
+
     // Screen dimension and size
     public static final Dimension SCREEN_DIMENSION = Toolkit.getDefaultToolkit().getScreenSize();
     public static final int WIDTH = SizeData.SCREEN_DIMENSION.width;
@@ -41,4 +45,10 @@ public final class SizeData {
     public static final int DROPDOWN_HEIGHT = SizeData.BUTTON_HEIGHT + (SizeData.BORDER_SIZE * 2);
     // Dropdown panel dimension
     public static final Dimension DROPDOWN_DIMENSION = new Dimension(SizeData.DROPDOWN_WIDTH, SizeData.DROPDOWN_HEIGHT);
+
+    // Editor size
+    public static final int EDITOR_WIDTH = SizeData.WIDTH / 2;
+    public static final int EDITOR_HEIGHT = SizeData.HEIGHT / 2;
+    // Editor dimension
+    public static final Dimension EDITOR_DIMENSION = new Dimension(SizeData.EDITOR_WIDTH, SizeData.EDITOR_HEIGHT);
 }
