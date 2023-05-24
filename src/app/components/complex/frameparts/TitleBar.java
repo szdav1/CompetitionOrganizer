@@ -1,11 +1,12 @@
 package app.components.complex.frameparts;
 
 import java.awt.BorderLayout;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
+import app.components.buttons.FCXButton;
 import app.frame.XFrame;
 import support.constants.PositionConstants;
 import support.framework.interfaces.Appearance;
@@ -13,6 +14,22 @@ import support.framework.interfaces.Appearance;
 public final class TitleBar extends AbstractTitleBar {
     public TitleBar(ImageIcon icon, String title, XFrame frame, Appearance appearance) {
         super(icon, title, frame, appearance);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        final Object source = e.getSource();
+        // Loop through the createMenuButton's options and check for events
+        final FCXButton sourceButton = (FCXButton) this.createMenuButton.getOptions().stream()
+            .filter(tempButton -> source.equals(((FCXButton) tempButton).getButton()))
+            .toList()
+            .get(0);
+
+        // Toggled the PouleEditor
+        if (sourceButton.equals(this.createMenuButton.getOptions().get(0))) {
+            this.createMenuButton.setToggled(false);
+            this.frame.togglePouleEditor();
+        }
     }
 
     @Override

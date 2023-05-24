@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
@@ -23,7 +24,7 @@ import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 import support.util.Util;
 
-public abstract class AbstractTitleBar extends AbstractXPanel {
+public abstract class AbstractTitleBar extends AbstractXPanel implements ActionListener {
     // Main buttons
     protected final ICXButton exitButton;
     protected final ICXButton iconifyButton;
@@ -98,6 +99,7 @@ public abstract class AbstractTitleBar extends AbstractXPanel {
                     .addMainForeground(Color.red)
                     .addSecondaryForeground(Color.yellow)
                     .build());
+            optionButton.addActionListener(this);
 
             this.createMenuButton.addOption(optionButton);
         }

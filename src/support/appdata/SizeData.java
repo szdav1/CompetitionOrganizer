@@ -51,4 +51,7 @@ public final class SizeData {
     public static final int EDITOR_HEIGHT = SizeData.HEIGHT / 2;
     // Editor dimension
     public static final Dimension EDITOR_DIMENSION = new Dimension(SizeData.EDITOR_WIDTH, SizeData.EDITOR_HEIGHT);
+
+    // Gaps
+    public static final int GAP = SizeData.FONT_SIZE;
 }

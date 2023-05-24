@@ -28,6 +28,19 @@ public final class MenuButton extends AbstractMenuButton {
         return this.dropdownPanel.getComponentList();
     }
 
+    public void setToggled(boolean toggled) {
+        this.toggled = toggled;
+
+        if (!this.toggled) {
+            this.button.setIcon(this.mainIcon);
+            this.frame.extractComponent(this.dropdownPanel);
+        }
+        else {
+            this.button.setIcon(this.secondaryIcon);
+            this.frame.insertComponent(this.dropdownPanel, PositionConstants.TOP_POS);
+        }
+    }
+
     @Override
     public void mousePressed(MouseEvent e) {
         super.mousePressed(e);

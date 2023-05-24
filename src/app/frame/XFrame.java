@@ -30,6 +30,7 @@ public final class XFrame extends AbstractXFrame {
 
     public XFrame(Image iconImage, String title) {
         super(iconImage, title);
+        this.setLocationRelativeTo(null);
 
         // Frame parts
         // Content panel
@@ -38,13 +39,13 @@ public final class XFrame extends AbstractXFrame {
         this.setContentPane(this.contentPanel);
 
         this.titleBar = new TitleBar(null, "", this, BasicAppearance.BLACK);
-        this.centerPanel = new CenterPanel(this, BasicAppearance.OPAQUE);
+        this.centerPanel = new CenterPanel(this, BasicAppearance.BLACK);
 
         // Poule editor
         this.pouleEditor = new PouleEditor(this,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
-                .addBorder(AppearanceData.DARK_GRAY_BORDER)
+                .addBorder(AppearanceData.RED_BORDER)
                 .build());
 
         // Add components to the frame

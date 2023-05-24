@@ -41,12 +41,13 @@ public abstract class AbstractEditor extends AbstractXPanel {
                 .addMainBackground(appearance.getMainBackground())
                 .build());
 
-        this.centerPanel = new XPanel(new Dimension(this.getWidth(), this.getHeight()), null, this.frame,
+        this.centerPanel = new XPanel(new Dimension(this.getWidth(), this.getHeight()), new FlowLayout(FlowLayout.CENTER, SizeData.GAP, 0),
+            this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(appearance.getMainBackground())
                 .build());
 
-        this.footerPanel = new XPanel(new Dimension(this.getWidth(), SizeData.BUTTON_HEIGHT), new FlowLayout(FlowLayout.CENTER, 0, 0),
+        this.footerPanel = new XPanel(new Dimension(this.getWidth(), SizeData.BUTTON_HEIGHT), new FlowLayout(FlowLayout.CENTER),
             this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(appearance.getMainBackground())
