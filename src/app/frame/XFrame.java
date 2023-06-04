@@ -7,6 +7,7 @@ import java.awt.Image;
 import javax.swing.JComponent;
 
 import app.components.complex.editors.PouleEditor;
+import app.components.complex.fencing.Poule;
 import app.components.complex.frameparts.CenterPanel;
 import app.components.complex.frameparts.ContentPanel;
 import app.components.complex.frameparts.TitleBar;
@@ -57,7 +58,7 @@ public final class XFrame extends AbstractXFrame {
     public void togglePouleEditor() {
         if (this.getFrameState() == XFrameConstants.NORMAL) {
             this.setFrameState(XFrameConstants.EDITOR_OPENED);
-            this.insertComponent(this.pouleEditor);
+            this.insertComponent(this.pouleEditor, PositionConstants.TOP_POS);
         }
     }
 

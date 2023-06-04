@@ -1,4 +1,4 @@
-package app.components.complex.inputs;
+package app.components.complex.fencing;
 
 import java.awt.BorderLayout;
 
@@ -8,17 +8,13 @@ import app.frame.XFrame;
 import support.constants.PositionConstants;
 import support.framework.interfaces.Appearance;
 
-public final class InputField extends AbstractInputField {
-    public InputField(String title, XFrame frame, Appearance panelAppearance, Appearance inputAppearance) {
-        super(title, frame, panelAppearance, inputAppearance);
+public final class Poule extends AbstractPoule {
+    public Poule(XFrame frame, int amount, Appearance appearance) {
+        super(frame, amount, appearance);
     }
 
-    public InputField(int x, int y, String title, XFrame frame, Appearance panelAppearance, Appearance inputAppearance) {
-        super(x, y, title, frame, panelAppearance, inputAppearance);
-    }
-
-    public Appearance getInputAppearance() {
-        return this.inputField.getAppearance();
+    public Poule(int x, int y, XFrame frame, int amount, Appearance appearance) {
+        super(x, y, frame, amount, appearance);
     }
 
     @Override

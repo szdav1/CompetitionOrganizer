@@ -13,6 +13,7 @@ public final class AppearanceData {
 
     // Colors
     public static final Color OPAQUE = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+    public static final Color DARK_GRAY = new Color(0x131313);
 
     // Borders
     // Basic colored borders

@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
+import app.components.complex.fencing.Poule;
 import app.components.complex.inputs.InputField;
 import app.components.labels.XLabel;
 import app.components.panels.XPanel;
@@ -30,8 +31,13 @@ public final class PouleEditor extends AbstractEditor {
     private final XPanel inputPanel;
     private final XPanel previewPanel;
 
+    // Preview poule
+    private final Poule previewPoule;
+
     // Input scroll panel
     private final XScrollPanel inputScrollPanel;
+    // Preview scroll panel
+    private final XScrollPanel previewScrollPanel;
 
     // List for the inputs
     private final List<InputField> inputList = new LinkedList<>();
@@ -60,6 +66,9 @@ public final class PouleEditor extends AbstractEditor {
         this.previewPanel = new XPanel(this.inputPanel.getPreferredSize(), this.inputPanel.getLayout(), this.frame,
             this.inputPanel.getAppearance());
 
+        // Preview poule
+        this.previewPoule = new Poule(0, 0, this.frame, 8, BasicAppearance.BLACK_BORDERED);
+
         // Input scroll panel
         this.inputScrollPanel = new XScrollPanel(this.inputPanel.getPreferredSize(), new FlowLayout(FlowLayout.CENTER, SizeData.GAP, SizeData.GAP),
             this.frame,
@@ -71,10 +80,25 @@ public final class PouleEditor extends AbstractEditor {
                 .addMainForeground(Color.red)
                 .build());
         // Add the inputFields
-        this.createInputFields(new String[] {"Round", "Poule", "Referee", "Number Of Fencers", "Fencers/Poule", "Date"});
+        this.createInputFields(new String[] {"Round*", "Poule*", "Referee", "Fencers*", "Fencers/Poule", "Date"});
+
+        // Preview scroll panel
+        this.previewScrollPanel = new XScrollPanel(this.previewPanel.getPreferredSize(), this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .build(),
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.red)
+                .build());
+        // Add the previewPoule
+        this.previewScrollPanel.addComponent(this.previewPoule);
 
         // Add the inputScrollPanel to the inputPanel
         this.inputPanel.addComponent(this.inputScrollPanel, BorderLayout.CENTER);
+
+        // Add the previewScrollPanel to the previewPanel
+        this.previewPanel.addComponent(this.previewScrollPanel, BorderLayout.CENTER);
 
         // Add the components to the centerPanel
         this.centerPanel.addComponent(this.inputLabel);

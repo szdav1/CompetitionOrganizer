@@ -58,6 +58,19 @@ public final class SizeData {
     // Input field dimension
     public static final Dimension INPUT_FIELD_DIMENSION = new Dimension(SizeData.INPUT_FIELD_WIDTH, SizeData.INPUT_FIELD_HEIGHT);
 
+    // Poule box size
+    public static final int BOX_WIDTH = SizeData.WIDTH * 2 / 100;
+    public static final int NAME_BOX_WIDTH = SizeData.WIDTH * 8 / 100;
+    public static final int BOX_HEIGHT = SizeData.BOX_WIDTH;
+    // Poule box dimension
+    public static final Dimension BOX_DIMENSION = new Dimension(SizeData.BOX_WIDTH, SizeData.BOX_HEIGHT);
+
+    // Poule panel size
+    public static final int POULE_WIDTH = SizeData.BOX_WIDTH * 14 + SizeData.NAME_BOX_WIDTH;
+    public static final int POULE_HEIGHT = SizeData.BOX_HEIGHT * 9;
+    // Poule panel dimension
+    public static final Dimension POULE_DIMENSION = new Dimension(SizeData.POULE_WIDTH, SizeData.POULE_HEIGHT);
+
     // Gaps
     public static final int GAP = SizeData.FONT_SIZE;
 }
