@@ -1,9 +1,6 @@
-package app.components.complex.frameparts;
+package app.components.complex.inputs;
 
 import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 
@@ -11,9 +8,17 @@ import app.frame.XFrame;
 import support.constants.PositionConstants;
 import support.framework.interfaces.Appearance;
 
-public final class ContentPanel extends AbstractContentPanel {
-    public ContentPanel(XFrame frame, Appearance appearance) {
-        super(frame, appearance);
+public class InputField extends AbstractInputField {
+    public InputField(String title, XFrame frame, Appearance panelAppearance, Appearance inputAppearance) {
+        super(title, frame, panelAppearance, inputAppearance);
+    }
+
+    public InputField(int x, int y, String title, XFrame frame, Appearance panelAppearance, Appearance inputAppearance) {
+        super(x, y, title, frame, panelAppearance, inputAppearance);
+    }
+
+    public Appearance getInputAppearance() {
+        return this.inputField.getAppearance();
     }
 
     @Override
@@ -58,18 +63,5 @@ public final class ContentPanel extends AbstractContentPanel {
     @Override
     public XFrame getFrame() {
         return this.frame;
-    }
-
-
-    @Override
-    public void paintComponent(Graphics graphics) {
-//        super.paintComponents(graphics);
-//
-//        Graphics2D graphics2D = (Graphics2D) graphics;
-//        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//        graphics2D.drawImage(Util.loadIcon(AssetsData.BACKGROUNDS.concat("mainBackground"), this.getWidth(), this.getHeight())
-//                .getImage(), 0, 0, null);
-//        graphics2D.setPaint(new GradientPaint(0, 0, Color.red, this.getWidth(), this.getHeight(), Color.yellow));
-//        graphics2D.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
 }

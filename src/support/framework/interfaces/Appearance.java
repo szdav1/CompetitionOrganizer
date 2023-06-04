@@ -20,6 +20,7 @@ public interface Appearance {
         // Component specific options
         if (component instanceof JTextField textField) {
             textField.setCaretColor(appearance.getMainForeground());
+            textField.setHorizontalAlignment(JTextField.LEFT);
         }
         else if (component instanceof JTextArea textArea) {
             textArea.setCaretColor(appearance.getMainForeground());

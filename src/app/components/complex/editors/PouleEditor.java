@@ -4,14 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JComponent;
 
+import app.components.complex.inputs.InputField;
 import app.components.labels.XLabel;
 import app.components.panels.XPanel;
+import app.components.scrollpanels.XScrollPanel;
 import app.frame.XFrame;
+import support.appdata.AppearanceData;
 import support.appdata.SizeData;
 import support.constants.PositionConstants;
+import support.framework.appearances.BasicAppearance;
 import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 
@@ -24,11 +30,17 @@ public final class PouleEditor extends AbstractEditor {
     private final XPanel inputPanel;
     private final XPanel previewPanel;
 
+    // Input scroll panel
+    private final XScrollPanel inputScrollPanel;
+
+    // List for the inputs
+    private final List<InputField> inputList = new LinkedList<>();
+
     public PouleEditor(XFrame frame, Appearance appearance) {
         super("Poule Editor", frame, appearance);
 
         // Title labels
-        this.inputLabel = new XLabel(new Dimension(this.getWidth() * 45 / 100, SizeData.BUTTON_HEIGHT), "Enter Desired Values",
+        this.inputLabel = new XLabel(new Dimension(this.getWidth() * 45 / 100, SizeData.BUTTON_HEIGHT), "Enter Values",
             this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(this.getAppearance().getMainBackground())
@@ -39,7 +51,7 @@ public final class PouleEditor extends AbstractEditor {
 
         // Inner containers
         this.inputPanel = new XPanel(new Dimension(this.inputLabel.getWidth(),
-            this.centerPanel.getHeight() * 75 / 100), new FlowLayout(FlowLayout.CENTER, 0, 0), this.frame,
+            this.centerPanel.getHeight() * 75 / 100), new BorderLayout(), this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(this.getAppearance().getMainBackground())
                 .addBorder(this.getAppearance().getBorder())
@@ -48,12 +60,48 @@ public final class PouleEditor extends AbstractEditor {
         this.previewPanel = new XPanel(this.inputPanel.getPreferredSize(), this.inputPanel.getLayout(), this.frame,
             this.inputPanel.getAppearance());
 
+        // Input scroll panel
+        this.inputScrollPanel = new XScrollPanel(this.inputPanel.getPreferredSize(), new FlowLayout(FlowLayout.CENTER, SizeData.GAP, SizeData.GAP),
+            this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .build(),
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.red)
+                .build());
+        // Add the inputFields
+        this.createInputFields(new String[] {"Round", "Poule", "Referee", "Number Of Fencers", "Fencers/Poule", "Date"});
+
+        // Add the inputScrollPanel to the inputPanel
+        this.inputPanel.addComponent(this.inputScrollPanel, BorderLayout.CENTER);
+
         // Add the components to the centerPanel
         this.centerPanel.addComponent(this.inputLabel);
         this.centerPanel.addComponent(this.previewLabel);
         // Add the inner containers to the centerPanel
         this.centerPanel.addComponent(this.inputPanel);
         this.centerPanel.addComponent(this.previewPanel);
+    }
+
+    private void createInputFields(String[] options) {
+        for (int i = 0; i < options.length; i++) {
+            final InputField inputField = new InputField(options[i], this.frame,
+                BasicAppearance.BLACK,
+                new CustomAppearanceBuilder()
+                    .addMainBackground(Color.black)
+                    .addMainForeground(Color.white)
+                    .addBorder(AppearanceData.RED_BORDER)
+                    .build());
+
+            this.inputScrollPanel.addComponent(inputField);
+            this.inputScrollPanel.getViewPanel().setPreferredSize(new Dimension(
+                this.inputScrollPanel.getViewPanel().getPreferredSize().width,
+                i * SizeData.INPUT_FIELD_HEIGHT
+            ));
+
+            this.inputList.add(inputField);
+        }
     }
 
     @Override

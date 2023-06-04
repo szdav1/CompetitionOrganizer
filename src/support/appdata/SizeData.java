@@ -19,7 +19,7 @@ public final class SizeData {
     public static final Dimension HALF_DIMENSION = new Dimension(SizeData.HALF_WIDTH, SizeData.HALF_HEIGHT);
 
     // Border size
-    public static final int BORDER_SIZE = (int) (SizeData.WIDTH * 0.1 / 100);
+    public static final int BORDER_SIZE = 1;
     // Font size
     public static final int FONT_SIZE = SizeData.WIDTH / 100;
 
@@ -34,7 +34,7 @@ public final class SizeData {
     public static final Dimension WIDE_BUTTON_DIMENSION = new Dimension(SizeData.WIDE_BUTTON_WIDTH, SizeData.BUTTON_HEIGHT);
 
     // Scrollbar size
-    public static final int SCROLLBAR_WIDTH = SizeData.WIDTH / 100;
+    public static final int SCROLLBAR_WIDTH = SizeData.WIDTH / 135;
     public static final int SCROLLBAR_HEIGHT = SizeData.HEIGHT * 4 / 100;
     // Scrollbar dimension
     public static final Dimension VERTICAL_SCROLLBAR_DIMENSION = new Dimension(SizeData.SCROLLBAR_WIDTH, SizeData.HEIGHT);
@@ -51,6 +51,12 @@ public final class SizeData {
     public static final int EDITOR_HEIGHT = SizeData.HEIGHT / 2;
     // Editor dimension
     public static final Dimension EDITOR_DIMENSION = new Dimension(SizeData.EDITOR_WIDTH, SizeData.EDITOR_HEIGHT);
+
+    // Input field size
+    public static final int INPUT_FIELD_WIDTH = SizeData.WIDE_BUTTON_WIDTH;
+    public static final int  INPUT_FIELD_HEIGHT = SizeData.BUTTON_HEIGHT * 2;
+    // Input field dimension
+    public static final Dimension INPUT_FIELD_DIMENSION = new Dimension(SizeData.INPUT_FIELD_WIDTH, SizeData.INPUT_FIELD_HEIGHT);
 
     // Gaps
     public static final int GAP = SizeData.FONT_SIZE;
