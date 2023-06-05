@@ -4,11 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JComponent;
 
+import app.components.buttons.FCXButton;
 import app.components.complex.fencing.Poule;
 import app.components.complex.inputs.InputField;
 import app.components.labels.XLabel;
@@ -22,7 +26,9 @@ import support.framework.appearances.BasicAppearance;
 import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 
-public final class PouleEditor extends AbstractEditor {
+public final class PouleEditor extends AbstractEditor implements KeyListener {
+    private boolean isErrorPresent;
+
     // Title labels
     private final XLabel inputLabel;
     private final XLabel previewLabel;
@@ -41,9 +47,13 @@ public final class PouleEditor extends AbstractEditor {
 
     // List for the inputs
     private final List<InputField> inputList = new LinkedList<>();
+    // List for the final values
+    private final List<String> valueList = new ArrayList<>();
 
     public PouleEditor(XFrame frame, Appearance appearance) {
         super("Poule Editor", frame, appearance);
+
+        this.isErrorPresent = false;
 
         // Title labels
         this.inputLabel = new XLabel(new Dimension(this.getWidth() * 45 / 100, SizeData.BUTTON_HEIGHT), "Enter Values",
@@ -70,17 +80,19 @@ public final class PouleEditor extends AbstractEditor {
         this.previewPoule = new Poule(0, 0, this.frame, 8, BasicAppearance.BLACK_BORDERED);
 
         // Input scroll panel
-        this.inputScrollPanel = new XScrollPanel(this.inputPanel.getPreferredSize(), new FlowLayout(FlowLayout.CENTER, SizeData.GAP, SizeData.GAP),
-            this.frame,
+        this.inputScrollPanel = new XScrollPanel(this.inputPanel.getPreferredSize(),
+            new FlowLayout(FlowLayout.CENTER, SizeData.GAP, SizeData.GAP), this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
+                .addBorder(this.inputPanel.getAppearance().getBorder())
                 .build(),
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
                 .addMainForeground(Color.red)
                 .build());
         // Add the inputFields
-        this.createInputFields(new String[] {"Round*", "Poule*", "Referee", "Fencers*", "Fencers/Poule", "Date"});
+        // The input with a * in its text must be filled
+        this.createInputFields(new String[] {"Round*", "Poule*", "Fencers/Poule", "Fencers*", "Referee", "Date"});
 
         // Preview scroll panel
         this.previewScrollPanel = new XScrollPanel(this.previewPanel.getPreferredSize(), this.frame,
@@ -117,15 +129,36 @@ public final class PouleEditor extends AbstractEditor {
                     .addMainForeground(Color.white)
                     .addBorder(AppearanceData.RED_BORDER)
                     .build());
+            inputField.getInputField().addKeyListener(this);
+
+            this.inputList.add(inputField);
 
             this.inputScrollPanel.addComponent(inputField);
             this.inputScrollPanel.getViewPanel().setPreferredSize(new Dimension(
                 this.inputScrollPanel.getViewPanel().getPreferredSize().width,
-                i * SizeData.INPUT_FIELD_HEIGHT
+                i * SizeData.INPUT_FIELD_HEIGHT + SizeData.BUTTON_HEIGHT
             ));
-
-            this.inputList.add(inputField);
         }
+
+        final FCXButton clearButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Clear", this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.white)
+                .addSecondaryForeground(Color.red)
+                .addBorder(AppearanceData.RED_BORDER)
+                .addFont(AppearanceData.MAIN_FONT_P)
+                .build(),
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.red)
+                .addSecondaryForeground(Color.yellow)
+                .build());
+        clearButton.addActionListener(e -> this.inputList.forEach(input -> {
+            input.getInputField().setText("");
+            input.removeError();
+        }));
+
+        this.inputScrollPanel.addComponent(clearButton);
     }
 
     @Override
@@ -172,5 +205,71 @@ public final class PouleEditor extends AbstractEditor {
     @Override
     public XFrame getFrame() {
         return this.frame;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        this.isErrorPresent = false;
+        this.valueList.clear();
+
+        // Loop through the inputList
+        if (e.getSource().equals(this.createButton.getButton())) {
+            this.inputList.forEach(input -> {
+                // Check for errors
+                if (input.getText().isBlank() && input.getDescription().contains("*")) {
+                    input.displayError();
+                    this.isErrorPresent = true;
+                }
+
+                // Check for more errors
+                if (Arrays.asList(new String[] {"Round*", "Fencers*", "Fencers/Poule"}).contains(input.getDescription())) {
+                    try {
+                        if (!input.getText().isBlank()) {
+                            int i = Integer.parseInt(input.getText());
+                            if (i <= 0) {
+                                throw new Exception();
+                            }
+                        }
+                    }
+                    catch (Exception exc) {
+                        input.displayError();
+                        this.isErrorPresent = true;
+                    }
+                }
+            });
+
+            // Fetch the valid values if there are no errors
+            if (!this.isErrorPresent) {
+                this.inputList.forEach(input -> this.valueList.add(input.getText()));
+                this.frame.closePouleEditor();
+            }
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getSource().equals(this.inputList.get(2).getInputField())) {
+            try {
+                int amount = Integer.parseInt(this.inputList.get(2).getText());
+                if (amount >= 9 || amount < 4) {
+                    throw new Exception();
+                }
+
+                this.previewPoule.reConstruct(amount);
+            }
+            catch (Exception exc) {
+
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
 
 import app.components.buttons.FCXButton;
 import app.components.labels.XLabel;
@@ -17,7 +18,7 @@ import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 import support.util.Util;
 
-public abstract class AbstractEditor extends AbstractXPanel {
+public abstract class AbstractEditor extends AbstractXPanel implements ActionListener {
     // Editor parts
     protected final XPanel titleBar;
     protected final XPanel centerPanel;
@@ -82,6 +83,7 @@ public abstract class AbstractEditor extends AbstractXPanel {
                 .addMainForeground(Color.red)
                 .addSecondaryForeground(Color.orange)
                 .build());
+        this.createButton.addActionListener(this);
 
         // Add components to the titleBar
         this.titleBar.addComponent(this.titleBarInnerContainer);

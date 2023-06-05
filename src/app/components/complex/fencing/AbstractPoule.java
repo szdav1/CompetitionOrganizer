@@ -1,6 +1,5 @@
 package app.components.complex.fencing;
 
-import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import support.framework.interfaces.Appearance;
 
 public abstract class AbstractPoule extends AbstractXPanel {
     // Box list
-    protected final List<XTextField> boxList = new LinkedList<>();
+    protected final XTextField[][] boxArray = new XTextField[9][15];
     // Amount of fencers
     protected int amount;
 
@@ -48,7 +47,7 @@ public abstract class AbstractPoule extends AbstractXPanel {
                     box.setFocusable(false);
                     box.setBackground(AppearanceData.DARK_GRAY);
                     if (x == 0) {
-                        box.setText("Fencer Name");
+                        box.setText("Name");
                     }
                     else if (x == 1) {
                         box.setText("#");
@@ -91,9 +90,22 @@ public abstract class AbstractPoule extends AbstractXPanel {
                 }
 
                 // Add the box to the list and to the panel
-                this.boxList.add(box);
+                this.boxArray[y][x] = box;
                 this.add(box);
             }
         }
+    }
+
+    public void reConstruct(int amount) {
+        // Remove previous boxes
+        for (int y = 0; y < this.boxArray.length; y++) {
+            for (int x = 0; x < this.boxArray[y].length; x++) {
+                this.removeComponent(this.boxArray[y][x]);
+            }
+        }
+
+        // Create structure with new amount
+        this.amount = amount;
+        this.createPouleStructure();
     }
 }

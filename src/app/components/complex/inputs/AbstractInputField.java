@@ -1,5 +1,8 @@
 package app.components.complex.inputs;
 
+import java.awt.event.FocusListener;
+import java.awt.event.MouseListener;
+
 import javax.swing.SwingConstants;
 
 import app.components.labels.XLabel;
@@ -10,7 +13,10 @@ import support.appdata.SizeData;
 import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 
-public abstract class AbstractInputField extends AbstractXPanel {
+public abstract class AbstractInputField extends AbstractXPanel implements MouseListener, FocusListener {
+    protected boolean required;
+    protected boolean isErrorPresent;
+
     // Title label
     protected final XLabel titleLabel;
     // Input field
@@ -19,6 +25,10 @@ public abstract class AbstractInputField extends AbstractXPanel {
     protected AbstractInputField(String title, XFrame frame, Appearance panelAppearance, Appearance inputAppearance) {
         super(SizeData.INPUT_FIELD_DIMENSION, null, frame, panelAppearance);
 
+        this.required = false;
+        this.isErrorPresent = false;
+
+        // Title label
         this.titleLabel = new XLabel(0, 0, SizeData.INPUT_FIELD_WIDTH, SizeData.INPUT_FIELD_HEIGHT / 2,
             title, this.frame,
             new CustomAppearanceBuilder()
@@ -26,8 +36,11 @@ public abstract class AbstractInputField extends AbstractXPanel {
                 .build());
         this.titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
+        // Input field
         this.inputField = new XTextField(0, this.titleLabel.getHeight(), this.titleLabel.getWidth(), this.titleLabel.getHeight(),
             this.frame, inputAppearance);
+        this.inputField.addMouseListener(this);
+        this.inputField.addFocusListener(this);
 
         // Add the components to the panel
         this.addComponent(this.titleLabel);
