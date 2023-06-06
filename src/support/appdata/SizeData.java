@@ -71,6 +71,12 @@ public final class SizeData {
     // Poule panel dimension
     public static final Dimension POULE_DIMENSION = new Dimension(SizeData.POULE_WIDTH, SizeData.POULE_HEIGHT);
 
+    // Competition panel size
+    public static final int COMPETITION_PANEL_WIDTH = SizeData.WIDTH * 75 / 100;
+    public static final int COMPETITION_PANEL_HEIGHT = SizeData.HEIGHT - SizeData.BUTTON_HEIGHT - SizeData.BORDER_SIZE;
+    // Competition panel dimension
+    public static final Dimension COMPETITION_PANEL_DIMENSION = new Dimension(SizeData.COMPETITION_PANEL_WIDTH, SizeData.COMPETITION_PANEL_HEIGHT);
+
     // Gaps
     public static final int GAP = SizeData.FONT_SIZE;
 }

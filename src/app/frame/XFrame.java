@@ -24,6 +24,9 @@ public final class XFrame extends AbstractXFrame {
     // Editors
     private final PouleEditor pouleEditor;
 
+    // Competition panel
+    private final CompetitionPanel competitionPanel;
+
     public XFrame(Image iconImage, String title) {
         super(iconImage, title);
         this.setLocationRelativeTo(null);
@@ -44,7 +47,15 @@ public final class XFrame extends AbstractXFrame {
                 .addBorder(AppearanceData.RED_BORDER)
                 .build());
 
+        // Competition panel
+        this.competitionPanel = new CompetitionPanel(this,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addBorder(AppearanceData.RED_BORDER)
+                .build());
+
         // Add components to the frame
+        this.insertComponent(this.competitionPanel);
 
         // Set the visibility of the frame
         this.setVisible(true);
