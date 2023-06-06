@@ -1,13 +1,6 @@
 package app.frame;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Image;
-
-import javax.swing.JComponent;
-
 import app.components.complex.editors.PouleEditor;
-import app.components.complex.fencing.Poule;
 import app.components.complex.frameparts.CenterPanel;
 import app.components.complex.frameparts.ContentPanel;
 import app.components.complex.frameparts.TitleBar;
@@ -15,10 +8,12 @@ import support.appdata.AppearanceData;
 import support.constants.PositionConstants;
 import support.framework.appearances.BasicAppearance;
 import support.framework.builders.CustomAppearanceBuilder;
-/*
-FIXME: The background and border is only temporary!!44!!
-TODO: Start making the PouleEditor panel and it's functionalities!!44!!
-*/
+
+import javax.swing.JComponent;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Image;
+
 public final class XFrame extends AbstractXFrame {
     // Frame parts
     // Content panel

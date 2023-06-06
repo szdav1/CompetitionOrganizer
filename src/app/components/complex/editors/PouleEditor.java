@@ -161,6 +161,10 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
         this.inputScrollPanel.addComponent(clearButton);
     }
 
+    public List<String> getValueList() {
+        return this.valueList;
+    }
+
     @Override
     public void addComponent(JComponent component, PositionConstants positionConstants) {
         this.add(component, positionConstants.getzIndex());
