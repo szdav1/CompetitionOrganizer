@@ -89,7 +89,7 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
                     numberOfFencers--;
                 }
             }
-            // TODO: Handle edge case: When the reminder is smaller than 4 and every poule has 8 fencers
+            // TODO: Handle edge case: When the reminder is smaller than 4 and every poule has 8 fencers and a few more...
         }
 
         this.scrollPanel.getViewPanel().setPreferredSize(new Dimension(
