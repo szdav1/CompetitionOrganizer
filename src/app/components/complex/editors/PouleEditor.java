@@ -230,7 +230,11 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
                     try {
                         if (!input.getText().isBlank()) {
                             int i = Integer.parseInt(input.getText());
-                            if (i <= 0) {
+                            if (i < 4 && !input.getDescription().equals("Round*")) {
+                                throw new Exception();
+                            }
+
+                            if (i > 8 && input.getDescription().equals("Fencers/Poule")) {
                                 throw new Exception();
                             }
                         }
@@ -246,6 +250,8 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
             if (!this.isErrorPresent) {
                 this.inputList.forEach(input -> this.valueList.add(input.getText()));
                 this.frame.closePouleEditor();
+                // Toggled the competitionPanel on the frame
+                this.frame.toggleCompetitionPanel(this.valueList);
             }
         }
     }

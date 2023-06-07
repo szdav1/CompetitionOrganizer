@@ -1,5 +1,6 @@
 package app.components.complex.fencing;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -98,11 +99,10 @@ public abstract class AbstractPoule extends AbstractXPanel {
 
     public void reConstruct(int amount) {
         // Remove previous boxes
-        for (int y = 0; y < this.boxArray.length; y++) {
-            for (int x = 0; x < this.boxArray[y].length; x++) {
-                this.removeComponent(this.boxArray[y][x]);
-            }
+        for (int i = 0; i < this.boxArray.length; i++) {
+            Arrays.fill(this.boxArray[i], null);
         }
+        this.removeAll();
 
         // Create structure with new amount
         this.amount = amount;

@@ -13,6 +13,7 @@ import javax.swing.JComponent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
+import java.util.List;
 
 public final class XFrame extends AbstractXFrame {
     // Frame parts
@@ -55,22 +56,34 @@ public final class XFrame extends AbstractXFrame {
                 .build());
 
         // Add components to the frame
-        this.insertComponent(this.competitionPanel);
 
         // Set the visibility of the frame
         this.setVisible(true);
     }
 
     public void togglePouleEditor() {
-        if (this.getFrameState() == XFrameConstants.NORMAL) {
-            this.setFrameState(XFrameConstants.EDITOR_OPENED);
+        if (!this.stateMap.get(XFrameConstants.EDITOR_OPENED)) {
             this.insertComponent(this.pouleEditor, PositionConstants.TOP_POS);
+            this.setFrameState(XFrameConstants.EDITOR_OPENED, true);
         }
     }
 
     public void closePouleEditor() {
-        this.setFrameState(XFrameConstants.NORMAL);
+        this.setFrameState(XFrameConstants.EDITOR_OPENED, false);
         this.extractComponent(this.pouleEditor);
+    }
+
+    public void toggleCompetitionPanel(List<String> valueList) {
+        if (!this.stateMap.get(XFrameConstants.ON_GOING_COMPETITION)) {
+            this.competitionPanel.generatePoules(valueList);
+            this.insertComponent(this.competitionPanel);
+            this.setFrameState(XFrameConstants.ON_GOING_COMPETITION, true);
+        }
+    }
+
+    public void closeCompetitionPanel() {
+        this.setFrameState(XFrameConstants.ON_GOING_COMPETITION, false);
+        this.extractComponent(this.competitionPanel);
     }
 
     public void insertComponent(JComponent component, PositionConstants positionConstants) {

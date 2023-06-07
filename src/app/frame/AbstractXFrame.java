@@ -1,6 +1,9 @@
 package app.frame;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Image;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -10,17 +13,20 @@ import support.interfaces.ContainerType;
 
 public abstract class AbstractXFrame extends JFrame implements ContainerType {
     protected final JLayeredPane contentPane;
-    protected XFrameConstants state;
+    protected HashMap<XFrameConstants, Boolean> stateMap = new HashMap<>();
 
     // Default JFrame setup
     protected AbstractXFrame() {
         this.contentPane = new JLayeredPane();
-        this.state = XFrameConstants.NORMAL;
+        // Setting the states
+        this.stateMap.put(XFrameConstants.NORMAL, true);
+        this.stateMap.put(XFrameConstants.EDITOR_OPENED, false);
+        this.stateMap.put(XFrameConstants.ON_GOING_COMPETITION, false);
 
         // Basic JFrame setup
         {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
             this.setContentPane(this.contentPane);
             this.setUndecorated(true);
             this.setBackground(Color.black);
@@ -38,12 +44,17 @@ public abstract class AbstractXFrame extends JFrame implements ContainerType {
         this.setTitle(title);
     }
 
-    public XFrameConstants getFrameState() {
-        return this.state;
+    public HashMap<XFrameConstants, Boolean> getFrameStates() {
+        return this.stateMap;
     }
 
-    public void setFrameState(XFrameConstants state) {
-        this.state = state;
+    public boolean getFrameState(XFrameConstants key) {
+        return this.stateMap.get(key);
     }
 
+    public void setFrameState(XFrameConstants key, boolean value) {
+        if (this.stateMap.containsKey(key)) {
+            this.stateMap.put(key, value);
+        }
+    }
 }
