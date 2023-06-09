@@ -17,10 +17,6 @@ public final class Poule extends AbstractPoule {
         super(x, y, frame, amount, appearance);
     }
 
-    public int getAmount() {
-        return this.amount;
-    }
-
     @Override
     public void addComponent(JComponent component, PositionConstants positionConstants) {
         this.add(component, positionConstants.getzIndex());

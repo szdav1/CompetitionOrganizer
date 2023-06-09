@@ -54,11 +54,13 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
 
         // Calculations and Generations
         // Number of poules with the preferred amount of fencers
+        // When the preferred size is bigger than the total amount of the fencers
         if (numberOfFencers <= fencersPoule) {
             final Poule poule = new Poule(this.frame, numberOfFencers, BasicAppearance.BLACK_BORDERED);
             this.pouleList.add(poule);
             this.insertComponent(poule);
         }
+        // Generate the poules normally
         else {
             int numberOfPoules = numberOfFencers / fencersPoule;
             numberOfFencers -= numberOfPoules * fencersPoule;
@@ -68,28 +70,32 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
                 this.insertComponent(poule);
             }
 
-            if (numberOfFencers > numberOfPoules) {
+            // Generate the last poule from the remaining fencers
+            if (numberOfFencers > numberOfPoules && numberOfFencers >= 4) {
+                final Poule poule = new Poule(this.frame, numberOfFencers, BasicAppearance.BLACK_BORDERED);
+                this.pouleList.add(poule);
+                this.insertComponent(poule);
+            }
+            else if (numberOfFencers > numberOfPoules) {
+                this.pouleList.get(0).reConstruct(this.pouleList.get(0).getAmount() - 1);
+                numberOfFencers++;
                 final Poule poule = new Poule(this.frame, numberOfFencers, BasicAppearance.BLACK_BORDERED);
                 this.pouleList.add(poule);
                 this.insertComponent(poule);
             }
             else {
-                // Spread the reminders among the poules
                 int index = 0;
                 while (numberOfFencers > 0) {
                     if (this.pouleList.get(index).getAmount() < 8) {
-                        this.pouleList.get(index).reConstruct(this.pouleList.get(0).getAmount() + 1);
-                    }
+                        this.pouleList.get(index).reConstruct(this.pouleList.get(index).getAmount() + 1);
 
-                    index++;
-
-                    if (index >= this.pouleList.size()) {
-                        index = 0;
+                        if (++index >= this.pouleList.size()) {
+                            index = 0;
+                        }
+                        numberOfFencers--;
                     }
-                    numberOfFencers--;
                 }
             }
-            // TODO: Handle edge case: When the reminder is smaller than 4 and every poule has 8 fencers and a few more...
         }
 
         this.scrollPanel.getViewPanel().setPreferredSize(new Dimension(

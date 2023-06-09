@@ -108,4 +108,12 @@ public abstract class AbstractPoule extends AbstractXPanel {
         this.amount = amount;
         this.createPouleStructure();
     }
+
+    public int getAmount() {
+        return this.amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 }
