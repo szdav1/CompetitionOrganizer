@@ -276,6 +276,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
                 }
 
                 this.previewPoule.reConstruct(amount);
+                this.repaintFrame();
             }
             catch (Exception exc) {
 

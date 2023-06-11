@@ -82,6 +82,7 @@ public final class XFrame extends AbstractXFrame {
     }
 
     public void closeCompetitionPanel() {
+        this.competitionPanel.clearAll();
         this.setFrameState(XFrameConstants.ON_GOING_COMPETITION, false);
         this.extractComponent(this.competitionPanel);
     }
