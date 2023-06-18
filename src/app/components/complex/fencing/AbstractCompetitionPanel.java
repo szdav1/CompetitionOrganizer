@@ -42,7 +42,7 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
 
         // Scroll panel
         this.scrollPanel = new XScrollPanel(new Dimension(this.getWidth(), this.getHeight()),
-            new FlowLayout(FlowLayout.CENTER, SizeData.GAP, SizeData.GAP), this.frame,
+            new FlowLayout(FlowLayout.CENTER, SizeData.GAP, SizeData.GAP), this.frame, SizeData.GAP, SizeData.GAP,
             new CustomAppearanceBuilder()
                 .addMainBackground(this.getAppearance().getMainBackground())
                 .addBorder(this.getAppearance().getBorder())

@@ -1,5 +1,6 @@
 package app.components.scrollpanels.scrollbars;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 
 import javax.swing.JScrollBar;
@@ -17,6 +18,7 @@ public abstract class AbstractXScrollbar extends JScrollBar implements XComponen
         this.appearance = appearance;
 
         this.setOrientation(orientation);
+        this.setFocusable(false);
         this.setPreferredSize(preferredSize);
         this.setUI(new XScrollbarUI(appearance));
         this.setBorder(null);
@@ -34,6 +36,7 @@ public abstract class AbstractXScrollbar extends JScrollBar implements XComponen
         this.appearance = appearance;
 
         this.setOrientation(orientation);
+        this.setFocusable(false);
         this.setPreferredSize(preferredSize);
         this.setUI(new XScrollbarUI(roundX, roundY, appearance));
         this.setBorder(null);
@@ -51,6 +54,7 @@ public abstract class AbstractXScrollbar extends JScrollBar implements XComponen
         this.appearance = scrollBar.getAppearance();
 
         this.setOrientation(scrollBar.getOrientation());
+        this.setFocusable(scrollBar.isFocusable());
         this.setPreferredSize(scrollBar.getPreferredSize());
         this.setUI(scrollBar.getUI());
         this.setBorder(null);

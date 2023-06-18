@@ -1,8 +1,6 @@
 package app.components.complex.fencing;
 
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.JTextField;
 

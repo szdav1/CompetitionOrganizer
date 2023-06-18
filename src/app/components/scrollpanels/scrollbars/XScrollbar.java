@@ -31,8 +31,6 @@ public final class XScrollbar extends AbstractXScrollbar {
         return this.appearance;
     }
 
-    // These methods are empty  because the must be an XComponent, but does not have
-    // to have a reference to the main frame.
     @Override
     public void repaintFrame() {
 

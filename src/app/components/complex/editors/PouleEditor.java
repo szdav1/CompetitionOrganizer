@@ -81,7 +81,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
 
         // Input scroll panel
         this.inputScrollPanel = new XScrollPanel(this.inputPanel.getPreferredSize(),
-            new FlowLayout(FlowLayout.CENTER, SizeData.GAP, SizeData.GAP), this.frame,
+            new FlowLayout(FlowLayout.CENTER, SizeData.GAP, SizeData.GAP), this.frame, SizeData.GAP, SizeData.GAP,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
                 .addBorder(this.inputPanel.getAppearance().getBorder())
@@ -95,7 +95,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
         this.createInputFields(new String[] {"Round*", "Poule*", "Fencers/Poule", "Fencers*", "Referee", "Date"});
 
         // Preview scroll panel
-        this.previewScrollPanel = new XScrollPanel(this.previewPanel.getPreferredSize(), this.frame,
+        this.previewScrollPanel = new XScrollPanel(this.previewPanel.getPreferredSize(), this.frame, SizeData.GAP, SizeData.GAP,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
                 .build(),
@@ -118,6 +118,8 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
         // Add the inner containers to the centerPanel
         this.centerPanel.addComponent(this.inputPanel);
         this.centerPanel.addComponent(this.previewPanel);
+
+        this.addKeyListener(this);
     }
 
     private void createInputFields(String[] options) {
@@ -163,6 +165,46 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
 
     public List<String> getValueList() {
         return this.valueList;
+    }
+
+    private void checkValues() {
+        this.isErrorPresent = false;
+        this.valueList.clear();
+        this.inputList.forEach(input -> {
+            // Check for errors
+            if (input.getText().isBlank() && input.getDescription().contains("*")) {
+                input.displayError();
+                this.isErrorPresent = true;
+            }
+
+            // Check for more errors
+            if (Arrays.asList(new String[] {"Round*", "Fencers*", "Fencers/Poule"}).contains(input.getDescription())) {
+                try {
+                    if (!input.getText().isBlank()) {
+                        int i = Integer.parseInt(input.getText());
+                        if (i < 4 && !input.getDescription().equals("Round*")) {
+                            throw new Exception();
+                        }
+
+                        if (i > 8 && input.getDescription().equals("Fencers/Poule")) {
+                            throw new Exception();
+                        }
+                    }
+                }
+                catch (Exception exc) {
+                    input.displayError();
+                    this.isErrorPresent = true;
+                }
+            }
+        });
+
+        // Fetch the valid values if there are no errors
+        if (!this.isErrorPresent) {
+            this.inputList.forEach(input -> this.valueList.add(input.getText()));
+            this.frame.closePouleEditor();
+            // Toggled the competitionPanel on the frame
+            this.frame.toggleCompetitionPanel(this.valueList);
+        }
     }
 
     @Override
@@ -213,46 +255,8 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        this.isErrorPresent = false;
-        this.valueList.clear();
-
-        // Loop through the inputList
         if (e.getSource().equals(this.createButton.getButton())) {
-            this.inputList.forEach(input -> {
-                // Check for errors
-                if (input.getText().isBlank() && input.getDescription().contains("*")) {
-                    input.displayError();
-                    this.isErrorPresent = true;
-                }
-
-                // Check for more errors
-                if (Arrays.asList(new String[] {"Round*", "Fencers*", "Fencers/Poule"}).contains(input.getDescription())) {
-                    try {
-                        if (!input.getText().isBlank()) {
-                            int i = Integer.parseInt(input.getText());
-                            if (i < 4 && !input.getDescription().equals("Round*")) {
-                                throw new Exception();
-                            }
-
-                            if (i > 8 && input.getDescription().equals("Fencers/Poule")) {
-                                throw new Exception();
-                            }
-                        }
-                    }
-                    catch (Exception exc) {
-                        input.displayError();
-                        this.isErrorPresent = true;
-                    }
-                }
-            });
-
-            // Fetch the valid values if there are no errors
-            if (!this.isErrorPresent) {
-                this.inputList.forEach(input -> this.valueList.add(input.getText()));
-                this.frame.closePouleEditor();
-                // Toggled the competitionPanel on the frame
-                this.frame.toggleCompetitionPanel(this.valueList);
-            }
+            this.checkValues();
         }
     }
 
@@ -263,7 +267,9 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            this.checkValues();
+        }
     }
 
     @Override

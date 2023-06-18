@@ -47,8 +47,11 @@ public final class XScrollbarUI extends BasicScrollBarUI {
     @Override
     public void paintThumb(Graphics graphics, JComponent component, Rectangle rectangle) {
         Graphics2D graphics2D = (Graphics2D) graphics;
-        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics2D.setColor(this.appearance.getMainForeground());
+        graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+//        graphics2D.setColor(this.appearance.getMainForeground());
+        graphics2D.setPaint(new GradientPaint(rectangle.x, rectangle.y, this.appearance.getMainForeground(), rectangle.width,
+            rectangle.height, this.appearance.getSecondaryForeground() == null ? this.appearance.getMainForeground() :
+            this.appearance.getSecondaryForeground()));
         graphics2D.fillRoundRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height, this.roundX, this.roundY);
     }
 
