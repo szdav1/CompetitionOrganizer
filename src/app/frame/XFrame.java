@@ -13,9 +13,11 @@ import javax.swing.JComponent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
 
-public final class XFrame extends AbstractXFrame {
+public final class XFrame extends AbstractXFrame implements KeyListener {
     // Frame parts
     // Content panel
     private final ContentPanel contentPanel;
@@ -30,7 +32,9 @@ public final class XFrame extends AbstractXFrame {
 
     public XFrame(Image iconImage, String title) {
         super(iconImage, title);
+        this.setAutoRequestFocus(true);
         this.setLocationRelativeTo(null);
+        this.addKeyListener(this);
 
         // Frame parts
         // Content panel
@@ -69,6 +73,7 @@ public final class XFrame extends AbstractXFrame {
     }
 
     public void closePouleEditor() {
+        this.requestFocusInWindow();
         this.setFrameState(XFrameConstants.EDITOR_OPENED, false);
         this.extractComponent(this.pouleEditor);
     }
@@ -82,6 +87,7 @@ public final class XFrame extends AbstractXFrame {
     }
 
     public void closeCompetitionPanel() {
+        this.requestFocusInWindow();
         this.competitionPanel.clearAll();
         this.setFrameState(XFrameConstants.ON_GOING_COMPETITION, false);
         this.extractComponent(this.competitionPanel);
@@ -128,5 +134,22 @@ public final class XFrame extends AbstractXFrame {
         this.remove(component);
         this.repaint();
         return component;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_F1) {
+            this.togglePouleEditor();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }

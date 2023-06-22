@@ -270,6 +270,9 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             this.checkValues();
         }
+        else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            this.frame.closePouleEditor();
+        }
     }
 
     @Override

@@ -132,36 +132,23 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
             }
 
             // Generate the last poule from the remaining fencers
-            if (numberOfFencers > numberOfPoules && numberOfFencers >= 4) {
+            // 1. When the reminder is enough to make another poule
+            if (numberOfFencers >= 4 && numberOfFencers <= 8) {
                 final Poule poule = new Poule(this.frame, numberOfFencers, BasicAppearance.BLACK_BORDERED);
                 this.pouleList.add(poule);
                 this.insertComponent(poule);
             }
-            else if (numberOfFencers > numberOfPoules) {
-                this.pouleList.get(0).reConstruct(this.pouleList.get(0).getAmount() - 1);
-                numberOfFencers++;
-                final Poule poule = new Poule(this.frame, numberOfFencers, BasicAppearance.BLACK_BORDERED);
-                this.pouleList.add(poule);
-                this.insertComponent(poule);
-            }
-            else if (numberOfFencers == 1) {
-                this.pouleList.get(0).reConstruct(this.pouleList.get(0).getAmount() - 3);
-                numberOfFencers += 3;
-                final Poule poule = new Poule(this.frame, numberOfFencers, BasicAppearance.BLACK_BORDERED);
-                this.pouleList.add(poule);
-                this.insertComponent(poule);
-            }
-            else {
-                int index = 0;
-                while (numberOfFencers > 0) {
-                    if (this.pouleList.get(index).getAmount() < 8) {
-                        this.pouleList.get(index).reConstruct(this.pouleList.get(index).getAmount() + 1);
-
-                        if (++index >= this.pouleList.size()) {
-                            index = 0;
-                        }
-                        numberOfFencers--;
-                    }
+            // 2. When the reminder is not enough to make another poule
+            else if (numberOfFencers < 4) {
+                if (this.pouleList.get(0).getAmount() + numberOfFencers < 8) {
+                    this.pouleList.get(0).reConstruct(this.pouleList.get(0).getAmount() + numberOfFencers);
+                }
+                else if (this.pouleList.get(0).getAmount() + numberOfFencers > 8) {
+                    this.pouleList.get(0).reConstruct(this.pouleList.get(0).getAmount() - (4 - numberOfFencers));
+                    numberOfFencers += (4 - numberOfFencers);
+                    final Poule poule = new Poule(this.frame, numberOfFencers, BasicAppearance.BLACK_BORDERED);
+                    this.pouleList.add(poule);
+                    this.insertComponent(poule);
                 }
             }
         }
