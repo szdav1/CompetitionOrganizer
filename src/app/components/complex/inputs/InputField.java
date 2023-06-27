@@ -3,6 +3,7 @@ package app.components.complex.inputs;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
@@ -147,6 +148,23 @@ public final class InputField extends AbstractInputField {
 
     @Override
     public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (this.isErrorPresent) {
+            this.removeError();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
 
     }
 }

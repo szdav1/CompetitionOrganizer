@@ -32,7 +32,6 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
     private final XPanel bottomSection;
 
     // Buttons
-    private final FCXButton calcAllButton;
     private final FCXButton finishButton;
     private final FCXButton closeButton;
 
@@ -54,21 +53,9 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
 
         // Inner container for the bottom section
         this.bottomSection = new XPanel(new Dimension(this.getWidth(), SizeData.BUTTON_HEIGHT),
-            new FlowLayout(FlowLayout.LEADING, 0, 0), this.frame, BasicAppearance.BLACK);
+            new FlowLayout(FlowLayout.CENTER, 0, 0), this.frame, BasicAppearance.BLACK);
 
         // Buttons
-        this.calcAllButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Calculate All", this.frame,
-            new CustomAppearanceBuilder()
-                .addMainBackground(Color.black)
-                .addMainForeground(Color.white)
-                .addSecondaryForeground(Color.red)
-                .addBorder(AppearanceData.RED_BORDER)
-                .build(),
-            new CustomAppearanceBuilder()
-                .addMainForeground(Color.red)
-                .addSecondaryForeground(Color.yellow)
-                .build());
-
         this.finishButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Finish All", this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
@@ -95,7 +82,6 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
         this.closeButton.addActionListener(e -> this.frame.closeCompetitionPanel());
 
         // Add components to the bottom section
-        this.bottomSection.addComponent(this.calcAllButton);
         this.bottomSection.addComponent(this.finishButton);
         this.bottomSection.addComponent(this.closeButton);
 
@@ -110,14 +96,17 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
         final String pouleName = valueList.get(1);
         final int fencersPoule = valueList.get(2).isBlank() ? 7 : Integer.parseInt(valueList.get(2));
         int numberOfFencers = Integer.parseInt(valueList.get(3));
-        final String referee = valueList.get(4);
-        final String date = valueList.get(5);
+        final String date = valueList.get(4);
 
         // Calculations and Generations
         // Number of poules with the preferred amount of fencers
         // When the preferred size is bigger than the total amount of the fencers
         if (numberOfFencers <= fencersPoule) {
-            final Poule poule = new Poule(this.frame, numberOfFencers, BasicAppearance.BLACK_BORDERED);
+            final Poule poule = new Poule(this.frame, numberOfFencers,
+                new CustomAppearanceBuilder()
+                    .addMainBackground(Color.black)
+                    .addBorder(AppearanceData.RED_BORDER)
+                    .build());
             this.pouleList.add(poule);
             this.insertComponent(poule);
         }
@@ -126,7 +115,11 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
             int numberOfPoules = numberOfFencers / fencersPoule;
             numberOfFencers -= numberOfPoules * fencersPoule;
             for (int i = 0; i < numberOfPoules; i++) {
-                final Poule poule = new Poule(this.frame, fencersPoule, BasicAppearance.BLACK_BORDERED);
+                final Poule poule = new Poule(this.frame, fencersPoule,
+                    new CustomAppearanceBuilder()
+                        .addMainBackground(Color.black)
+                        .addBorder(AppearanceData.RED_BORDER)
+                        .build());
                 this.pouleList.add(poule);
                 this.insertComponent(poule);
             }
@@ -134,7 +127,11 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
             // Generate the last poule from the remaining fencers
             // 1. When the reminder is enough to make another poule
             if (numberOfFencers >= 4 && numberOfFencers <= 8) {
-                final Poule poule = new Poule(this.frame, numberOfFencers, BasicAppearance.BLACK_BORDERED);
+                final Poule poule = new Poule(this.frame, numberOfFencers,
+                    new CustomAppearanceBuilder()
+                        .addMainBackground(Color.black)
+                        .addBorder(AppearanceData.RED_BORDER)
+                        .build());
                 this.pouleList.add(poule);
                 this.insertComponent(poule);
             }
@@ -146,7 +143,11 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
                 else if (this.pouleList.get(0).getAmount() + numberOfFencers > 8) {
                     this.pouleList.get(0).reConstruct(this.pouleList.get(0).getAmount() - (4 - numberOfFencers));
                     numberOfFencers += (4 - numberOfFencers);
-                    final Poule poule = new Poule(this.frame, numberOfFencers, BasicAppearance.BLACK_BORDERED);
+                    final Poule poule = new Poule(this.frame, numberOfFencers,
+                        new CustomAppearanceBuilder()
+                            .addMainBackground(Color.black)
+                            .addBorder(AppearanceData.RED_BORDER)
+                            .build());
                     this.pouleList.add(poule);
                     this.insertComponent(poule);
                 }

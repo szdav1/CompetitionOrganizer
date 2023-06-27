@@ -11,6 +11,7 @@ import app.components.labels.XLabel;
 import app.components.panels.AbstractXPanel;
 import app.components.panels.XPanel;
 import app.frame.XFrame;
+import support.appdata.AppearanceData;
 import support.appdata.AssetsData;
 import support.appdata.SizeData;
 import support.framework.appearances.BasicAppearance;
@@ -78,6 +79,7 @@ public abstract class AbstractEditor extends AbstractXPanel implements ActionLis
             new CustomAppearanceBuilder()
                 .addMainForeground(Color.white)
                 .addSecondaryForeground(Color.red)
+                .addBorder(AppearanceData.RED_BORDER)
                 .build(),
             new CustomAppearanceBuilder()
                 .addMainForeground(Color.red)

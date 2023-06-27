@@ -1,6 +1,7 @@
 package app.components.complex.inputs;
 
 import java.awt.event.FocusListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 
 import javax.swing.SwingConstants;
@@ -13,7 +14,7 @@ import support.appdata.SizeData;
 import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 
-public abstract class AbstractInputField extends AbstractXPanel implements MouseListener, FocusListener {
+public abstract class AbstractInputField extends AbstractXPanel implements MouseListener, FocusListener, KeyListener {
     protected boolean required;
     protected boolean isErrorPresent;
 
@@ -41,6 +42,7 @@ public abstract class AbstractInputField extends AbstractXPanel implements Mouse
             this.frame, inputAppearance);
         this.inputField.addMouseListener(this);
         this.inputField.addFocusListener(this);
+        this.inputField.addKeyListener(this);
 
         // Add the components to the panel
         this.addComponent(this.titleLabel);

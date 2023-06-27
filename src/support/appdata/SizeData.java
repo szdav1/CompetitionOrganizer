@@ -48,7 +48,7 @@ public final class SizeData {
 
     // Editor size
     public static final int EDITOR_WIDTH = SizeData.WIDTH / 2;
-    public static final int EDITOR_HEIGHT = SizeData.HEIGHT / 2;
+    public static final int EDITOR_HEIGHT = SizeData.HEIGHT / 2 + SizeData.GAP;
     // Editor dimension
     public static final Dimension EDITOR_DIMENSION = new Dimension(SizeData.EDITOR_WIDTH, SizeData.EDITOR_HEIGHT);
 
@@ -66,8 +66,9 @@ public final class SizeData {
     public static final Dimension BOX_DIMENSION = new Dimension(SizeData.BOX_WIDTH, SizeData.BOX_HEIGHT);
 
     // Poule panel size
-    public static final int POULE_WIDTH = SizeData.BOX_WIDTH * 14 + SizeData.NAME_BOX_WIDTH;
-    public static final int POULE_HEIGHT = SizeData.BOX_HEIGHT * 9;
+    public static final int POULE_WIDTH = (SizeData.BOX_WIDTH * 14) + SizeData.NAME_BOX_WIDTH + (SizeData.BORDER_SIZE * 2);
+    public static final int POULE_HEIGHT = (SizeData.BOX_HEIGHT * 9) + (SizeData.BUTTON_HEIGHT * 5);
+    public static final int PREVIEW_POULE_HEIGHT = SizeData.BOX_HEIGHT * 9;
     // Poule panel dimension
     public static final Dimension POULE_DIMENSION = new Dimension(SizeData.POULE_WIDTH, SizeData.POULE_HEIGHT);
 

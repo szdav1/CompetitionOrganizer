@@ -70,7 +70,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
             this.centerPanel.getHeight() * 75 / 100), new BorderLayout(), this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(this.getAppearance().getMainBackground())
-                .addBorder(this.getAppearance().getBorder())
+                .addBorder(AppearanceData.GRAY_BORDER)
                 .build());
 
         this.previewPanel = new XPanel(this.inputPanel.getPreferredSize(), this.inputPanel.getLayout(), this.frame,
@@ -78,6 +78,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
 
         // Preview poule
         this.previewPoule = new Poule(0, 0, this.frame, 8, BasicAppearance.BLACK_BORDERED);
+        this.previewPoule.setSize(SizeData.POULE_WIDTH, SizeData.PREVIEW_POULE_HEIGHT);
 
         // Input scroll panel
         this.inputScrollPanel = new XScrollPanel(this.inputPanel.getPreferredSize(),
@@ -88,20 +89,18 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
                 .build(),
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
-                .addMainForeground(Color.red)
+                .addMainForeground(Color.darkGray)
                 .build());
         // Add the inputFields
         // The input with a * in its text must be filled
-        this.createInputFields(new String[] {"Round*", "Poule*", "Fencers/Poule", "Fencers*", "Referee", "Date"});
+        this.createInputFields(new String[] {"Round*", "Poule*", "Fencers/Poule", "Fencers*", "Date", ""});
 
         // Preview scroll panel
         this.previewScrollPanel = new XScrollPanel(this.previewPanel.getPreferredSize(), this.frame, SizeData.GAP, SizeData.GAP,
+            this.inputScrollPanel.getAppearance(),
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
-                .build(),
-            new CustomAppearanceBuilder()
-                .addMainBackground(Color.black)
-                .addMainForeground(Color.red)
+                .addMainForeground(Color.darkGray)
                 .build());
         // Add the previewPoule
         this.previewScrollPanel.addComponent(this.previewPoule);
@@ -129,9 +128,15 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
                 new CustomAppearanceBuilder()
                     .addMainBackground(Color.black)
                     .addMainForeground(Color.white)
-                    .addBorder(AppearanceData.RED_BORDER)
+                    .addBorder(AppearanceData.GRAY_BORDER)
                     .build());
             inputField.getInputField().addKeyListener(this);
+
+            if (inputField.getDescription().isBlank()) {
+                inputField.getInputField().setBorder(null);
+                inputField.getInputField().setFocusable(false);
+                inputField.getInputField().setEnabled(false);
+            }
 
             this.inputList.add(inputField);
 

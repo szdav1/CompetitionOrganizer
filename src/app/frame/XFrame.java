@@ -53,11 +53,7 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
                 .build());
 
         // Competition panel
-        this.competitionPanel = new CompetitionPanel(this,
-            new CustomAppearanceBuilder()
-                .addMainBackground(Color.black)
-                .addBorder(AppearanceData.RED_BORDER)
-                .build());
+        this.competitionPanel = new CompetitionPanel(this, BasicAppearance.BLACK);
 
         // Add components to the frame
 
