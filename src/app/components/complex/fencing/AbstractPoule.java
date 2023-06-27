@@ -107,6 +107,53 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
         this.setBounds(x, y, SizeData.POULE_WIDTH, SizeData.POULE_HEIGHT);
     }
 
+    public void calculateFencerData() {
+        // Calculate the tr
+        int current = 1;
+        for (int x = 2; x < this.amount + 2; x++) {
+            int tr = 0;
+            for (int y = 1; y < this.amount + 1; y++) {
+                if (!this.boxArray[y][x].getText().isBlank()) {
+                    tr += this.boxArray[y][x].getText().equals("V") ? 5 : Integer.parseInt(this.boxArray[y][x].getText());
+                }
+            }
+            this.boxArray[current][this.amount + 4].setText(String.valueOf(tr));
+            current++;
+        }
+
+        for (int y = 1; y < this.amount + 1; y++) {
+            int wins = 0;
+            int ts = 0;
+            int index = 0;
+            int place = 0;
+
+            for (int x = 2; x < this.amount + 2; x++) {
+                // Calculate the wins
+                if (this.boxArray[y][x].getText().equals("V")) {
+                    wins++;
+                }
+
+                // Calculate the ts
+                if (!this.boxArray[y][x].getText().isBlank()) {
+                    ts += this.boxArray[y][x].getText().equals("V") ? 5 : Integer.parseInt(this.boxArray[y][x].getText());
+                }
+            }
+
+            // Insert the values to the corresponding place
+            // Wins
+            this.boxArray[y][this.amount + 2].setText(String.valueOf(wins));
+            // Ts
+            this.boxArray[y][this.amount + 3].setText(String.valueOf(ts));
+            // Index
+            this.boxArray[y][this.amount + 5].setText(
+                String.valueOf(Integer.parseInt(this.boxArray[y][this.amount + 3].getText()) -
+                    Integer.parseInt(this.boxArray[y][this.amount + 4].getText()))
+            );
+            // Place
+            this.boxArray[y][this.amount + 6].setText(String.valueOf(place)); // TODO: Implement places
+        }
+    }
+
     private void createPouleStructure() {
         for (int y = 0; y < this.amount + 1; y++) {
             for (int x = 0; x < this.amount + 7; x++) {
@@ -174,10 +221,17 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
 
     public void reConstruct(int amount) {
         // Remove previous boxes
-        for (int i = 0; i < this.boxArray.length; i++) {
+        for (int i = 0; i < this.amount; i++) {
             Arrays.fill(this.boxArray[i], null);
         }
+
         this.removeAll();
+
+        this.addComponent(this.fencer1NameInput);
+        this.addComponent(this.fencer1TouchInput);
+        this.addComponent(this.fencer2NameInput);
+        this.addComponent(this.fencer2TouchInput);
+        this.addComponent(this.insertButton);
 
         // Create structure with new amount
         this.amount = amount;

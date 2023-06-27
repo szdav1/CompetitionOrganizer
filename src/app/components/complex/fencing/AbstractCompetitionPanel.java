@@ -52,7 +52,7 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
                 .build());
 
         // Inner container for the bottom section
-        this.bottomSection = new XPanel(new Dimension(this.getWidth(), SizeData.BUTTON_HEIGHT),
+        this.bottomSection = new XPanel(new Dimension(this.getWidth(), SizeData.INPUT_FIELD_HEIGHT),
             new FlowLayout(FlowLayout.CENTER, 0, 0), this.frame, BasicAppearance.BLACK);
 
         // Buttons
@@ -93,10 +93,9 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
     public void generatePoules(List<String> valueList) {
         // Collect the data from the list
         final String round = valueList.get(0);
-        final String pouleName = valueList.get(1);
-        final int fencersPoule = valueList.get(2).isBlank() ? 7 : Integer.parseInt(valueList.get(2));
-        int numberOfFencers = Integer.parseInt(valueList.get(3));
-        final String date = valueList.get(4);
+        final int fencersPoule = valueList.get(1).isBlank() ? 7 : Integer.parseInt(valueList.get(1));
+        int numberOfFencers = Integer.parseInt(valueList.get(2));
+        final String date = valueList.get(3);
 
         // Calculations and Generations
         // Number of poules with the preferred amount of fencers

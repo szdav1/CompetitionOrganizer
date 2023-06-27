@@ -93,7 +93,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
                 .build());
         // Add the inputFields
         // The input with a * in its text must be filled
-        this.createInputFields(new String[] {"Round*", "Poule*", "Fencers/Poule", "Fencers*", "Date", ""});
+        this.createInputFields(new String[] {"Round*", "Fencers/Poule", "Fencers*", "Date"});
 
         // Preview scroll panel
         this.previewScrollPanel = new XScrollPanel(this.previewPanel.getPreferredSize(), this.frame, SizeData.GAP, SizeData.GAP,
