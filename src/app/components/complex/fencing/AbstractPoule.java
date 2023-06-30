@@ -196,8 +196,6 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
                 }
             });
         }
-
-        this.fencerList.forEach(System.out::println);
     }
 
     private void createPouleStructure() {
