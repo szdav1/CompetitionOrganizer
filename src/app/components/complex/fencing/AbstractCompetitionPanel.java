@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import support.framework.appearances.BasicAppearance;
 import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 
-public abstract class AbstractCompetitionPanel extends AbstractXPanel {
+public abstract class AbstractCompetitionPanel extends AbstractXPanel implements ActionListener {
     // List for the poules
     protected final List<Poule> pouleList = new LinkedList<>();
 
@@ -32,8 +33,8 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
     private final XPanel bottomSection;
 
     // Buttons
-    private final FCXButton finishButton;
-    private final FCXButton closeButton;
+    protected final FCXButton finishButton;
+    protected final FCXButton closeButton;
 
     public AbstractCompetitionPanel(XFrame frame, Appearance appearance) {
         super(0, SizeData.BORDER_SIZE, SizeData.COMPETITION_PANEL_WIDTH,
@@ -52,7 +53,7 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
                 .build());
 
         // Inner container for the bottom section
-        this.bottomSection = new XPanel(new Dimension(this.getWidth(), SizeData.INPUT_FIELD_HEIGHT),
+        this.bottomSection = new XPanel(new Dimension(this.getWidth(), SizeData.BUTTON_HEIGHT),
             new FlowLayout(FlowLayout.CENTER, 0, 0), this.frame, BasicAppearance.BLACK);
 
         // Buttons
@@ -67,6 +68,7 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
                 .addMainForeground(Color.red)
                 .addSecondaryForeground(Color.yellow)
                 .build());
+        this.finishButton.addActionListener(this);
 
         this.closeButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Close", this.frame,
             new CustomAppearanceBuilder()
@@ -93,7 +95,7 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
     public void generatePoules(List<String> valueList) {
         // Collect the data from the list
         final String round = valueList.get(0);
-        final int fencersPoule = valueList.get(1).isBlank() ? 7 : Integer.parseInt(valueList.get(1));
+        final int fencersPoule = valueList.get(1).isBlank() ? 8 : Integer.parseInt(valueList.get(1));
         int numberOfFencers = Integer.parseInt(valueList.get(2));
         final String date = valueList.get(3);
 

@@ -1,4 +1,3 @@
-// TODO: Implement the buttons' functionalities
 package app.components.complex.fencing;
 
 import java.awt.BorderLayout;
@@ -179,8 +178,7 @@ public final class Poule extends AbstractPoule {
     public void actionPerformed(ActionEvent e) {
         final Object source = e.getSource();
         if (source.equals(this.insertButton.getButton())) {
-//            this.insertValues();
-            this.calculateFencerData();
+            this.insertValues();
         }
     }
 

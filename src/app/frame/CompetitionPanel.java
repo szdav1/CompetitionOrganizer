@@ -1,10 +1,12 @@
 package app.frame;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JComponent;
 
 import app.components.complex.fencing.AbstractCompetitionPanel;
+import app.components.complex.fencing.Poule;
 import support.constants.PositionConstants;
 import support.framework.interfaces.Appearance;
 
@@ -55,5 +57,13 @@ public final class CompetitionPanel extends AbstractCompetitionPanel {
     @Override
     public XFrame getFrame() {
         return this.frame;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        final Object source = e.getSource();
+        if (source.equals(this.finishButton.getButton())) {
+            this.pouleList.forEach(Poule::calculateFencerData);
+        }
     }
 }

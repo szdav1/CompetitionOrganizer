@@ -48,7 +48,7 @@ public final class SizeData {
 
     // Editor size
     public static final int EDITOR_WIDTH = SizeData.WIDTH / 2;
-    public static final int EDITOR_HEIGHT = SizeData.HEIGHT / 2 + SizeData.GAP;
+    public static final int EDITOR_HEIGHT = (SizeData.HEIGHT / 2) + SizeData.GAP;
     // Editor dimension
     public static final Dimension EDITOR_DIMENSION = new Dimension(SizeData.EDITOR_WIDTH, SizeData.EDITOR_HEIGHT);
 
