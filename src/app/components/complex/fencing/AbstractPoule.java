@@ -3,7 +3,11 @@ package app.components.complex.fencing;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JTextField;
 
@@ -12,6 +16,7 @@ import app.components.complex.inputs.InputField;
 import app.components.panels.AbstractXPanel;
 import app.components.textcontainers.XTextField;
 import app.frame.XFrame;
+import app.other.Fencer;
 import support.appdata.AppearanceData;
 import support.appdata.SizeData;
 import support.framework.appearances.BasicAppearance;
@@ -19,8 +24,10 @@ import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 
 public abstract class AbstractPoule extends AbstractXPanel implements ActionListener, KeyListener {
-    // Box list
+    // Box array
     protected final XTextField[][] boxArray = new XTextField[9][15];
+    // Fencer list
+    protected List<Fencer> fencerList = new ArrayList<>();
     // Amount of fencers
     protected int amount;
     // Inner container
@@ -108,6 +115,9 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
     }
 
     public void calculateFencerData() {
+        // Reset the fencerList
+        this.fencerList.clear();
+
         // Calculate the tr
         int current = 1;
         for (int x = 2; x < this.amount + 2; x++) {
@@ -149,9 +159,45 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
                 String.valueOf(Integer.parseInt(this.boxArray[y][this.amount + 3].getText()) -
                     Integer.parseInt(this.boxArray[y][this.amount + 4].getText()))
             );
-            // Place
-            this.boxArray[y][this.amount + 6].setText(String.valueOf(place)); // TODO: Implement places
         }
+
+        // Collect the fencers
+        for (int y = 1; y < this.amount + 1; y++) {
+            String name;
+            int wins;
+            int ts;
+            int tr;
+            int index;
+            int place;
+
+            this.fencerList.add(new Fencer(
+                this.boxArray[y][0].getText(),
+                Integer.parseInt(this.boxArray[y][this.amount + 2].getText()),
+                Integer.parseInt(this.boxArray[y][this.amount + 3].getText()),
+                Integer.parseInt(this.boxArray[y][this.amount + 4].getText()),
+                Integer.parseInt(this.boxArray[y][this.amount + 5].getText())
+            ));
+        }
+
+        // Sort the fencerList - descending
+        this.fencerList = this.fencerList.stream()
+            .sorted(Comparator.comparing(Fencer::getIndex).reversed())
+            .collect(Collectors.toList());
+        // Set the place for the fencers
+        this.fencerList.forEach(fencer -> fencer.setPlace(this.fencerList.indexOf(fencer) + 1));
+
+        // Insert the fencer's place into the poule
+        int i = 0;
+        for (int y = 1; y < this.amount + 1; y++) {
+            int yTemp = y;
+            this.fencerList.forEach(fencer -> {
+                if (this.boxArray[yTemp][0].getText().equals(fencer.getName())) {
+                    this.boxArray[yTemp][this.amount + 6].setText(String.valueOf(fencer.getPlace()));
+                }
+            });
+        }
+
+        this.fencerList.forEach(System.out::println);
     }
 
     private void createPouleStructure() {
@@ -216,6 +262,10 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
                 this.boxArray[y][x] = box;
                 this.add(box);
             }
+        }
+
+        for (int y = 0; y < this.amount + 1; y++) {
+            this.boxArray[y][this.amount + 6].setForeground(Color.red);
         }
     }
 
