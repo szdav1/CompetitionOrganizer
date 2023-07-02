@@ -1,14 +1,15 @@
 package app.components.complex.fencing;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 import javax.swing.JComponent;
 
 import app.frame.XFrame;
-import support.appdata.AppearanceData;
 import support.constants.PositionConstants;
 import support.framework.interfaces.Appearance;
 
@@ -68,7 +69,7 @@ public final class Poule extends AbstractPoule {
                 isErrorPresent = true;
             }
 
-            if (touch1 == 5 && touch2 == 5) {
+            if (touch1 < 5 && touch2 < 5) {
                 this.fencer1TouchInput.displayError();
                 this.fencer2TouchInput.displayError();
                 isErrorPresent = true;
@@ -224,6 +225,27 @@ public final class Poule extends AbstractPoule {
         int indexX = 0;
         int indexY = 0;
 
+        for (int y = 1; y < this.amount + 1; y++) {
+            for (int x = 2; x < this.amount + 2; x++) {
+                if (e.getSource().equals(this.boxArray[y][x])) {
+                    if (Arrays.asList(new Integer[] {KeyEvent.VK_0, KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3,
+                        KeyEvent.VK_4, KeyEvent.VK_5, KeyEvent.VK_V}).contains(e.getKeyCode())) {
+                        this.boxArray[y][x].setText(String.valueOf(e.getKeyChar()).toUpperCase());
+
+                        if (this.boxArray[x - 1][y + 1].getText().equalsIgnoreCase(this.boxArray[y][x].getText())) {
+                            this.boxArray[y][x].setText("");
+                        }
+                    }
+                    else if (e.getKeyCode() == KeyEvent.VK_F2) {
+
+                    }
+                    else {
+                        this.boxArray[y][x].setText("");
+                    }
+                }
+            }
+        }
+
         if (e.getKeyCode() == KeyEvent.VK_F2) {
             for (int y = 1; y < this.amount + 1; y++) {
                 for (int x = 2; x < this.amount + 2; x++) {
@@ -265,7 +287,7 @@ public final class Poule extends AbstractPoule {
         for (int y = 1; y < this.amount + 1; y++) {
             for (int x = 2; x < this.amount + 2; x++) {
                 if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
-                    this.boxArray[y][x].setBorder(AppearanceData.RED_BORDER);
+                    this.boxArray[y][x].setBackground(Color.lightGray);
                     this.boxArray[y][x].requestFocusInWindow();
                     indexX = x;
                     indexY = y;
@@ -275,7 +297,7 @@ public final class Poule extends AbstractPoule {
         }
 
         if (indexX >= 1 && indexX < this.amount + 2 && indexY >= 1 && indexY < this.amount + 1) {
-            this.boxArray[indexX - 1][indexY + 1].setBorder(AppearanceData.RED_BORDER);
+            this.boxArray[indexX - 1][indexY + 1].setBackground(Color.lightGray);
         }
     }
 
@@ -289,7 +311,7 @@ public final class Poule extends AbstractPoule {
             for (int x = 2; x < this.amount + 2; x++) {
                 if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
                     if (this.boxArray[y][x].isEnabled()) {
-                        this.boxArray[y][x].setBorder(AppearanceData.GRAY_BORDER);
+                        this.boxArray[y][x].setBackground(Color.black);
                         indexX = x;
                         indexY = y;
                         break;
@@ -299,7 +321,7 @@ public final class Poule extends AbstractPoule {
         }
 
         if (indexX >= 1 && indexX < this.amount + 2 && indexY >= 1 && indexY < this.amount + 1) {
-            this.boxArray[indexX - 1][indexY + 1].setBorder(AppearanceData.GRAY_BORDER);
+            this.boxArray[indexX - 1][indexY + 1].setBackground(Color.black);
         }
     }
 }

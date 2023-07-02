@@ -1,4 +1,3 @@
-// TODO: Optimalizalas a poule generalasnal, felhasznalobarattabba tenni a poulet es az editort
 package app.components.complex.fencing;
 
 import java.awt.Color;
@@ -26,6 +25,7 @@ import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 
 public abstract class AbstractPoule extends AbstractXPanel implements ActionListener, KeyListener, MouseListener {
+    protected boolean isErrorPresent;
     // Box array
     protected final XTextField[][] boxArray = new XTextField[9][15];
     // Fencer list
@@ -44,6 +44,7 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
     protected AbstractPoule(XFrame frame, int amount, Appearance appearance) {
         super(SizeData.POULE_DIMENSION, null, frame, appearance);
 
+        this.isErrorPresent = false;
         this.amount = amount;
 
         // Input fields for the inner container
@@ -120,6 +121,35 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
         // Reset the fencerList
         this.fencerList.clear();
 
+        // Run a for loop that searches for errors
+        for (int y = 1; y < this.amount + 1; y++) {
+            for (int x = 2; x < this.amount + 2; x++) {
+                if (this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
+                    XTextField box = this.boxArray[y][x];
+                    int boxData = 0;
+                    // Try to retrieve data from the box
+                    try {
+                        if (!box.getText().equalsIgnoreCase("V")) {
+                            boxData = Integer.parseInt(box.getText());
+                        }
+                    }
+                    catch (Exception exc) {
+                        this.boxArray[y][x].setBackground(Color.red);
+                        this.isErrorPresent = true;
+                    }
+
+                    if (boxData < 0 || boxData > 5) {
+                        this.boxArray[y][x].setBackground(Color.red);
+                        this.isErrorPresent = true;
+                    }
+                }
+            }
+        }
+
+        if (this.isErrorPresent) {
+            return;
+        }
+
         // Calculate the tr
         int current = 1;
         for (int x = 2; x < this.amount + 2; x++) {
@@ -141,13 +171,13 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
 
             for (int x = 2; x < this.amount + 2; x++) {
                 // Calculate the wins
-                if (this.boxArray[y][x].getText().equals("V")) {
+                if (this.boxArray[y][x].getText().equalsIgnoreCase("V")) {
                     wins++;
                 }
 
                 // Calculate the ts
                 if (!this.boxArray[y][x].getText().isBlank()) {
-                    ts += this.boxArray[y][x].getText().equals("V") ? 5 : Integer.parseInt(this.boxArray[y][x].getText());
+                    ts += this.boxArray[y][x].getText().equalsIgnoreCase("V") ? 5 : Integer.parseInt(this.boxArray[y][x].getText());
                 }
             }
 
