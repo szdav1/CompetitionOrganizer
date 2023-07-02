@@ -3,10 +3,12 @@ package app.components.complex.fencing;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 
 import app.frame.XFrame;
+import support.appdata.AppearanceData;
 import support.constants.PositionConstants;
 import support.framework.interfaces.Appearance;
 
@@ -20,6 +22,8 @@ public final class Poule extends AbstractPoule {
     }
 
     public void insertValues() {
+        boolean isErrorPresent = false;
+
         try {
             if (this.fencer1TouchInput.getText().isBlank()) {
                 throw new Exception("Invalid touch1");
@@ -36,18 +40,18 @@ public final class Poule extends AbstractPoule {
 
             if (fencer1 > this.amount) {
                 this.fencer1NameInput.displayError();
-                return;
+                isErrorPresent = true;
             }
 
             if (fencer2 > this.amount) {
                 this.fencer2NameInput.displayError();
-                return;
+                isErrorPresent = true;
             }
 
             if (fencer1 == fencer2) {
                 this.fencer1NameInput.displayError();
                 this.fencer2NameInput.displayError();
-                return;
+                isErrorPresent = true;
             }
 
             if (touch1 < 0 || touch1 > 5) {
@@ -58,9 +62,19 @@ public final class Poule extends AbstractPoule {
                 throw new Exception("Invalid touch2");
             }
 
+            if (touch1 == touch2) {
+                this.fencer1TouchInput.displayError();
+                this.fencer2TouchInput.displayError();
+                isErrorPresent = true;
+            }
+
             if (touch1 == 5 && touch2 == 5) {
                 this.fencer1TouchInput.displayError();
                 this.fencer2TouchInput.displayError();
+                isErrorPresent = true;
+            }
+
+            if (isErrorPresent) {
                 return;
             }
 
@@ -68,6 +82,11 @@ public final class Poule extends AbstractPoule {
             this.boxArray[fencer1][fencer2 + 1].setText(touch1 == 5 ? "V" : String.valueOf(touch1));
             // Insert fencer2's touch to its row
             this.boxArray[fencer2][fencer1 + 1].setText(touch2 == 5 ? "V" : String.valueOf(touch2));
+
+            this.fencer1NameInput.clearText();
+            this.fencer2NameInput.clearText();
+            this.fencer1TouchInput.clearText();
+            this.fencer2TouchInput.clearText();
         }
         catch (Exception exc) {
             if (exc.getMessage().equals("Invalid touch1")) {
@@ -115,6 +134,11 @@ public final class Poule extends AbstractPoule {
                     this.boxArray[fencer1Index][fencer2Index + 1].setText(touch1 == 5 ? "V" : String.valueOf(touch1));
                     // Insert fencer2's touch to its row
                     this.boxArray[fencer2Index][fencer1Index + 1].setText(touch2 == 5 ? "V" : String.valueOf(touch2));
+
+                    this.fencer1NameInput.clearText();
+                    this.fencer2NameInput.clearText();
+                    this.fencer1TouchInput.clearText();
+                    this.fencer2TouchInput.clearText();
                 }
                 else if (fencer1Index == 0) {
                     this.fencer1NameInput.displayError();
@@ -196,6 +220,86 @@ public final class Poule extends AbstractPoule {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        final Object source = e.getSource();
+        int indexX = 0;
+        int indexY = 0;
 
+        if (e.getKeyCode() == KeyEvent.VK_F2) {
+            for (int y = 1; y < this.amount + 1; y++) {
+                for (int x = 2; x < this.amount + 2; x++) {
+                    if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
+                        indexX = x;
+                        indexY = y;
+                        break;
+                    }
+                }
+            }
+
+            if (indexX >= 1 && indexX < this.amount + 2 && indexY >= 1 && indexY < this.amount + 1) {
+                this.boxArray[indexX - 1][indexY + 1].requestFocusInWindow();
+            }
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        final Object source = e.getSource();
+        int indexX = 0;
+        int indexY = 0;
+
+        for (int y = 1; y < this.amount + 1; y++) {
+            for (int x = 2; x < this.amount + 2; x++) {
+                if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
+                    this.boxArray[y][x].setBorder(AppearanceData.RED_BORDER);
+                    this.boxArray[y][x].requestFocusInWindow();
+                    indexX = x;
+                    indexY = y;
+                    break;
+                }
+            }
+        }
+
+        if (indexX >= 1 && indexX < this.amount + 2 && indexY >= 1 && indexY < this.amount + 1) {
+            this.boxArray[indexX - 1][indexY + 1].setBorder(AppearanceData.RED_BORDER);
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        final Object source = e.getSource();
+        int indexX = 0;
+        int indexY = 0;
+
+        for (int y = 1; y < this.amount + 1; y++) {
+            for (int x = 2; x < this.amount + 2; x++) {
+                if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
+                    if (this.boxArray[y][x].isEnabled()) {
+                        this.boxArray[y][x].setBorder(AppearanceData.GRAY_BORDER);
+                        indexX = x;
+                        indexY = y;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (indexX >= 1 && indexX < this.amount + 2 && indexY >= 1 && indexY < this.amount + 1) {
+            this.boxArray[indexX - 1][indexY + 1].setBorder(AppearanceData.GRAY_BORDER);
+        }
     }
 }

@@ -45,6 +45,9 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
     // Preview scroll panel
     private final XScrollPanel previewScrollPanel;
 
+    // Label for the input scroll panel that displays the method of poule generation
+    private final XLabel pouleGenerationInfoLabel;
+
     // List for the inputs
     private final List<InputField> inputList = new LinkedList<>();
     // List for the final values
@@ -104,6 +107,19 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
                 .build());
         // Add the previewPoule
         this.previewScrollPanel.addComponent(this.previewPoule);
+
+        // Label that displays the method of poule generation
+        this.pouleGenerationInfoLabel = new XLabel(new Dimension(this.inputScrollPanel.getPreferredSize().width - SizeData.GAP,
+            SizeData.BUTTON_HEIGHT), "Generation Method: Search for optimal", this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.white)
+                .addBorder(AppearanceData.RED_BORDER)
+                .addFont(AppearanceData.MAIN_FONT_P)
+                .build());
+
+        // Add components to the inputScrollPanel
+        this.inputScrollPanel.addComponent(this.pouleGenerationInfoLabel);
 
         // Add the inputScrollPanel to the inputPanel
         this.inputPanel.addComponent(this.inputScrollPanel, BorderLayout.CENTER);
@@ -282,9 +298,9 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getSource().equals(this.inputList.get(2).getInputField())) {
+        if (e.getSource().equals(this.inputList.get(1).getInputField())) {
             try {
-                int amount = Integer.parseInt(this.inputList.get(2).getText());
+                int amount = Integer.parseInt(this.inputList.get(1).getText());
                 if (amount >= 9 || amount < 4) {
                     throw new Exception();
                 }
@@ -296,5 +312,10 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
 
             }
         }
+
+        this.pouleGenerationInfoLabel.setText(
+            this.inputList.get(1).getText().isBlank() ? "Generation Method: Search for optimal"
+                : "Generation Method: Based on user data"
+        );
     }
 }

@@ -30,6 +30,14 @@ public final class InputField extends AbstractInputField {
         return this.inputField.getText();
     }
 
+    public void seText(String text) {
+        this.inputField.setText(text);
+    }
+
+    public void clearText() {
+        this.seText("");
+    }
+
     public void setRequired(boolean required) {
         this.required = required;
     }

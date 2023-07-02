@@ -1,8 +1,10 @@
+// TODO: Optimalizalas a poule generalasnal, felhasznalobarattabba tenni a poulet es az editort
 package app.components.complex.fencing;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -23,7 +25,7 @@ import support.framework.appearances.BasicAppearance;
 import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 
-public abstract class AbstractPoule extends AbstractXPanel implements ActionListener, KeyListener {
+public abstract class AbstractPoule extends AbstractXPanel implements ActionListener, KeyListener, MouseListener {
     // Box array
     protected final XTextField[][] boxArray = new XTextField[9][15];
     // Fencer list
@@ -52,7 +54,7 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
                 .addMainForeground(Color.white)
                 .addBorder(AppearanceData.RED_BORDER)
                 .build());
-        this.fencer1NameInput.addKeyListener(this);
+        this.fencer1NameInput.getInputField().addKeyListener(this);
 
         this.fencer2NameInput = new InputField(this.fencer1NameInput.getX(),
             this.fencer1NameInput.getY() + SizeData.INPUT_FIELD_HEIGHT, "Fencer2", this.frame, BasicAppearance.BLACK,
@@ -61,7 +63,7 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
                 .addMainForeground(Color.white)
                 .addBorder(AppearanceData.RED_BORDER)
                 .build());
-        this.fencer2NameInput.addKeyListener(this);
+        this.fencer2NameInput.getInputField().addKeyListener(this);
 
         this.fencer1TouchInput = new InputField(this.fencer1NameInput.getX() + SizeData.INPUT_FIELD_WIDTH + SizeData.GAP,
             this.fencer1NameInput.getY(), "Point1", this.frame, BasicAppearance.BLACK,
@@ -70,7 +72,7 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
                 .addMainForeground(Color.white)
                 .addBorder(AppearanceData.RED_BORDER)
                 .build());
-        this.fencer1TouchInput.addKeyListener(this);
+        this.fencer1TouchInput.getInputField().addKeyListener(this);
 
         this.fencer2TouchInput = new InputField(this.fencer1NameInput.getX() + SizeData.INPUT_FIELD_WIDTH + SizeData.GAP,
             this.fencer2NameInput.getY(), "Point2", this.frame, BasicAppearance.BLACK,
@@ -79,7 +81,7 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
                 .addMainForeground(Color.white)
                 .addBorder(AppearanceData.RED_BORDER)
                 .build());
-        this.fencer2TouchInput.addKeyListener(this);
+        this.fencer2TouchInput.getInputField().addKeyListener(this);
 
         // Buttons for the inner container
         this.insertButton = new FCXButton(this.fencer1TouchInput.getX() + this.fencer1TouchInput.getWidth() + SizeData.GAP,
@@ -124,7 +126,7 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
             int tr = 0;
             for (int y = 1; y < this.amount + 1; y++) {
                 if (!this.boxArray[y][x].getText().isBlank()) {
-                    tr += this.boxArray[y][x].getText().equals("V") ? 5 : Integer.parseInt(this.boxArray[y][x].getText());
+                    tr += this.boxArray[y][x].getText().equalsIgnoreCase("v") ? 5 : Integer.parseInt(this.boxArray[y][x].getText());
                 }
             }
             this.boxArray[current][this.amount + 4].setText(String.valueOf(tr));
@@ -257,6 +259,8 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
                 }
 
                 // Add the box to the list and to the panel
+                box.addMouseListener(this);
+                box.addKeyListener(this);
                 this.boxArray[y][x] = box;
                 this.add(box);
             }

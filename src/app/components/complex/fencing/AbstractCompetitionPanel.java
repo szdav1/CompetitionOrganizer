@@ -95,23 +95,92 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
     public void generatePoules(List<String> valueList) {
         // Collect the data from the list
         final String round = valueList.get(0);
-        final int fencersPoule = valueList.get(1).isBlank() ? 8 : Integer.parseInt(valueList.get(1));
+        int fencersPoule = valueList.get(1).isBlank() ? 5 : Integer.parseInt(valueList.get(1));
         int numberOfFencers = Integer.parseInt(valueList.get(2));
         final String date = valueList.get(3);
 
-        // Calculations and Generations
-        // Number of poules with the preferred amount of fencers
-        // When the preferred size is bigger than the total amount of the fencers
-        if (numberOfFencers <= fencersPoule) {
-            final Poule poule = new Poule(this.frame, numberOfFencers,
-                new CustomAppearanceBuilder()
-                    .addMainBackground(Color.black)
-                    .addBorder(AppearanceData.RED_BORDER)
-                    .build());
-            this.pouleList.add(poule);
-            this.insertComponent(poule);
+        final boolean isDefaultValuesUsed = valueList.get(1).isBlank();
+
+        // Generating poules with the optimal amount of fencers in them
+        // This happens when the fencers/poule input field is left empty
+        if (isDefaultValuesUsed) {
+            if (numberOfFencers <= fencersPoule) {
+                final Poule poule = new Poule(this.frame, numberOfFencers,
+                    new CustomAppearanceBuilder()
+                        .addMainBackground(Color.black)
+                        .addBorder(AppearanceData.RED_BORDER)
+                        .build());
+                this.pouleList.add(poule);
+                this.insertComponent(poule);
+            }
+            // Generate poules normally
+            else {
+                if (numberOfFencers % fencersPoule == 0) {
+                    int numberOfPoules = numberOfFencers / fencersPoule;
+
+                    for (int i = 0; i < numberOfPoules; i++) {
+                        final Poule poule = new Poule(this.frame, fencersPoule,
+                            new CustomAppearanceBuilder()
+                                .addMainBackground(Color.black)
+                                .addBorder(AppearanceData.RED_BORDER)
+                                .build());
+
+                        this.pouleList.add(poule);
+                        this.insertComponent(poule);
+                    }
+                }
+                else if (numberOfFencers % 2 == 0) {
+                    while (numberOfFencers % fencersPoule != 0 && fencersPoule < 8) {
+                        fencersPoule++;
+                    }
+
+                    int numberOfPoules = numberOfFencers / fencersPoule;
+                    numberOfFencers -= numberOfPoules * fencersPoule;
+                    for (int i = 0; i < numberOfPoules; i++) {
+                        final Poule poule = new Poule(this.frame, fencersPoule,
+                            new CustomAppearanceBuilder()
+                                .addMainBackground(Color.black)
+                                .addBorder(AppearanceData.RED_BORDER)
+                                .build());
+
+                        this.pouleList.add(poule);
+                        this.insertComponent(poule);
+                    }
+                }
+                else {
+                    while (numberOfFencers % fencersPoule < 4 && fencersPoule < 8) {
+                        fencersPoule++;
+                    }
+
+                    int numberOfPoules = numberOfFencers / fencersPoule;
+                    numberOfFencers -= numberOfPoules * fencersPoule;
+                    for (int i = 0; i < numberOfPoules; i++) {
+                        final Poule poule = new Poule(this.frame, fencersPoule,
+                            new CustomAppearanceBuilder()
+                                .addMainBackground(Color.black)
+                                .addBorder(AppearanceData.RED_BORDER)
+                                .build());
+
+                        this.pouleList.add(poule);
+                        this.insertComponent(poule);
+                    }
+                }
+
+                // Generate remaining poule
+                if (numberOfFencers >= 4 && numberOfFencers <= 8) {
+                    final Poule poule = new Poule(this.frame, numberOfFencers,
+                        new CustomAppearanceBuilder()
+                            .addMainBackground(Color.black)
+                            .addBorder(AppearanceData.RED_BORDER)
+                            .build());
+
+                    this.pouleList.add(poule);
+                    this.insertComponent(poule);
+                }
+            }
         }
-        // Generate the poules normally
+        // Generating poules without optimization
+        // This happens when the used enters a value for the fencers/poule inut field
         else {
             int numberOfPoules = numberOfFencers / fencersPoule;
             numberOfFencers -= numberOfPoules * fencersPoule;
@@ -138,7 +207,7 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
             }
             // 2. When the reminder is not enough to make another poule
             else if (numberOfFencers < 4) {
-                if (this.pouleList.get(0).getAmount() + numberOfFencers < 8) {
+                if (this.pouleList.get(0).getAmount() + numberOfFencers <= 8) {
                     this.pouleList.get(0).reConstruct(this.pouleList.get(0).getAmount() + numberOfFencers);
                 }
                 else if (this.pouleList.get(0).getAmount() + numberOfFencers > 8) {
@@ -154,6 +223,7 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
                 }
             }
         }
+
 
         this.scrollPanel.getViewPanel().setPreferredSize(new Dimension(
             this.scrollPanel.getViewPanel().getPreferredSize().width,
