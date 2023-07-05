@@ -4,21 +4,24 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.util.*;
 
 import javax.swing.JComponent;
 
 import app.components.buttons.FCXButton;
 import app.components.complex.fencing.Poule;
 import app.components.complex.inputs.InputField;
+import app.components.complex.other.Checkbox;
+import app.components.complex.other.SelectionPanel;
 import app.components.labels.XLabel;
 import app.components.panels.XPanel;
 import app.components.scrollpanels.XScrollPanel;
 import app.frame.XFrame;
+import app.other.Fencer;
 import support.appdata.AppearanceData;
 import support.appdata.SizeData;
 import support.constants.PositionConstants;
@@ -28,6 +31,7 @@ import support.framework.interfaces.Appearance;
 
 public final class PouleEditor extends AbstractEditor implements KeyListener {
     private boolean isErrorPresent;
+    private boolean isFromSelection;
 
     // Title labels
     private final XLabel inputLabel;
@@ -51,10 +55,15 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
     // Label for the input scroll panel that displays the method of poule generation
     private final XLabel pouleGenerationInfoLabel;
 
+    // Selection panel
+    private final SelectionPanel selectionPanel;
+
     // List for the inputs
     private final List<InputField> inputList = new LinkedList<>();
     // List for the final values
     private final List<String> valueList = new ArrayList<>();
+    // List of fencers
+    private List<Fencer> fencerList = new ArrayList<>();
 
     public PouleEditor(XFrame frame, Appearance appearance) {
         super("Poule Editor", frame, appearance);
@@ -62,6 +71,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
         this.closeButton.addActionListener(e -> this.frame.closePouleEditor());
 
         this.isErrorPresent = false;
+        this.isFromSelection = false;
 
         // Title labels
         this.inputLabel = new XLabel(new Dimension(this.getWidth() * 45 / 100, SizeData.BUTTON_HEIGHT), "Enter Values",
@@ -128,6 +138,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
                 .addMainForeground(Color.red)
                 .addSecondaryForeground(Color.yellow)
                 .build());
+        this.enterValuesViaDatabaseButton.addActionListener(e -> this.toggleSelectionPanel());
 
         // Label that displays the method of poule generation
         this.pouleGenerationInfoLabel = new XLabel(new Dimension(this.inputScrollPanel.getPreferredSize().width - SizeData.GAP,
@@ -138,6 +149,15 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
                 .addBorder(AppearanceData.RED_BORDER)
                 .addFont(AppearanceData.MAIN_FONT_P)
                 .build());
+
+        // Selection panel
+        this.selectionPanel = new SelectionPanel(new Dimension(this.getPreferredSize().width,
+            this.getPreferredSize().height - (SizeData.BUTTON_HEIGHT * 2) - SizeData.GAP), this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addBorder(AppearanceData.RED_BORDER)
+                .build());
+        this.selectionPanel.getCloseButton().addActionListener(e -> this.closeSelectionPanel());
 
         // Add components to the inputScrollPanel
         this.inputScrollPanel.addComponent(this.enterValuesViaDatabaseButton);
@@ -157,6 +177,52 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
         this.centerPanel.addComponent(this.previewPanel);
 
         this.addKeyListener(this);
+    }
+
+    private void toggleSelectionPanel() {
+        this.isFromSelection = true;
+        // Read the fencers from the file
+        this.readFencersFromFile();
+
+        this.centerPanel.removeAll();
+        this.centerPanel.addComponent(this.selectionPanel);
+    }
+
+    private void closeSelectionPanel() {
+        this.isFromSelection = false;
+        this.centerPanel.removeAll();
+        // Add the components to the centerPanel
+        this.centerPanel.addComponent(this.inputLabel);
+        this.centerPanel.addComponent(this.previewLabel);
+        // Add the inner containers to the centerPanel
+        this.centerPanel.addComponent(this.inputPanel);
+        this.centerPanel.addComponent(this.previewPanel);
+    }
+
+    private void readFencersFromFile() {
+        this.fencerList.clear();
+
+        try {
+            final Scanner scanner = new Scanner(new File("database/fencers.csv"));
+            while (scanner.hasNextLine()) {
+                final String[] data = scanner.nextLine().split(";");
+                for (String datum : data) {
+                    this.fencerList.add(new Fencer(datum, 0, 0, 0, 0));
+                }
+            }
+            scanner.close();
+
+            for (int i = 0; i < this.fencerList.size(); i++) {
+                final Checkbox checkbox = new Checkbox(SizeData.GAP, (SizeData.BUTTON_HEIGHT * i) + (SizeData.GAP * i),
+                    this.selectionPanel.getPreferredSize().width - (SizeData.GAP * 2), SizeData.BUTTON_HEIGHT,
+                    this.fencerList.get(i).getName(), this.frame,BasicAppearance.BLACK_BORDERED);
+
+                this.selectionPanel.addToScrollPanel(checkbox);
+            }
+        }
+        catch (Exception exc) {
+            exc.printStackTrace();
+        }
     }
 
     private void createInputFields(String[] options) {
@@ -298,8 +364,14 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(this.createButton.getButton())) {
+        if (e.getSource().equals(this.createButton.getButton()) && !this.isFromSelection) {
             this.checkValues();
+        }
+        else {
+            this.frame.closePouleEditor();
+            this.frame.toggleCompetitionPanel(new ArrayList<>(Arrays.asList("1", "",
+                String.valueOf(this.selectionPanel.getSelectedFencers().size()), "")));
+            this.isFromSelection = false;
         }
     }
 

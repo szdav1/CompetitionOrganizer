@@ -57,14 +57,14 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
 
         // Scroll panel that will display the fencers in the database
         this.fencerDisplayPanel = new XScrollPanel(new Dimension(this.getWidth() - SizeData.GAP,
-            this.getHeight() * 45 / 100), null, this.frame,
+            this.getHeight() * 45 / 100), null, this.frame, SizeData.GAP, SizeData.GAP,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
-                .addBorder(AppearanceData.RED_BORDER)
+                .addBorder(AppearanceData.GRAY_BORDER)
                 .build(),
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
-                .addMainForeground(Color.red)
+                .addMainForeground(Color.darkGray)
                 .build());
 
         // Input field to insert fencers into the database
@@ -123,6 +123,22 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
                 data.append(scanner.nextLine());
             }
             scanner.close();
+
+            // Refill the fencerList without the fencerName
+            for (String string : data.toString().split(";")) {
+                if (!string.equals(fencerName)) {
+                    this.fencerList.add(new Fencer(string, 0, 0, 0, 0));
+                }
+            }
+
+            // Write the fencers to the file
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("database/fencers.csv"));
+            for (Fencer fencer : this.fencerList) {
+                bufferedWriter.write(fencer.getName().concat(";"));
+            }
+            bufferedWriter.close();
+            this.fencerNameInput.clearText();
+            this.readFencersFromFile();
         }
         catch (Exception exc) {
             exc.printStackTrace();
@@ -190,7 +206,7 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
                         .addMainBackground(Color.black)
                         .addMainForeground(Color.white)
                         .addFont(AppearanceData.MAIN_FONT_P)
-                        .addBorder(AppearanceData.RED_BORDER)
+                        .addBorder(AppearanceData.GRAY_BORDER)
                         .build()
                 );
                 this.fencerDisplayPanel.addComponent(fencerLabel);
@@ -269,6 +285,9 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
         }
         else if (e.getKeyCode() == KeyEvent.VK_F12) {
             this.removeFencerFromFile();
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            this.frame.closeDatabaseEditor();
         }
     }
 }
