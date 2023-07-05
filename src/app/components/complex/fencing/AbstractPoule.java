@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 
 import app.components.buttons.FCXButton;
 import app.components.complex.inputs.InputField;
+import app.components.labels.XLabel;
 import app.components.panels.AbstractXPanel;
 import app.components.textcontainers.XTextField;
 import app.frame.XFrame;
@@ -40,6 +41,8 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
     protected final InputField fencer2TouchInput;
     // Buttons for the inner container
     protected final FCXButton insertButton;
+    // Label that contains the poule number
+    protected final XLabel pouleNumberLabel;
 
     protected AbstractPoule(XFrame frame, int amount, Appearance appearance) {
         super(SizeData.POULE_DIMENSION, null, frame, appearance);
@@ -100,12 +103,17 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
                 .build());
         this.insertButton.addActionListener(this);
 
+        // Label that contains the poule number
+        this.pouleNumberLabel = new XLabel(this.insertButton.getX() + this.insertButton.getWidth() + SizeData.GAP,
+            this.insertButton.getY(), SizeData.BUTTON_WIDTH, SizeData.BUTTON_HEIGHT, "No.: ", this.frame, this.insertButton.getAppearance());
+
         // Add components to the inner container
         this.addComponent(this.fencer1NameInput);
         this.addComponent(this.fencer1TouchInput);
         this.addComponent(this.fencer2NameInput);
         this.addComponent(this.fencer2TouchInput);
         this.addComponent(this.insertButton);
+        this.addComponent(this.pouleNumberLabel);
 
         this.createPouleStructure();
 

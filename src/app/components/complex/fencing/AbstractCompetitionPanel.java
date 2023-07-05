@@ -93,6 +93,8 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
     }
 
     public void generatePoules(List<String> valueList) {
+        // Poule number
+        int number = 1;
         // Collect the data from the list
         final String round = valueList.get(0);
         int fencersPoule = valueList.get(1).isBlank() ? 5 : Integer.parseInt(valueList.get(1));
@@ -110,8 +112,11 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
                         .addMainBackground(Color.black)
                         .addBorder(AppearanceData.RED_BORDER)
                         .build());
+                poule.setNumber(String.valueOf(number));
                 this.pouleList.add(poule);
                 this.insertComponent(poule);
+
+                number++;
             }
             // Generate poules normally
             else {
@@ -124,9 +129,10 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
                                 .addMainBackground(Color.black)
                                 .addBorder(AppearanceData.RED_BORDER)
                                 .build());
-
+                        poule.setNumber(String.valueOf(number));
                         this.pouleList.add(poule);
                         this.insertComponent(poule);
+                        number++;
                     }
                 }
                 else if (numberOfFencers % 2 == 0) {
@@ -142,9 +148,10 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
                                 .addMainBackground(Color.black)
                                 .addBorder(AppearanceData.RED_BORDER)
                                 .build());
-
+                        poule.setNumber(String.valueOf(number));
                         this.pouleList.add(poule);
                         this.insertComponent(poule);
+                        number++;
                     }
                 }
                 else {
@@ -160,9 +167,10 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
                                 .addMainBackground(Color.black)
                                 .addBorder(AppearanceData.RED_BORDER)
                                 .build());
-
+                        poule.setNumber(String.valueOf(number));
                         this.pouleList.add(poule);
                         this.insertComponent(poule);
+                        number++;
                     }
                 }
 
@@ -173,9 +181,10 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
                             .addMainBackground(Color.black)
                             .addBorder(AppearanceData.RED_BORDER)
                             .build());
-
+                    poule.setNumber(String.valueOf(number));
                     this.pouleList.add(poule);
                     this.insertComponent(poule);
+                    number++;
                 }
             }
         }
@@ -190,8 +199,10 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
                         .addMainBackground(Color.black)
                         .addBorder(AppearanceData.RED_BORDER)
                         .build());
+                poule.setNumber(String.valueOf(number));
                 this.pouleList.add(poule);
                 this.insertComponent(poule);
+                number++;
             }
 
             // Generate the last poule from the remaining fencers
@@ -202,8 +213,10 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
                         .addMainBackground(Color.black)
                         .addBorder(AppearanceData.RED_BORDER)
                         .build());
+                poule.setNumber(String.valueOf(number));
                 this.pouleList.add(poule);
                 this.insertComponent(poule);
+                number++;
             }
             // 2. When the reminder is not enough to make another poule
             else if (numberOfFencers < 4) {
@@ -218,8 +231,10 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
                             .addMainBackground(Color.black)
                             .addBorder(AppearanceData.RED_BORDER)
                             .build());
+                    poule.setNumber(String.valueOf(number));
                     this.pouleList.add(poule);
                     this.insertComponent(poule);
+                    number++;
                 }
             }
         }

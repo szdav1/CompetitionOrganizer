@@ -72,7 +72,6 @@ public abstract class AbstractEditor extends AbstractXPanel implements ActionLis
                 .addMainForeground(Color.red)
                 .addSecondaryForeground(Color.white)
                 .build());
-        this.closeButton.addActionListener(e -> this.frame.closePouleEditor());
 
         // Footer panel parts
         this.createButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Create", this.frame,

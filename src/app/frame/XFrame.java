@@ -1,5 +1,6 @@
 package app.frame;
 
+import app.components.complex.editors.DatabaseEditor;
 import app.components.complex.editors.PouleEditor;
 import app.components.complex.frameparts.CenterPanel;
 import app.components.complex.frameparts.ContentPanel;
@@ -21,11 +22,14 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
     // Frame parts
     // Content panel
     private final ContentPanel contentPanel;
+    // Title bar
     private final TitleBar titleBar;
+    // Center panel
     private final CenterPanel centerPanel;
 
     // Editors
     private final PouleEditor pouleEditor;
+    private final DatabaseEditor databaseEditor;
 
     // Competition panel
     private final CompetitionPanel competitionPanel;
@@ -52,13 +56,31 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
                 .addBorder(AppearanceData.RED_BORDER)
                 .build());
 
+        // Database editor
+        this.databaseEditor = new DatabaseEditor(this, this.pouleEditor.getAppearance());
+
         // Competition panel
         this.competitionPanel = new CompetitionPanel(this, BasicAppearance.BLACK);
 
         // Add components to the frame
+//        this.insertComponent(this.databaseEditor);
 
         // Set the visibility of the frame
         this.setVisible(true);
+    }
+
+    public void toggleDatabaseEditor() {
+        if (!this.stateMap.get(XFrameConstants.EDITOR_OPENED)) {
+            this.databaseEditor.readFencersFromFile();
+            this.insertComponent(this.databaseEditor, PositionConstants.TOP_POS);
+            this.setFrameState(XFrameConstants.EDITOR_OPENED, true);
+        }
+    }
+
+    public void closeDatabaseEditor() {
+        this.requestFocusInWindow();
+        this.setFrameState(XFrameConstants.EDITOR_OPENED, false);
+        this.extractComponent(this.databaseEditor);
     }
 
     public void togglePouleEditor() {
@@ -141,6 +163,9 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_F1) {
             this.togglePouleEditor();
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_F2) {
+            this.toggleDatabaseEditor();
         }
     }
 

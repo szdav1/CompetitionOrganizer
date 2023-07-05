@@ -45,6 +45,9 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
     // Preview scroll panel
     private final XScrollPanel previewScrollPanel;
 
+    // Button for the "enter values via database" window
+    private final FCXButton enterValuesViaDatabaseButton;
+
     // Label for the input scroll panel that displays the method of poule generation
     private final XLabel pouleGenerationInfoLabel;
 
@@ -55,6 +58,8 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
 
     public PouleEditor(XFrame frame, Appearance appearance) {
         super("Poule Editor", frame, appearance);
+
+        this.closeButton.addActionListener(e -> this.frame.closePouleEditor());
 
         this.isErrorPresent = false;
 
@@ -108,6 +113,22 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
         // Add the previewPoule
         this.previewScrollPanel.addComponent(this.previewPoule);
 
+        // Button for the "enter values via database" window
+        this.enterValuesViaDatabaseButton = new FCXButton(SizeData.WIDE_BUTTON_DIMENSION, "Fill Via Database",
+            this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.white)
+                .addSecondaryForeground(Color.red)
+                .addBorder(AppearanceData.RED_BORDER)
+                .addFont(AppearanceData.MAIN_FONT_P)
+                .build(),
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.red)
+                .addSecondaryForeground(Color.yellow)
+                .build());
+
         // Label that displays the method of poule generation
         this.pouleGenerationInfoLabel = new XLabel(new Dimension(this.inputScrollPanel.getPreferredSize().width - SizeData.GAP,
             SizeData.BUTTON_HEIGHT), "Generation Method: Search for optimal", this.frame,
@@ -119,6 +140,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
                 .build());
 
         // Add components to the inputScrollPanel
+        this.inputScrollPanel.addComponent(this.enterValuesViaDatabaseButton);
         this.inputScrollPanel.addComponent(this.pouleGenerationInfoLabel);
 
         // Add the inputScrollPanel to the inputPanel
@@ -163,7 +185,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
             ));
         }
 
-        final FCXButton clearButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Clear", this.frame,
+        final FCXButton clearButton = new FCXButton(SizeData.WIDE_BUTTON_DIMENSION, "Clear", this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
                 .addMainForeground(Color.white)

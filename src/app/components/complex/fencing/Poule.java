@@ -155,6 +155,10 @@ public final class Poule extends AbstractPoule {
         }
     }
 
+    public void setNumber(String number) {
+        this.pouleNumberLabel.setText(this.pouleNumberLabel.getText().concat(number));
+    }
+
     @Override
     public void addComponent(JComponent component, PositionConstants positionConstants) {
         this.add(component, positionConstants.getzIndex());

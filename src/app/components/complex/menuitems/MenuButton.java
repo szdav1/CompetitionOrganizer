@@ -28,6 +28,10 @@ public final class MenuButton extends AbstractMenuButton {
         return this.dropdownPanel.getComponentList();
     }
 
+    public boolean isToggled() {
+        return this.toggled;
+    }
+
     public void setToggled(boolean toggled) {
         this.toggled = toggled;
 

@@ -2,6 +2,7 @@ package app.components.complex.frameparts;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -19,16 +20,33 @@ public final class TitleBar extends AbstractTitleBar {
     @Override
     public void actionPerformed(ActionEvent e) {
         final Object source = e.getSource();
+        int indexOfSourceButton = -1;
         // Loop through the createMenuButton's options and check for events
-        final FCXButton sourceButton = (FCXButton) this.createMenuButton.getOptions().stream()
-            .filter(tempButton -> source.equals(((FCXButton) tempButton).getButton()))
-            .toList()
-            .get(0);
-
-        // Toggled the PouleEditor
-        if (sourceButton.equals(this.createMenuButton.getOptions().get(0))) {
+        for (JComponent component : this.createMenuButton.getOptions()) {
+            if (component instanceof FCXButton fcxButton) {
+                if (source.equals(fcxButton.getButton())) {
+                    indexOfSourceButton = this.createMenuButton.getOptions().indexOf(fcxButton);
+                }
+            }
+        }
+        // Execute events
+        if (indexOfSourceButton == 0) {
             this.createMenuButton.setToggled(false);
             this.frame.togglePouleEditor();
+        }
+
+        // Loop through the utilMenuButton's options and check for events
+        for (JComponent component : this.utilMenuButton.getOptions()) {
+            if (component instanceof FCXButton fcxButton) {
+                if (source.equals(fcxButton.getButton())) {
+                    indexOfSourceButton = this.utilMenuButton.getOptions().indexOf(fcxButton);
+                }
+            }
+        }
+        // Execute events
+        if (indexOfSourceButton == 0) {
+            this.utilMenuButton.setToggled(false);
+            this.frame.toggleDatabaseEditor();
         }
     }
 
@@ -74,5 +92,34 @@ public final class TitleBar extends AbstractTitleBar {
     @Override
     public XFrame getFrame() {
         return this.frame;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        final Object source = e.getSource();
+
+        this.menuButtonList.stream()
+            .filter(menuButton -> !source.equals(menuButton.getButton()))
+            .forEach(menuButton -> menuButton.setToggled(false));
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

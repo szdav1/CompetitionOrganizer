@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -23,7 +27,7 @@ import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 import support.util.Util;
 
-public abstract class AbstractTitleBar extends AbstractXPanel implements ActionListener {
+public abstract class AbstractTitleBar extends AbstractXPanel implements ActionListener, MouseListener {
     // Main buttons
     protected final ICXButton exitButton;
     protected final ICXButton iconifyButton;
@@ -33,6 +37,10 @@ public abstract class AbstractTitleBar extends AbstractXPanel implements ActionL
 
     // Menu buttons
     protected final MenuButton createMenuButton;
+    protected final MenuButton utilMenuButton;
+
+    // List for the menu buttons
+    protected final List<MenuButton> menuButtonList = new ArrayList<>();
 
     // Bottom border
 
@@ -64,16 +72,33 @@ public abstract class AbstractTitleBar extends AbstractXPanel implements ActionL
         // Menu buttons
         this.createMenuButton = new MenuButton(SizeData.NARROW_BUTTON_DIMENSION, 0, 0,
             Util.loadBigIcon(AssetsData.BUTTON_ICONS.concat("menu1")),
-            Util.loadBigIcon(AssetsData.BUTTON_ICONS.concat("menu2")), this.frame, BasicAppearance.OPAQUE,
+            Util.loadBigIcon(AssetsData.BUTTON_ICONS.concat("menu2")), this.frame, BasicAppearance.BLACK,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
                 .addBorder(new LineBorder(Color.red, SizeData.BORDER_SIZE))
                 .build());
+        this.createMenuButton.getButton().addMouseListener(this);
         // Fill the createMenuButton's dropdown panel
         this.addCreateMenuOptions();
 
+        this.utilMenuButton = new MenuButton(SizeData.NARROW_BUTTON_DIMENSION, SizeData.NARROW_BUTTON_WIDTH, 0,
+            Util.loadBigIcon(AssetsData.BUTTON_ICONS.concat("util1")),
+            Util.loadBigIcon(AssetsData.BUTTON_ICONS.concat("util2")), this.frame, BasicAppearance.BLACK,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addBorder(new LineBorder(Color.red, SizeData.BORDER_SIZE))
+                .build());
+        this.utilMenuButton.getButton().addMouseListener(this);
+        // Fill the utilMenuButton's dropdown panel
+        this.addUtilMenuOptions();
+
+        // Fill the menuButtonList
+        this.menuButtonList.add(this.createMenuButton);
+        this.menuButtonList.add(this.utilMenuButton);
+
         // Add components to the innerContainer
         this.innerContainer.addComponent(this.createMenuButton);
+        this.innerContainer.addComponent(this.utilMenuButton);
 
         // Add components to the TitleBar
         this.addComponent(this.innerContainer);
@@ -85,11 +110,11 @@ public abstract class AbstractTitleBar extends AbstractXPanel implements ActionL
     }
 
     private void addCreateMenuOptions() {
-        final String[] options = {"New Poule", "New Table"};
+        final String[] options = {"New Competition", "New Poule(s)", "New Table"};
 
         for (int i = 0; i < options.length; i++) {
             final FCXButton optionButton = new FCXButton(SizeData.BORDER_SIZE, SizeData.BORDER_SIZE + (i * SizeData.BUTTON_HEIGHT),
-                SizeData.BUTTON_WIDTH, SizeData.BUTTON_HEIGHT, options[i], this.frame,
+                SizeData.WIDE_BUTTON_WIDTH, SizeData.BUTTON_HEIGHT, options[i], this.frame,
                 new CustomAppearanceBuilder()
                     .addMainForeground(Color.white)
                     .addSecondaryBackground(Color.red)
@@ -101,6 +126,26 @@ public abstract class AbstractTitleBar extends AbstractXPanel implements ActionL
             optionButton.addActionListener(this);
 
             this.createMenuButton.addOption(optionButton);
+        }
+    }
+
+    private void addUtilMenuOptions() {
+        final String[] options = {"Manage Database", "Add Fencer", "Remove Fencer(s)"};
+
+        for (int i = 0; i < options.length; i++) {
+            final FCXButton optionButton = new FCXButton(SizeData.BORDER_SIZE, SizeData.BORDER_SIZE + (i * SizeData.BUTTON_HEIGHT),
+                SizeData.WIDE_BUTTON_WIDTH, SizeData.BUTTON_HEIGHT, options[i], this.frame,
+                new CustomAppearanceBuilder()
+                    .addMainForeground(Color.white)
+                    .addSecondaryBackground(Color.red)
+                    .build(),
+                new CustomAppearanceBuilder()
+                    .addMainForeground(Color.red)
+                    .addSecondaryForeground(Color.yellow)
+                    .build());
+            optionButton.addActionListener(this);
+
+            this.utilMenuButton.addOption(optionButton);
         }
     }
 }
