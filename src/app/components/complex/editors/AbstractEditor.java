@@ -49,7 +49,7 @@ public abstract class AbstractEditor extends AbstractXPanel implements ActionLis
                 .addMainBackground(appearance.getMainBackground())
                 .build());
 
-        this.footerPanel = new XPanel(new Dimension(this.getWidth(), SizeData.BUTTON_HEIGHT), new FlowLayout(FlowLayout.CENTER),
+        this.footerPanel = new XPanel(new Dimension(this.getWidth(), SizeData.BUTTON_HEIGHT), new FlowLayout(FlowLayout.CENTER, SizeData.GAP, 0),
             this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(appearance.getMainBackground())

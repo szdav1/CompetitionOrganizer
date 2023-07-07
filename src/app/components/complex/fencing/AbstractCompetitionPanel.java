@@ -15,6 +15,7 @@ import app.components.panels.AbstractXPanel;
 import app.components.panels.XPanel;
 import app.components.scrollpanels.XScrollPanel;
 import app.frame.XFrame;
+import app.other.Fencer;
 import support.appdata.AppearanceData;
 import support.appdata.SizeData;
 import support.constants.PositionConstants;
@@ -54,7 +55,7 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
 
         // Inner container for the bottom section
         this.bottomSection = new XPanel(new Dimension(this.getWidth(), SizeData.BUTTON_HEIGHT),
-            new FlowLayout(FlowLayout.CENTER, 0, 0), this.frame, BasicAppearance.BLACK);
+            new FlowLayout(FlowLayout.CENTER, SizeData.GAP, 0), this.frame, BasicAppearance.BLACK);
 
         // Buttons
         this.finishButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Finish All", this.frame,
@@ -92,7 +93,7 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
         this.addComponent(this.bottomSection, BorderLayout.SOUTH);
     }
 
-    public void generatePoules(List<String> valueList) {
+    public void generatePoules(List<String> valueList, List<Fencer> fencerList) {
         // Poule number
         int number = 1;
         // Collect the data from the list
@@ -239,7 +240,18 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
             }
         }
 
+        // Fill the poules with the names if given
+        int nameIndex = 0;
+        if (!fencerList.isEmpty()) {
+            for (Poule poule : pouleList) {
+                for (int y = 1; y < poule.getAmount() + 1; y++) {
+                    poule.boxArray[y][0].setText(fencerList.get(nameIndex).getName());
+                    nameIndex++;
+                }
+            }
+        }
 
+        // Resize the scroll panel to the desired dimensions
         this.scrollPanel.getViewPanel().setPreferredSize(new Dimension(
             this.scrollPanel.getViewPanel().getPreferredSize().width,
             this.pouleList.size() * SizeData.POULE_HEIGHT + SizeData.GAP

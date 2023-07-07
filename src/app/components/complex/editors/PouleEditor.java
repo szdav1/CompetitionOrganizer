@@ -311,9 +311,11 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
         if (!this.isErrorPresent) {
             this.inputList.forEach(input -> this.valueList.add(input.getText()));
             this.frame.closePouleEditor();
-            // Toggled the competitionPanel on the frame
-            this.frame.toggleCompetitionPanel(this.valueList);
         }
+    }
+
+    public void reset() {
+        this.closeSelectionPanel();
     }
 
     @Override
@@ -366,11 +368,16 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(this.createButton.getButton()) && !this.isFromSelection) {
             this.checkValues();
+            this.frame.toggleCompetitionPanel(this.valueList, new ArrayList<>(0));
         }
         else {
+            if (this.selectionPanel.getSelectedValues().size() < 4) {
+                return;
+            }
+
             this.frame.closePouleEditor();
             this.frame.toggleCompetitionPanel(new ArrayList<>(Arrays.asList("1", "",
-                String.valueOf(this.selectionPanel.getSelectedFencers().size()), "")));
+                String.valueOf(this.selectionPanel.getSelectedValues().size()), "")), this.selectionPanel.getSelectedValues());
             this.isFromSelection = false;
         }
     }
@@ -411,5 +418,9 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
             this.inputList.get(1).getText().isBlank() ? "Generation Method: Search for optimal"
                 : "Generation Method: Based on user data"
         );
+
+        if (e.getKeyCode() == KeyEvent.VK_F2) {
+            this.toggleSelectionPanel();
+        }
     }
 }

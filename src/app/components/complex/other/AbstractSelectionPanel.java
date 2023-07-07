@@ -6,9 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.swing.JComponent;
 
 import app.components.buttons.FCXButton;
 import app.components.panels.AbstractXPanel;
@@ -33,6 +30,10 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
     // Scroll panel
     protected final XScrollPanel scrollPanel;
 
+    // Quick access buttons
+    protected final FCXButton checkAllButton;
+    protected final FCXButton uncheckAllButton;
+
     // List of components
     protected final List<Checkbox> checkboxList = new ArrayList<>();
 
@@ -43,7 +44,7 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
         this.topSection = new XPanel(SizeData.WIDE_BUTTON_DIMENSION, new FlowLayout(FlowLayout.TRAILING, 0, 0),
             this.frame, BasicAppearance.BLACK);
 
-        this.centerPanel = new XPanel(preferredSize, new FlowLayout(FlowLayout.CENTER, 0, 0), this.frame,
+        this.centerPanel = new XPanel(preferredSize, new FlowLayout(FlowLayout.CENTER, SizeData.GAP, 0), this.frame,
             BasicAppearance.BLACK);
 
         this.bottomSection = new XPanel(SizeData.WIDE_BUTTON_DIMENSION, new FlowLayout(FlowLayout.TRAILING, 0, 0),
@@ -64,7 +65,7 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
 
         // Scroll panel
         this.scrollPanel = new XScrollPanel(new Dimension(preferredSize.width,
-            (preferredSize.height) - SizeData.BUTTON_HEIGHT), this.frame, SizeData.GAP, SizeData.GAP,
+            preferredSize.height - (SizeData.BUTTON_HEIGHT * 2)), this.frame, SizeData.GAP, SizeData.GAP,
             new CustomAppearanceBuilder()
                 .addMainBackground(appearance.getMainBackground())
                 .build(),
@@ -73,10 +74,41 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
                 .addMainForeground(Color.darkGray)
                 .build());
 
+        // Quick access buttons
+        this.checkAllButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Check All", this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.white)
+                .addSecondaryForeground(Color.red)
+                .addBorder(AppearanceData.RED_BORDER)
+                .addFont(AppearanceData.MAIN_FONT_P)
+                .build(),
+            new CustomAppearanceBuilder()
+                .addMainForeground(Color.red)
+                .addSecondaryForeground(Color.yellow)
+                .build());
+        this.checkAllButton.addActionListener(e -> this.checkboxList.forEach(Checkbox::check));
+
+        this.uncheckAllButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Uncheck All", this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.white)
+                .addSecondaryForeground(Color.red)
+                .addBorder(AppearanceData.RED_BORDER)
+                .addFont(AppearanceData.MAIN_FONT_P)
+                .build(),
+            new CustomAppearanceBuilder()
+                .addMainForeground(Color.red)
+                .addSecondaryForeground(Color.yellow)
+                .build());
+        this.uncheckAllButton.addActionListener(e -> this.checkboxList.forEach(Checkbox::unCheck));
+
         // Add components to the inner containers
         this.topSection.addComponent(this.closeButton);
 
         this.centerPanel.addComponent(this.scrollPanel);
+        this.centerPanel.addComponent(this.checkAllButton);
+        this.centerPanel.addComponent(this.uncheckAllButton);
 
         // Add the inner containers
         this.addComponent(this.topSection, BorderLayout.NORTH);
@@ -92,7 +124,7 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
         this.checkboxList.add(checkbox);
     }
 
-    public List<Fencer> getSelectedFencers() {
+    public List<Fencer> getSelectedValues() {
         final List<Fencer> fencerList = new ArrayList<>();
         for (Checkbox checkbox : checkboxList) {
             if (checkbox.isChecked) {

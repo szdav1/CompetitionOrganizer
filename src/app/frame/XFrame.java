@@ -5,6 +5,7 @@ import app.components.complex.editors.PouleEditor;
 import app.components.complex.frameparts.CenterPanel;
 import app.components.complex.frameparts.ContentPanel;
 import app.components.complex.frameparts.TitleBar;
+import app.other.Fencer;
 import support.appdata.AppearanceData;
 import support.constants.PositionConstants;
 import support.framework.appearances.BasicAppearance;
@@ -93,12 +94,13 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
     public void closePouleEditor() {
         this.requestFocusInWindow();
         this.setFrameState(XFrameConstants.EDITOR_OPENED, false);
+        this.pouleEditor.reset();
         this.extractComponent(this.pouleEditor);
     }
 
-    public void toggleCompetitionPanel(List<String> valueList) {
+    public void toggleCompetitionPanel(List<String> valueList, List<Fencer> fencerList) {
         if (!this.stateMap.get(XFrameConstants.ON_GOING_COMPETITION)) {
-            this.competitionPanel.generatePoules(valueList);
+            this.competitionPanel.generatePoules(valueList, fencerList);
             this.insertComponent(this.competitionPanel);
             this.setFrameState(XFrameConstants.ON_GOING_COMPETITION, true);
         }

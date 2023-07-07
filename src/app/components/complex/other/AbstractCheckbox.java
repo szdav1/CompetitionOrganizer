@@ -69,6 +69,16 @@ public abstract class AbstractCheckbox extends AbstractXPanel implements MouseLi
         this.addComponent(this.checkLabel);
     }
 
+    public void check() {
+        this.isChecked = true;
+        this.checkLabel.setIcon(this.checkIcon);
+    }
+
+    public void unCheck() {
+        this.isChecked = false;
+        this.checkLabel.setIcon(null);
+    }
+
     public String getText() {
         return this.textLabel.getText();
     }
