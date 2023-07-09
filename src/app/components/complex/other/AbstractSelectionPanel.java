@@ -75,7 +75,7 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
                 .build());
 
         // Quick access buttons
-        this.checkAllButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Check All", this.frame,
+        this.checkAllButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Select All", this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
                 .addMainForeground(Color.white)
@@ -89,7 +89,7 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
                 .build());
         this.checkAllButton.addActionListener(e -> this.checkboxList.forEach(Checkbox::check));
 
-        this.uncheckAllButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Uncheck All", this.frame,
+        this.uncheckAllButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Unselect All", this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
                 .addMainForeground(Color.white)
@@ -115,8 +115,24 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
         this.addComponent(this.centerPanel, BorderLayout.CENTER);
     }
 
+    public void removeTopSection() {
+        this.removeComponent(this.topSection);
+        this.scrollPanel.setPreferredSize(new Dimension(this.getPreferredSize().width,
+            this.getPreferredSize().height - SizeData.BUTTON_HEIGHT));
+    }
+
     public FCXButton getCloseButton() {
         return this.closeButton;
+    }
+
+    public void removeFromScrollPanel(Checkbox checkbox) {
+        this.scrollPanel.removeComponent(checkbox);
+        this.checkboxList.remove(checkbox);
+    }
+
+    public void removeAllFromScrollPanel() {
+        this.scrollPanel.getViewPanel().removeAll();
+        this.checkboxList.clear();
     }
 
     public void addToScrollPanel(Checkbox checkbox) {
@@ -128,6 +144,17 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
         final List<Fencer> fencerList = new ArrayList<>();
         for (Checkbox checkbox : checkboxList) {
             if (checkbox.isChecked) {
+                fencerList.add(new Fencer(checkbox.getText(), 0, 0, 0, 0));
+            }
+        }
+
+        return fencerList;
+    }
+
+    public List<Fencer> getUnselectedFencers() {
+        final List<Fencer> fencerList = new ArrayList<>();
+        for (Checkbox checkbox : checkboxList) {
+            if (!checkbox.isChecked) {
                 fencerList.add(new Fencer(checkbox.getText(), 0, 0, 0, 0));
             }
         }

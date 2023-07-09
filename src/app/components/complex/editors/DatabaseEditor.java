@@ -3,6 +3,7 @@ package app.components.complex.editors;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -17,8 +18,10 @@ import javax.swing.JComponent;
 
 import app.components.buttons.FCXButton;
 import app.components.complex.inputs.InputField;
+import app.components.complex.other.Checkbox;
+import app.components.complex.other.SelectionPanel;
 import app.components.labels.XLabel;
-import app.components.scrollpanels.XScrollPanel;
+import app.components.panels.XPanel;
 import app.frame.XFrame;
 import app.other.Fencer;
 import support.appdata.AppearanceData;
@@ -36,11 +39,12 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
     private final XLabel scrollPanelLabel;
     // For the input
     private final XLabel inputLabel;
-    // Scroll panel that will display the fencers in the database
-    private final XScrollPanel fencerDisplayPanel;
+    // Selection panel that will display the fencers in the database
+    private final SelectionPanel selectionPanel;
+    // Inner container for the fencerNameInput
+    private final XPanel innerContainer;
     // Input field to insert fencers into the database
     private final InputField fencerNameInput;
-
     // Button to remove fencers
     private final FCXButton removeButton;
 
@@ -48,28 +52,31 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
         super("Database Editor", frame, appearance);
 
         this.closeButton.addActionListener(e -> this.frame.closeDatabaseEditor());
+        this.centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, SizeData.GAP / 2, 0));
 
         // Labels
         // For the scroll panel
-        this.scrollPanelLabel = new XLabel(SizeData.WIDE_BUTTON_DIMENSION, "Fencers", this.frame, BasicAppearance.BLACK);
-        this.inputLabel = new XLabel(new Dimension(this.getWidth() - SizeData.GAP, SizeData.BUTTON_HEIGHT),
-            "Insert Fencer", this.frame, BasicAppearance.BLACK);
+        this.scrollPanelLabel = new XLabel(new Dimension(this.getPreferredSize().width / 2 - SizeData.GAP, SizeData.BUTTON_HEIGHT),
+            "Remove Fencers", this.frame, BasicAppearance.BLACK);
 
-        // Scroll panel that will display the fencers in the database
-        this.fencerDisplayPanel = new XScrollPanel(new Dimension(this.getWidth() - SizeData.GAP,
-            this.getHeight() * 45 / 100), null, this.frame, SizeData.GAP, SizeData.GAP,
+        this.inputLabel = new XLabel(this.scrollPanelLabel.getPreferredSize(), "Insert Fencers", this.frame, BasicAppearance.BLACK);
+
+        // Selection panel that will display the fencers in the database
+        this.selectionPanel = new SelectionPanel(new Dimension(this.getWidth() / 2 - SizeData.GAP,
+            this.getHeight() * 70 / 100), this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
                 .addBorder(AppearanceData.GRAY_BORDER)
-                .build(),
-            new CustomAppearanceBuilder()
-                .addMainBackground(Color.black)
-                .addMainForeground(Color.darkGray)
                 .build());
+        this.selectionPanel.removeTopSection();
+
+        // Inner container for the fencerNameInput
+        this.innerContainer = new XPanel(this.selectionPanel.getPreferredSize(), new FlowLayout(FlowLayout.CENTER, 0, 0),
+            this.frame, BasicAppearance.BLACK_BORDERED);
 
         // Input field to insert fencers into the database
         this.fencerNameInput = new InputField("Fencer Name", this.frame, BasicAppearance.BLACK,
-            this.fencerDisplayPanel.getAppearance());
+            this.selectionPanel.getAppearance());
         this.fencerNameInput.getInputField().addKeyListener(this);
 
         // Button to remove fencers
@@ -91,11 +98,14 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
         this.createButton.getButton().setText("Insert");
         this.createButton.addActionListener(e -> this.insertFencerToFile());
 
+        // Add components to the innerContainer
+        this.innerContainer.addComponent(this.fencerNameInput);
+
         // Add components to the editor
-        this.centerPanel.addComponent(this.scrollPanelLabel);
-        this.centerPanel.addComponent(this.fencerDisplayPanel);
         this.centerPanel.addComponent(this.inputLabel);
-        this.centerPanel.addComponent(this.fencerNameInput);
+        this.centerPanel.addComponent(this.scrollPanelLabel);
+        this.centerPanel.addComponent(this.innerContainer);
+        this.centerPanel.addComponent(this.selectionPanel);
 
         // Add components to the footer panel
         this.footerPanel.addComponent(this.removeButton);
@@ -104,40 +114,19 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
     }
 
     private void removeFencerFromFile() {
-        final String fencerName = this.fencerNameInput.getText();
-        StringBuilder data = new StringBuilder();
-
-        // Check for empty name value
-        if (fencerName.isBlank() || fencerName.equalsIgnoreCase("missing name")) {
-            this.fencerNameInput.displayError("Missing Name");
-            return;
-        }
-
         try {
             // Remove all the fencers
             this.fencerList.clear();
-            // Open the file
-            final Scanner scanner = new Scanner(new File("database/fencers.csv"));
-            // Read in the fencers
-            while (scanner.hasNextLine()) {
-                data.append(scanner.nextLine());
-            }
-            scanner.close();
 
-            // Refill the fencerList without the fencerName
-            for (String string : data.toString().split(";")) {
-                if (!string.equals(fencerName)) {
-                    this.fencerList.add(new Fencer(string, 0, 0, 0, 0));
-                }
-            }
+            // Gather the unselected fencers
+            final List<Fencer> unselectedFencerList = this.selectionPanel.getUnselectedFencers();
 
             // Write the fencers to the file
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("database/fencers.csv"));
-            for (Fencer fencer : this.fencerList) {
+            for (Fencer fencer : unselectedFencerList) {
                 bufferedWriter.write(fencer.getName().concat(";"));
             }
             bufferedWriter.close();
-            this.fencerNameInput.clearText();
             this.readFencersFromFile();
         }
         catch (Exception exc) {
@@ -183,7 +172,7 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
         // Clear the fencer list
         this.fencerList.clear();
         // Clear the fencerDisplayPanel
-        this.fencerDisplayPanel.getViewPanel().removeAll();
+        this.selectionPanel.removeAllFromScrollPanel();
 
         try {
             // Open the file
@@ -199,17 +188,17 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
 
             // fill the dropdown panel with the fencers
             for (int i = 0; i < this.fencerList.size(); i++) {
-                final XLabel fencerLabel = new XLabel(SizeData.GAP, (SizeData.BUTTON_HEIGHT * i) + (SizeData.GAP * (i + 1)),
-                    this.fencerDisplayPanel.getWidth() - (SizeData.GAP * 2), SizeData.BUTTON_HEIGHT,
+                final Checkbox fencerCheckbox = new Checkbox(SizeData.GAP, (SizeData.BUTTON_HEIGHT * i) + (SizeData.GAP * (i + 1)),
+                    this.selectionPanel.getWidth() - (SizeData.GAP * 2), SizeData.BUTTON_HEIGHT,
                     this.fencerList.get(i).getName(), this.frame,
                     new CustomAppearanceBuilder()
                         .addMainBackground(Color.black)
                         .addMainForeground(Color.white)
                         .addFont(AppearanceData.MAIN_FONT_P)
                         .addBorder(AppearanceData.GRAY_BORDER)
-                        .build()
-                );
-                this.fencerDisplayPanel.addComponent(fencerLabel);
+                        .build());
+
+                this.selectionPanel.addToScrollPanel(fencerCheckbox);
             }
         }
         catch (Exception exc) {
