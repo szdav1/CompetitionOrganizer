@@ -1,9 +1,6 @@
 package app.components.complex.editors;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -14,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 
 import app.components.buttons.FCXButton;
@@ -53,6 +51,8 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
 
         this.closeButton.addActionListener(e -> this.frame.closeDatabaseEditor());
         this.centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, SizeData.GAP / 2, 0));
+        this.footerPanel.setLayout(new GridLayout(1, 2));
+        this.footerPanel.removeComponent(this.createButton);
 
         // Labels
         // For the scroll panel
@@ -108,7 +108,20 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
         this.centerPanel.addComponent(this.selectionPanel);
 
         // Add components to the footer panel
-        this.footerPanel.addComponent(this.removeButton);
+        // Inner containers for the footerPanel
+        final XPanel leftInnerContainer = new XPanel(SizeData.WIDE_BUTTON_DIMENSION, new FlowLayout(FlowLayout.CENTER,
+            0, 0), this.frame, BasicAppearance.BLACK);
+
+        final XPanel rightInnerContainer = new XPanel(leftInnerContainer.getPreferredSize(), leftInnerContainer.getLayout(),
+            leftInnerContainer.getFrame(), leftInnerContainer.getAppearance());
+
+        // Add components to the innerContainers
+        leftInnerContainer.addComponent(this.createButton);
+        rightInnerContainer.addComponent(this.removeButton);
+
+        // Add the innerContainers to the footerPanel
+        this.footerPanel.addComponent(leftInnerContainer);
+        this.footerPanel.addComponent(rightInnerContainer);
 
         this.addKeyListener(this);
     }

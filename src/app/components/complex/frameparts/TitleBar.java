@@ -20,17 +20,20 @@ public final class TitleBar extends AbstractTitleBar {
     @Override
     public void actionPerformed(ActionEvent e) {
         final Object source = e.getSource();
+        boolean fromCreateMenu = false;
         int indexOfSourceButton = -1;
+
         // Loop through the createMenuButton's options and check for events
         for (JComponent component : this.createMenuButton.getOptions()) {
             if (component instanceof FCXButton fcxButton) {
                 if (source.equals(fcxButton.getButton())) {
                     indexOfSourceButton = this.createMenuButton.getOptions().indexOf(fcxButton);
+                    fromCreateMenu = true;
                 }
             }
         }
         // Execute events
-        if (indexOfSourceButton == 0) {
+        if (indexOfSourceButton == 1 && fromCreateMenu) {
             this.createMenuButton.setToggled(false);
             this.frame.togglePouleEditor();
         }
@@ -40,11 +43,12 @@ public final class TitleBar extends AbstractTitleBar {
             if (component instanceof FCXButton fcxButton) {
                 if (source.equals(fcxButton.getButton())) {
                     indexOfSourceButton = this.utilMenuButton.getOptions().indexOf(fcxButton);
+                    fromCreateMenu = false;
                 }
             }
         }
         // Execute events
-        if (indexOfSourceButton == 0) {
+        if (indexOfSourceButton == 0 && !fromCreateMenu) {
             this.utilMenuButton.setToggled(false);
             this.frame.toggleDatabaseEditor();
         }

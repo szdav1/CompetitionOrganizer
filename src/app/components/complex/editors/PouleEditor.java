@@ -368,7 +368,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(this.createButton.getButton()) && !this.isFromSelection) {
             this.checkValues();
-            this.frame.toggleCompetitionPanel(this.valueList, new ArrayList<>(0));
+            this.frame.togglePouleOnlyCompetitionPanel(this.valueList, new ArrayList<>(0));
         }
         else {
             if (this.selectionPanel.getSelectedValues().size() < 4) {
@@ -376,7 +376,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
             }
 
             this.frame.closePouleEditor();
-            this.frame.toggleCompetitionPanel(new ArrayList<>(Arrays.asList("1", "",
+            this.frame.togglePouleOnlyCompetitionPanel(new ArrayList<>(Arrays.asList("1", "",
                 String.valueOf(this.selectionPanel.getSelectedValues().size()), "")), this.selectionPanel.getSelectedValues());
             this.isFromSelection = false;
         }

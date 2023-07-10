@@ -2,6 +2,7 @@ package app.frame;
 
 import app.components.complex.editors.DatabaseEditor;
 import app.components.complex.editors.PouleEditor;
+import app.components.complex.fencing.PouleOnlyCompetitionPanel;
 import app.components.complex.frameparts.CenterPanel;
 import app.components.complex.frameparts.ContentPanel;
 import app.components.complex.frameparts.TitleBar;
@@ -33,7 +34,7 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
     private final DatabaseEditor databaseEditor;
 
     // Competition panel
-    private final CompetitionPanel competitionPanel;
+    private final PouleOnlyCompetitionPanel pouleOnlyCompetitionPanel;
 
     public XFrame(Image iconImage, String title) {
         super(iconImage, title);
@@ -61,7 +62,7 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
         this.databaseEditor = new DatabaseEditor(this, this.pouleEditor.getAppearance());
 
         // Competition panel
-        this.competitionPanel = new CompetitionPanel(this, BasicAppearance.BLACK);
+        this.pouleOnlyCompetitionPanel = new PouleOnlyCompetitionPanel(this, BasicAppearance.BLACK);
 
         // Add components to the frame
 //        this.insertComponent(this.databaseEditor);
@@ -98,19 +99,19 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
         this.extractComponent(this.pouleEditor);
     }
 
-    public void toggleCompetitionPanel(List<String> valueList, List<Fencer> fencerList) {
+    public void togglePouleOnlyCompetitionPanel(List<String> valueList, List<Fencer> fencerList) {
         if (!this.stateMap.get(XFrameConstants.ON_GOING_COMPETITION)) {
-            this.competitionPanel.generatePoules(valueList, fencerList);
-            this.insertComponent(this.competitionPanel);
+            this.pouleOnlyCompetitionPanel.generatePoules(valueList, fencerList);
+            this.insertComponent(this.pouleOnlyCompetitionPanel);
             this.setFrameState(XFrameConstants.ON_GOING_COMPETITION, true);
         }
     }
 
-    public void closeCompetitionPanel() {
+    public void closePouleOnlyCompetitionPanel() {
         this.requestFocusInWindow();
-        this.competitionPanel.clearAll();
+        this.pouleOnlyCompetitionPanel.clearAll();
         this.setFrameState(XFrameConstants.ON_GOING_COMPETITION, false);
-        this.extractComponent(this.competitionPanel);
+        this.extractComponent(this.pouleOnlyCompetitionPanel);
     }
 
     public void insertComponent(JComponent component, PositionConstants positionConstants) {
