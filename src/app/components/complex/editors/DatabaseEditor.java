@@ -149,7 +149,6 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
 
     private void insertFencerToFile() {
         final String fencerName = this.fencerNameInput.getText();
-        StringBuilder data = new StringBuilder();
 
         // Check for empty name value
         if (fencerName.isBlank() || fencerName.equalsIgnoreCase("missing name")) {
@@ -158,27 +157,34 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
         }
 
         try {
-            // Open the file for reading
-            final Scanner scanner = new Scanner(new File("database/fencers.csv"));
-            // Read in all the existing data
-            while (scanner.hasNextLine()) {
-                data.append(scanner.nextLine());
-            }
-            scanner.close();
-            // Concat the fencer name to the existing data
-            data.append(fencerName.concat(";"));
-
+            // Append the fencer to the fencerList
+            this.fencerList.add(new Fencer(fencerName, 0, 0, 0, 0));
             // Open the file for writing
-            final BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("database/fencers.csv"));
-            bufferedWriter.write(data.toString());
+            final BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("database/fencers.csv", true));
+            bufferedWriter.write(fencerName + ";");
             bufferedWriter.close();
 
-            this.readFencersFromFile();
+            this.appendFencerCheckboxToScrollPanel(fencerName);
             this.fencerNameInput.clearText();
         }
         catch (Exception exc) {
             exc.printStackTrace();
         }
+    }
+
+    private void appendFencerCheckboxToScrollPanel(String fencerName) {
+        final Checkbox fencerCheckbox = new Checkbox(SizeData.GAP, (SizeData.BUTTON_HEIGHT * (this.fencerList.size() - 1)) +
+            (SizeData.GAP * this.fencerList.size()), this.selectionPanel.getWidth() - (SizeData.GAP * 2), SizeData.BUTTON_HEIGHT,
+            fencerName, this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.white)
+                .addFont(AppearanceData.MAIN_FONT_P)
+                .addBorder(AppearanceData.GRAY_BORDER)
+                .build());
+
+        this.selectionPanel.addToScrollPanel(fencerCheckbox);
+        this.frame.repaint();
     }
 
     public void readFencersFromFile() {
@@ -199,7 +205,7 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
             }
             scanner.close();
 
-            // fill the dropdown panel with the fencers
+            // fill the scroll panel with the fencers
             for (int i = 0; i < this.fencerList.size(); i++) {
                 final Checkbox fencerCheckbox = new Checkbox(SizeData.GAP, (SizeData.BUTTON_HEIGHT * i) + (SizeData.GAP * (i + 1)),
                     this.selectionPanel.getWidth() - (SizeData.GAP * 2), SizeData.BUTTON_HEIGHT,

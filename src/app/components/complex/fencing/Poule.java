@@ -240,8 +240,8 @@ public final class Poule extends AbstractPoule {
                             this.boxArray[y][x].setText("");
                         }
                     }
-                    else if (e.getKeyCode() == KeyEvent.VK_F2) {
-
+                    else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                        this.boxArray[y][x].setText(this.boxArray[y][x].getText().replace(" ", ""));
                     }
                     else {
                         this.boxArray[y][x].setText("");
@@ -250,7 +250,7 @@ public final class Poule extends AbstractPoule {
             }
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_F2) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             for (int y = 1; y < this.amount + 1; y++) {
                 for (int x = 2; x < this.amount + 2; x++) {
                     if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {

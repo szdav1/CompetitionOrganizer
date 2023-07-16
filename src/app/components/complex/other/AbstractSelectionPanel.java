@@ -132,15 +132,16 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
 
     public void removeAllFromScrollPanel() {
         this.scrollPanel.getViewPanel().removeAll();
+        this.scrollPanel.getViewPanel().setPreferredSize(new Dimension(0, 0));
         this.checkboxList.clear();
     }
 
     public void addToScrollPanel(Checkbox checkbox) {
-        this.scrollPanel.addComponent(checkbox);
         this.checkboxList.add(checkbox);
+        this.scrollPanel.addComponent(checkbox);
     }
 
-    public List<Fencer> getSelectedValues() {
+    public List<Fencer> getSelectedFencers() {
         final List<Fencer> fencerList = new ArrayList<>();
         for (Checkbox checkbox : checkboxList) {
             if (checkbox.isChecked) {

@@ -164,10 +164,10 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_F1) {
+        if (e.getKeyCode() == KeyEvent.VK_F2) {
             this.togglePouleEditor();
         }
-        else if (e.getKeyCode() == KeyEvent.VK_F2) {
+        else if (e.getKeyCode() == KeyEvent.VK_F5) {
             this.toggleDatabaseEditor();
         }
     }

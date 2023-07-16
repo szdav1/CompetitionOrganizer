@@ -371,13 +371,13 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
             this.frame.togglePouleOnlyCompetitionPanel(this.valueList, new ArrayList<>(0));
         }
         else {
-            if (this.selectionPanel.getSelectedValues().size() < 4) {
+            if (this.selectionPanel.getSelectedFencers().size() < 4) {
                 return;
             }
 
             this.frame.closePouleEditor();
             this.frame.togglePouleOnlyCompetitionPanel(new ArrayList<>(Arrays.asList("1", "",
-                String.valueOf(this.selectionPanel.getSelectedValues().size()), "")), this.selectionPanel.getSelectedValues());
+                String.valueOf(this.selectionPanel.getSelectedFencers().size()), "")), this.selectionPanel.getSelectedFencers());
             this.isFromSelection = false;
         }
     }

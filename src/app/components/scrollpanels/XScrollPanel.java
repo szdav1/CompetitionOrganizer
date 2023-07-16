@@ -67,6 +67,7 @@ public final class XScrollPanel extends AbstractXScrollPanel {
 
         // Add the component
         this.viewPanel.add(component, positionConstants.getzIndex());
+        this.setViewportView(this.viewPanel);
         this.repaintFrame();
     }
 

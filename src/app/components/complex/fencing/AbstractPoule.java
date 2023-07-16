@@ -328,6 +328,10 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
         this.createPouleStructure();
     }
 
+    public List<Fencer> getFencerList() {
+        return this.fencerList;
+    }
+
     public int getAmount() {
         return this.amount;
     }

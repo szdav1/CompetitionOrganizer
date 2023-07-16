@@ -46,13 +46,6 @@ public abstract class AbstractFencer {
 
     @Override
     public String toString() {
-        return "AbstractFencer{" +
-            "name='" + name + '\'' +
-            ", wins=" + wins +
-            ", ts=" + ts +
-            ", tr=" + tr +
-            ", index=" + index +
-            ", place=" + place +
-            '}';
+        return name + ", " + wins + ", " + ts + ", " + tr + ", " + index + ", " + place;
     }
 }
