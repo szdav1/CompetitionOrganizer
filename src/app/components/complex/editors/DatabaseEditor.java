@@ -126,6 +126,10 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
         this.addKeyListener(this);
     }
 
+    public void clearSelectionsInSelectionPanel() {
+        this.selectionPanel.unSelectAll();
+    }
+
     private void removeFencerFromFile() {
         try {
             // Remove all the fencers

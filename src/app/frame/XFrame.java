@@ -81,6 +81,7 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
 
     public void closeDatabaseEditor() {
         this.requestFocusInWindow();
+        this.databaseEditor.clearSelectionsInSelectionPanel();
         this.setFrameState(XFrameConstants.EDITOR_OPENED, false);
         this.extractComponent(this.databaseEditor);
     }

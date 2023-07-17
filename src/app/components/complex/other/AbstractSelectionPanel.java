@@ -101,7 +101,7 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
                 .addMainForeground(Color.red)
                 .addSecondaryForeground(Color.yellow)
                 .build());
-        this.uncheckAllButton.addActionListener(e -> this.checkboxList.forEach(Checkbox::unCheck));
+        this.uncheckAllButton.addActionListener(e -> this.unSelectAll());
 
         // Add components to the inner containers
         this.topSection.addComponent(this.closeButton);
@@ -143,23 +143,25 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
 
     public List<Fencer> getSelectedFencers() {
         final List<Fencer> fencerList = new ArrayList<>();
-        for (Checkbox checkbox : checkboxList) {
-            if (checkbox.isChecked) {
+        for (Checkbox checkbox : this.checkboxList) {
+            if (checkbox.isChecked()) {
                 fencerList.add(new Fencer(checkbox.getText(), 0, 0, 0, 0));
             }
         }
-
         return fencerList;
     }
 
     public List<Fencer> getUnselectedFencers() {
         final List<Fencer> fencerList = new ArrayList<>();
-        for (Checkbox checkbox : checkboxList) {
-            if (!checkbox.isChecked) {
+        for (Checkbox checkbox : this.checkboxList) {
+            if (!checkbox.isChecked()) {
                 fencerList.add(new Fencer(checkbox.getText(), 0, 0, 0, 0));
             }
         }
-
         return fencerList;
+    }
+
+    public void unSelectAll() {
+        this.checkboxList.forEach(Checkbox::unCheck);
     }
 }

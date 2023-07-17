@@ -17,7 +17,7 @@ import support.util.Util;
 
 public abstract class AbstractCheckbox extends AbstractXPanel implements MouseListener {
     // Checked value
-    protected boolean isChecked;
+    protected boolean checked;
     // Label for the text
     protected final XLabel textLabel;
     // Label for the check
@@ -29,7 +29,7 @@ public abstract class AbstractCheckbox extends AbstractXPanel implements MouseLi
         super(preferredSize, new FlowLayout(FlowLayout.LEADING, 0, 0), frame, appearance);
 
         // Checked value
-        this.isChecked = false;
+        this.checked = false;
 
         // Label for the text
         this.textLabel = new XLabel(new Dimension(preferredSize.width - SizeData.NARROW_BUTTON_WIDTH, preferredSize.height),
@@ -51,7 +51,7 @@ public abstract class AbstractCheckbox extends AbstractXPanel implements MouseLi
         super(x, y, width, height, new FlowLayout(FlowLayout.LEADING, 0, 0), frame, appearance);
 
         // Checked value
-        this.isChecked = false;
+        this.checked = false;
 
         // Label for the text
         this.textLabel = new XLabel(new Dimension(width - SizeData.NARROW_BUTTON_WIDTH - (SizeData.BORDER_SIZE * 2),
@@ -70,12 +70,12 @@ public abstract class AbstractCheckbox extends AbstractXPanel implements MouseLi
     }
 
     public void check() {
-        this.isChecked = true;
+        this.checked = true;
         this.checkLabel.setIcon(this.checkIcon);
     }
 
     public void unCheck() {
-        this.isChecked = false;
+        this.checked = false;
         this.checkLabel.setIcon(null);
     }
 
@@ -84,6 +84,13 @@ public abstract class AbstractCheckbox extends AbstractXPanel implements MouseLi
     }
 
     public boolean isChecked() {
-        return this.isChecked;
+        return this.checked;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractCheckbox{" +
+            "checked=" + checked +
+            '}';
     }
 }

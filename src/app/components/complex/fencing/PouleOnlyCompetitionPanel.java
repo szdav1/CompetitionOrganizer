@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-import app.components.labels.XLabel;
 import app.components.panels.XPanel;
 import app.frame.XFrame;
 import app.other.Fencer;
@@ -43,10 +42,7 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
 
     public void finishAllPoule() {
         // Calculate fencer data and remove the poules
-        this.pouleList.forEach(poule -> {
-            poule.calculateFencerData();
-            poule.getFencerList().forEach(System.out::println);
-        });
+        this.pouleList.forEach(Poule::calculateFencerData);
         this.pouleList.forEach(this.scrollPanel::removeComponent);
 
         // Resize the resultsPanel
@@ -233,6 +229,7 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
     }
 
     public void clearAll() {
+        this.scrollPanel.removeComponent(this.resultsPanel);
         this.pouleList.forEach(this::extractComponent);
         this.pouleList.clear();
     }

@@ -191,6 +191,8 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
     private void closeSelectionPanel() {
         this.isFromSelection = false;
         this.centerPanel.removeAll();
+        this.selectionPanel.unSelectAll();
+
         // Add the components to the centerPanel
         this.centerPanel.addComponent(this.inputLabel);
         this.centerPanel.addComponent(this.previewLabel);
@@ -201,6 +203,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
 
     private void readFencersFromFile() {
         this.fencerList.clear();
+        this.selectionPanel.removeAllFromScrollPanel();
 
         try {
             final Scanner scanner = new Scanner(new File("database/fencers.csv"));
@@ -370,14 +373,15 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
             this.checkValues();
             this.frame.togglePouleOnlyCompetitionPanel(this.valueList, new ArrayList<>(0));
         }
-        else {
-            if (this.selectionPanel.getSelectedFencers().size() < 4) {
+        else if (e.getSource().equals(this.createButton.getButton()) && this.isFromSelection) {
+            final List<Fencer> selectedFencerList = this.selectionPanel.getSelectedFencers();
+            if (selectedFencerList.size() < 4) {
                 return;
             }
 
             this.frame.closePouleEditor();
             this.frame.togglePouleOnlyCompetitionPanel(new ArrayList<>(Arrays.asList("1", "",
-                String.valueOf(this.selectionPanel.getSelectedFencers().size()), "")), this.selectionPanel.getSelectedFencers());
+                String.valueOf(selectedFencerList.size()), "")), selectedFencerList);
             this.isFromSelection = false;
         }
     }

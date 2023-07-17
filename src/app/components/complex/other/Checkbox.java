@@ -27,14 +27,14 @@ public final class Checkbox extends AbstractCheckbox {
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getSource().equals(this.checkLabel)) {
-            this.isChecked = !this.isChecked;
+            this.checked = !this.checked;
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         if (e.getSource().equals(this.checkLabel)) {
-            if (this.isChecked) {
+            if (this.checked) {
                 this.checkLabel.setIcon(this.checkIcon);
             }
             else {
