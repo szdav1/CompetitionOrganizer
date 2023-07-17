@@ -43,23 +43,23 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
     public void finishAllPoule() {
         // Calculate fencer data and remove the poules
         this.pouleList.forEach(Poule::calculateFencerData);
-        this.pouleList.forEach(this.scrollPanel::removeComponent);
-
-        // Resize the resultsPanel
-        this.resultsPanel.setPreferredSize(new Dimension(SizeData.HALF_WIDTH + (SizeData.GAP * 2), (SizeData.BUTTON_HEIGHT * this.numberOfFencers)
-         + (SizeData.GAP * (this.numberOfFencers + 1))));
-
-        // Fill the resultsPanel
-        this.pouleList.forEach(poule -> {
-            poule.fencerList.forEach(fencer -> {
-                this.resultsPanel.addComponent(new FencerDisplayLabel(fencer.getName(), String.valueOf(fencer.getPlace()),
-                    this.frame, BasicAppearance.BLACK));
-            });
-        });
-
-        // Add the resultsPanel to the scrollPanel
-        this.scrollPanel.addComponent(this.resultsPanel);
-        this.finishButton.getButton().setEnabled(false);
+//        this.pouleList.forEach(this.scrollPanel::removeComponent);
+//
+//        // Resize the resultsPanel
+//        this.resultsPanel.setPreferredSize(new Dimension(SizeData.HALF_WIDTH + (SizeData.GAP * 2), (SizeData.BUTTON_HEIGHT * this.numberOfFencers)
+//         + (SizeData.GAP * (this.numberOfFencers + 1))));
+//
+//        // Fill the resultsPanel
+//        this.pouleList.forEach(poule -> {
+//            poule.fencerList.forEach(fencer -> {
+//                this.resultsPanel.addComponent(new FencerDisplayLabel(fencer.getName(), String.valueOf(fencer.getPlace()),
+//                    this.frame, BasicAppearance.BLACK));
+//            });
+//        });
+//
+//        // Add the resultsPanel to the scrollPanel
+//        this.scrollPanel.addComponent(this.resultsPanel);
+//        this.finishButton.getButton().setEnabled(false);
     }
 
     public void generatePoules(List<String> valueList, List<Fencer> fencerList) {
