@@ -125,7 +125,9 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
         this.setBounds(x, y, SizeData.POULE_WIDTH, SizeData.POULE_HEIGHT);
     }
 
-    public void calculateFencerData() {
+    public boolean calculateFencerData() {
+        // Reset isErrorPresent
+        this.isErrorPresent = false;
         // Reset the fencerList
         this.fencerList.clear();
 
@@ -155,7 +157,7 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
         }
 
         if (this.isErrorPresent) {
-            return;
+            return isErrorPresent;
         }
 
         // Calculate the tr
@@ -236,6 +238,8 @@ public abstract class AbstractPoule extends AbstractXPanel implements ActionList
                 }
             });
         }
+
+        return isErrorPresent;
     }
 
     private void createPouleStructure() {

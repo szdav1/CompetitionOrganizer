@@ -4,9 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
 
@@ -25,11 +26,14 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
     private int numberOfFencers;
     // List for the poules
     private final List<Poule> pouleList = new LinkedList<>();
+    // List for the fencers
+    private List<Fencer> fencerList = new LinkedList<>();
     // Panel for the results
     private final XPanel resultsPanel;
 
     public PouleOnlyCompetitionPanel(XFrame frame, Appearance appearance) {
         super(frame, appearance);
+
 
         // Panel for the results
         this.resultsPanel = new XPanel(new Dimension(SizeData.HALF_WIDTH + (SizeData.GAP * 2), SizeData.BUTTON_HEIGHT), new FlowLayout(FlowLayout.CENTER,
@@ -38,6 +42,50 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
                 .addMainBackground(Color.black)
                 .addBorder(AppearanceData.RED_BORDER)
                 .build());
+
+        // ActionListener for the finish button
+        this.finishButton.addActionListener(e -> {
+            if (this.finishButton.getButton().getText().equalsIgnoreCase("finish all")) {
+                for (Poule poule : this.pouleList) {
+                    if (poule.calculateFencerData()) {
+                        return;
+                    }
+                }
+                this.finishButton.getButton().setText("Show Results");
+            }
+            else if (this.finishButton.getButton().getText().equalsIgnoreCase("show results")) {
+                // Clear the fencer list
+                this.fencerList.clear();
+                // Collect the fencers into one big list
+                this.pouleList.forEach(poule -> this.fencerList.addAll(poule.getFencerList()));
+                // Sort the big fencer list based on place and then index
+                this.fencerList = this.fencerList.stream()
+                    .sorted(Comparator.comparing(Fencer::getPlace))
+                    .sorted(Comparator.comparing(Fencer::getIndex).reversed())
+                    .collect(Collectors.toList());
+
+                // TODO: Rewrite the place of the fencers to their index + 1 in the fencerList
+
+                // Resize the resultsPanel
+                this.resultsPanel.setPreferredSize(new Dimension(SizeData.HALF_WIDTH + (SizeData.GAP * 2),
+                    (SizeData.BUTTON_HEIGHT * this.fencerList.size()) + (SizeData.GAP * (this.fencerList.size() + 1))));
+
+                // Add the fencers to the results panel
+                this.fencerList.forEach(fencer -> {
+                    this.resultsPanel.addComponent(new FencerDisplayLabel(fencer.getName(), String.valueOf(fencer.getPlace()),
+                        this.frame, BasicAppearance.BLACK));
+                });
+
+                // Remove the poules and add the results panel
+                this.pouleList.forEach(this.scrollPanel::removeComponent);
+                this.scrollPanel.addComponent(this.resultsPanel);
+
+                this.finishButton.getButton().setText("Continue");
+            }
+            else {
+
+            }
+        });
     }
 
     public void finishAllPoule() {
@@ -45,17 +93,8 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
         this.pouleList.forEach(Poule::calculateFencerData);
 //        this.pouleList.forEach(this.scrollPanel::removeComponent);
 //
-//        // Resize the resultsPanel
-//        this.resultsPanel.setPreferredSize(new Dimension(SizeData.HALF_WIDTH + (SizeData.GAP * 2), (SizeData.BUTTON_HEIGHT * this.numberOfFencers)
-//         + (SizeData.GAP * (this.numberOfFencers + 1))));
+
 //
-//        // Fill the resultsPanel
-//        this.pouleList.forEach(poule -> {
-//            poule.fencerList.forEach(fencer -> {
-//                this.resultsPanel.addComponent(new FencerDisplayLabel(fencer.getName(), String.valueOf(fencer.getPlace()),
-//                    this.frame, BasicAppearance.BLACK));
-//            });
-//        });
 //
 //        // Add the resultsPanel to the scrollPanel
 //        this.scrollPanel.addComponent(this.resultsPanel);
@@ -229,6 +268,7 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
     }
 
     public void clearAll() {
+        this.finishButton.getButton().setText("Finish All");
         this.scrollPanel.removeComponent(this.resultsPanel);
         this.pouleList.forEach(this::extractComponent);
         this.pouleList.clear();
@@ -276,13 +316,5 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
     @Override
     public XFrame getFrame() {
         return this.frame;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        final Object source = e.getSource();
-        if (source.equals(this.finishButton.getButton())) {
-            this.finishAllPoule();
-        }
     }
 }

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
 
 import javax.swing.JComponent;
 
@@ -20,12 +19,12 @@ import support.framework.appearances.BasicAppearance;
 import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 
-public abstract class AbstractCompetitionPanel extends AbstractXPanel implements ActionListener {
+public abstract class AbstractCompetitionPanel extends AbstractXPanel {
     // Scroll panel
     protected final XScrollPanel scrollPanel;
 
     // Inner container for the bottom section
-    private final XPanel bottomSection;
+    protected final XPanel bottomSection;
 
     // Buttons
     protected final FCXButton finishButton;
@@ -63,7 +62,6 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel implements
                 .addMainForeground(Color.red)
                 .addSecondaryForeground(Color.yellow)
                 .build());
-        this.finishButton.addActionListener(this);
 
         this.closeButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Close", this.frame,
             new CustomAppearanceBuilder()
