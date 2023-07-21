@@ -63,8 +63,8 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
                     .sorted(Comparator.comparing(Fencer::getPlace))
                     .sorted(Comparator.comparing(Fencer::getIndex).reversed())
                     .collect(Collectors.toList());
-
-                // TODO: Rewrite the place of the fencers to their index + 1 in the fencerList
+                // Rewrite the place of the fencers
+                this.fencerList.forEach(fencer -> fencer.setPlace(this.fencerList.indexOf(fencer) + 1));
 
                 // Resize the resultsPanel
                 this.resultsPanel.setPreferredSize(new Dimension(SizeData.HALF_WIDTH + (SizeData.GAP * 2),
@@ -80,10 +80,7 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
                 this.pouleList.forEach(this.scrollPanel::removeComponent);
                 this.scrollPanel.addComponent(this.resultsPanel);
 
-                this.finishButton.getButton().setText("Continue");
-            }
-            else {
-
+                this.bottomSection.removeComponent(this.finishButton);
             }
         });
     }
