@@ -47,7 +47,7 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
         this.centerPanel = new XPanel(preferredSize, new FlowLayout(FlowLayout.CENTER, SizeData.GAP, 0), this.frame,
             BasicAppearance.BLACK);
 
-        this.bottomSection = new XPanel(SizeData.WIDE_BUTTON_DIMENSION, new FlowLayout(FlowLayout.TRAILING, 0, 0),
+        this.bottomSection = new XPanel(new Dimension(preferredSize.width, SizeData.BUTTON_HEIGHT), new FlowLayout(FlowLayout.TRAILING, 0, 0),
             this.frame, BasicAppearance.BLACK);
 
         // Close button
@@ -87,7 +87,7 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
                 .addMainForeground(Color.red)
                 .addSecondaryForeground(Color.yellow)
                 .build());
-        this.checkAllButton.addActionListener(e -> this.checkboxList.forEach(Checkbox::check));
+        this.checkAllButton.addActionListener(e -> this.selectAll());
 
         this.uncheckAllButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Unselect All", this.frame,
             new CustomAppearanceBuilder()
@@ -113,6 +113,24 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
         // Add the inner containers
         this.addComponent(this.topSection, BorderLayout.NORTH);
         this.addComponent(this.centerPanel, BorderLayout.CENTER);
+    }
+
+    public List<Checkbox> getCheckboxList() {
+        return this.checkboxList;
+    }
+
+    public FCXButton getCheckAllButton() {
+        return this.checkAllButton;
+    }
+
+    public FCXButton getUncheckAllButton() {
+        return this.uncheckAllButton;
+    }
+
+    public void removeBottomSection() {
+        this.removeComponent(this.bottomSection);
+        this.scrollPanel.setPreferredSize(new Dimension(this.getPreferredSize().width,
+            this.getPreferredSize().height));
     }
 
     public void removeTopSection() {
@@ -159,6 +177,10 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
             }
         }
         return fencerList;
+    }
+
+    public void selectAll() {
+        this.checkboxList.forEach(Checkbox::check);
     }
 
     public void unSelectAll() {

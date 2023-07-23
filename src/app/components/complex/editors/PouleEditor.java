@@ -155,7 +155,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
             this.getPreferredSize().height - (SizeData.BUTTON_HEIGHT * 2) - SizeData.GAP), this.frame,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
-                .addBorder(AppearanceData.RED_BORDER)
+                .addBorder(AppearanceData.GRAY_BORDER)
                 .build());
         this.selectionPanel.getCloseButton().addActionListener(e -> this.closeSelectionPanel());
 

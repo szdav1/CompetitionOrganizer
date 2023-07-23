@@ -33,9 +33,15 @@ public final class TitleBar extends AbstractTitleBar {
             }
         }
         // Execute events
-        if (indexOfSourceButton == 1 && fromCreateMenu) {
-            this.createMenuButton.setToggled(false);
-            this.frame.togglePouleEditor();
+        if (fromCreateMenu) {
+            if (indexOfSourceButton == 1) {
+                this.createMenuButton.setToggled(false);
+                this.frame.togglePouleEditor();
+            }
+            else if (indexOfSourceButton == 2) {
+                this.createMenuButton.setToggled(false);
+                this.frame.toggleTableEditor();
+            }
         }
 
         // Loop through the utilMenuButton's options and check for events
@@ -48,9 +54,11 @@ public final class TitleBar extends AbstractTitleBar {
             }
         }
         // Execute events
-        if (indexOfSourceButton == 0 && !fromCreateMenu) {
-            this.utilMenuButton.setToggled(false);
-            this.frame.toggleDatabaseEditor();
+        if (!fromCreateMenu) {
+            if (indexOfSourceButton == 0) {
+                this.utilMenuButton.setToggled(false);
+                this.frame.toggleDatabaseEditor();
+            }
         }
     }
 

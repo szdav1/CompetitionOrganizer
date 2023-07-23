@@ -36,6 +36,7 @@ public abstract class AbstractFencerDisplayLabel extends AbstractXPanel {
                 .addMainBackground(Color.black)
                 .addMainForeground(Color.red)
                 .addBorder(AppearanceData.RED_BORDER)
+                .addFont(AppearanceData.MAIN_FONT_B)
                 .build());
 
         // Add the labels to the display

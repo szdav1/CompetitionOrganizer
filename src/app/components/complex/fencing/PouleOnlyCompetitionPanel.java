@@ -85,90 +85,92 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
         });
     }
 
-    public void finishAllPoule() {
-        // Calculate fencer data and remove the poules
-        this.pouleList.forEach(Poule::calculateFencerData);
-//        this.pouleList.forEach(this.scrollPanel::removeComponent);
-//
-
-//
-//
-//        // Add the resultsPanel to the scrollPanel
-//        this.scrollPanel.addComponent(this.resultsPanel);
-//        this.finishButton.getButton().setEnabled(false);
-    }
-
     public void generatePoules(List<String> valueList, List<Fencer> fencerList) {
         // Poule number
         int number = 1;
-        // Collect the data from the list
-        final String round = valueList.get(0);
-        int fencersPoule = valueList.get(1).isBlank() ? 5 : Integer.parseInt(valueList.get(1));
-        this.numberOfFencers = Integer.parseInt(valueList.get(2));
-        final String date = valueList.get(3);
+        try {
+            // Collect the data from the list
+            final String round = valueList.get(0);
+            int fencersPoule = valueList.get(1).isBlank() ? 5 : Integer.parseInt(valueList.get(1));
+            this.numberOfFencers = Integer.parseInt(valueList.get(2));
+            final String date = valueList.get(3);
 
-        final boolean isDefaultValuesUsed = valueList.get(1).isBlank();
+            final boolean isDefaultValuesUsed = valueList.get(1).isBlank();
 
-        // Generating poules with the optimal amount of fencers in them
-        // This happens when the fencers/poule input field is left empty
-        if (isDefaultValuesUsed) {
-            if (this.numberOfFencers <= fencersPoule) {
-                final Poule poule = new Poule(this.frame, this.numberOfFencers,
-                    new CustomAppearanceBuilder()
-                        .addMainBackground(Color.black)
-                        .addBorder(AppearanceData.RED_BORDER)
-                        .build());
-                poule.setNumber(String.valueOf(number));
-                this.pouleList.add(poule);
-                this.insertComponent(poule);
+            // Generating poules with the optimal amount of fencers in them
+            // This happens when the fencers/poule input field is left empty
+            if (isDefaultValuesUsed) {
+                if (this.numberOfFencers <= fencersPoule) {
+                    final Poule poule = new Poule(this.frame, this.numberOfFencers,
+                        new CustomAppearanceBuilder()
+                            .addMainBackground(Color.black)
+                            .addBorder(AppearanceData.RED_BORDER)
+                            .build());
+                    poule.setNumber(String.valueOf(number));
+                    this.pouleList.add(poule);
+                    this.insertComponent(poule);
 
-                number++;
-            }
-            // Generate poules normally
-            else {
-                if (this.numberOfFencers % fencersPoule == 0) {
-                    int numberOfPoules = this.numberOfFencers / fencersPoule;
-
-                    for (int i = 0; i < numberOfPoules; i++) {
-                        final Poule poule = new Poule(this.frame, fencersPoule,
-                            new CustomAppearanceBuilder()
-                                .addMainBackground(Color.black)
-                                .addBorder(AppearanceData.RED_BORDER)
-                                .build());
-                        poule.setNumber(String.valueOf(number));
-                        this.pouleList.add(poule);
-                        this.insertComponent(poule);
-                        number++;
-                    }
+                    number++;
                 }
-                else if (this.numberOfFencers % 2 == 0) {
-                    while (this.numberOfFencers % fencersPoule != 0 && fencersPoule < 8) {
-                        fencersPoule++;
-                    }
-
-                    int numberOfPoules = this.numberOfFencers / fencersPoule;
-                    this.numberOfFencers -= numberOfPoules * fencersPoule;
-                    for (int i = 0; i < numberOfPoules; i++) {
-                        final Poule poule = new Poule(this.frame, fencersPoule,
-                            new CustomAppearanceBuilder()
-                                .addMainBackground(Color.black)
-                                .addBorder(AppearanceData.RED_BORDER)
-                                .build());
-                        poule.setNumber(String.valueOf(number));
-                        this.pouleList.add(poule);
-                        this.insertComponent(poule);
-                        number++;
-                    }
-                }
+                // Generate poules normally
                 else {
-                    while (this.numberOfFencers % fencersPoule < 4 && fencersPoule < 8) {
-                        fencersPoule++;
+                    if (this.numberOfFencers % fencersPoule == 0) {
+                        int numberOfPoules = this.numberOfFencers / fencersPoule;
+
+                        for (int i = 0; i < numberOfPoules; i++) {
+                            final Poule poule = new Poule(this.frame, fencersPoule,
+                                new CustomAppearanceBuilder()
+                                    .addMainBackground(Color.black)
+                                    .addBorder(AppearanceData.RED_BORDER)
+                                    .build());
+                            poule.setNumber(String.valueOf(number));
+                            this.pouleList.add(poule);
+                            this.insertComponent(poule);
+                            number++;
+                        }
+                    }
+                    else if (this.numberOfFencers % 2 == 0) {
+                        while (this.numberOfFencers % fencersPoule != 0 && fencersPoule < 8) {
+                            fencersPoule++;
+                        }
+
+                        int numberOfPoules = this.numberOfFencers / fencersPoule;
+                        this.numberOfFencers -= numberOfPoules * fencersPoule;
+                        for (int i = 0; i < numberOfPoules; i++) {
+                            final Poule poule = new Poule(this.frame, fencersPoule,
+                                new CustomAppearanceBuilder()
+                                    .addMainBackground(Color.black)
+                                    .addBorder(AppearanceData.RED_BORDER)
+                                    .build());
+                            poule.setNumber(String.valueOf(number));
+                            this.pouleList.add(poule);
+                            this.insertComponent(poule);
+                            number++;
+                        }
+                    }
+                    else {
+                        while (this.numberOfFencers % fencersPoule < 4 && fencersPoule < 8) {
+                            fencersPoule++;
+                        }
+
+                        int numberOfPoules = this.numberOfFencers / fencersPoule;
+                        this.numberOfFencers -= numberOfPoules * fencersPoule;
+                        for (int i = 0; i < numberOfPoules; i++) {
+                            final Poule poule = new Poule(this.frame, fencersPoule,
+                                new CustomAppearanceBuilder()
+                                    .addMainBackground(Color.black)
+                                    .addBorder(AppearanceData.RED_BORDER)
+                                    .build());
+                            poule.setNumber(String.valueOf(number));
+                            this.pouleList.add(poule);
+                            this.insertComponent(poule);
+                            number++;
+                        }
                     }
 
-                    int numberOfPoules = this.numberOfFencers / fencersPoule;
-                    this.numberOfFencers -= numberOfPoules * fencersPoule;
-                    for (int i = 0; i < numberOfPoules; i++) {
-                        final Poule poule = new Poule(this.frame, fencersPoule,
+                    // Generate remaining poule
+                    if (this.numberOfFencers >= 4 && this.numberOfFencers <= 8) {
+                        final Poule poule = new Poule(this.frame, this.numberOfFencers,
                             new CustomAppearanceBuilder()
                                 .addMainBackground(Color.black)
                                 .addBorder(AppearanceData.RED_BORDER)
@@ -179,8 +181,26 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
                         number++;
                     }
                 }
+            }
+            // Generating poules without optimization
+            // This happens when the used enters a value for the fencers/poule inut field
+            else {
+                int numberOfPoules = this.numberOfFencers / fencersPoule;
+                this.numberOfFencers -= numberOfPoules * fencersPoule;
+                for (int i = 0; i < numberOfPoules; i++) {
+                    final Poule poule = new Poule(this.frame, fencersPoule,
+                        new CustomAppearanceBuilder()
+                            .addMainBackground(Color.black)
+                            .addBorder(AppearanceData.RED_BORDER)
+                            .build());
+                    poule.setNumber(String.valueOf(number));
+                    this.pouleList.add(poule);
+                    this.insertComponent(poule);
+                    number++;
+                }
 
-                // Generate remaining poule
+                // Generate the last poule from the remaining fencers
+                // 1. When the reminder is enough to make another poule
                 if (this.numberOfFencers >= 4 && this.numberOfFencers <= 8) {
                     final Poule poule = new Poule(this.frame, this.numberOfFencers,
                         new CustomAppearanceBuilder()
@@ -192,76 +212,48 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
                     this.insertComponent(poule);
                     number++;
                 }
-            }
-        }
-        // Generating poules without optimization
-        // This happens when the used enters a value for the fencers/poule inut field
-        else {
-            int numberOfPoules = this.numberOfFencers / fencersPoule;
-            this.numberOfFencers -= numberOfPoules * fencersPoule;
-            for (int i = 0; i < numberOfPoules; i++) {
-                final Poule poule = new Poule(this.frame, fencersPoule,
-                    new CustomAppearanceBuilder()
-                        .addMainBackground(Color.black)
-                        .addBorder(AppearanceData.RED_BORDER)
-                        .build());
-                poule.setNumber(String.valueOf(number));
-                this.pouleList.add(poule);
-                this.insertComponent(poule);
-                number++;
-            }
-
-            // Generate the last poule from the remaining fencers
-            // 1. When the reminder is enough to make another poule
-            if (this.numberOfFencers >= 4 && this.numberOfFencers <= 8) {
-                final Poule poule = new Poule(this.frame, this.numberOfFencers,
-                    new CustomAppearanceBuilder()
-                        .addMainBackground(Color.black)
-                        .addBorder(AppearanceData.RED_BORDER)
-                        .build());
-                poule.setNumber(String.valueOf(number));
-                this.pouleList.add(poule);
-                this.insertComponent(poule);
-                number++;
-            }
-            // 2. When the reminder is not enough to make another poule
-            else if (this.numberOfFencers < 4) {
-                if (this.pouleList.get(0).getAmount() + this.numberOfFencers <= 8) {
-                    this.pouleList.get(0).reConstruct(this.pouleList.get(0).getAmount() + this.numberOfFencers);
-                }
-                else if (this.pouleList.get(0).getAmount() + this.numberOfFencers > 8) {
-                    this.pouleList.get(0).reConstruct(this.pouleList.get(0).getAmount() - (4 - this.numberOfFencers));
-                    this.numberOfFencers += (4 - this.numberOfFencers);
-                    final Poule poule = new Poule(this.frame, this.numberOfFencers,
-                        new CustomAppearanceBuilder()
-                            .addMainBackground(Color.black)
-                            .addBorder(AppearanceData.RED_BORDER)
-                            .build());
-                    poule.setNumber(String.valueOf(number));
-                    this.pouleList.add(poule);
-                    this.insertComponent(poule);
-                    number++;
+                // 2. When the reminder is not enough to make another poule
+                else if (this.numberOfFencers < 4) {
+                    if (this.pouleList.get(0).getAmount() + this.numberOfFencers <= 8) {
+                        this.pouleList.get(0).reConstruct(this.pouleList.get(0).getAmount() + this.numberOfFencers);
+                    }
+                    else if (this.pouleList.get(0).getAmount() + this.numberOfFencers > 8) {
+                        this.pouleList.get(0).reConstruct(this.pouleList.get(0).getAmount() - (4 - this.numberOfFencers));
+                        this.numberOfFencers += (4 - this.numberOfFencers);
+                        final Poule poule = new Poule(this.frame, this.numberOfFencers,
+                            new CustomAppearanceBuilder()
+                                .addMainBackground(Color.black)
+                                .addBorder(AppearanceData.RED_BORDER)
+                                .build());
+                        poule.setNumber(String.valueOf(number));
+                        this.pouleList.add(poule);
+                        this.insertComponent(poule);
+                        number++;
+                    }
                 }
             }
-        }
 
-        // Fill the poules with the names if given
-        int nameIndex = 0;
-        if (!fencerList.isEmpty()) {
-            for (Poule poule : pouleList) {
-                for (int y = 1; y < poule.getAmount() + 1; y++) {
-                    poule.boxArray[y][0].setText(fencerList.get(nameIndex).getName());
-                    nameIndex++;
+            // Fill the poules with the names if given
+            int nameIndex = 0;
+            if (!fencerList.isEmpty()) {
+                for (Poule poule : pouleList) {
+                    for (int y = 1; y < poule.getAmount() + 1; y++) {
+                        poule.boxArray[y][0].setText(fencerList.get(nameIndex).getName());
+                        nameIndex++;
+                    }
                 }
             }
-        }
 
-        // Resize the scroll panel to the desired dimensions
-        this.scrollPanel.getViewPanel().setPreferredSize(new Dimension(
-            this.scrollPanel.getViewPanel().getPreferredSize().width,
-            this.pouleList.size() * SizeData.POULE_HEIGHT + SizeData.GAP
-        ));
-        this.repaintFrame();
+            // Resize the scroll panel to the desired dimensions
+            this.scrollPanel.getViewPanel().setPreferredSize(new Dimension(
+                this.scrollPanel.getViewPanel().getPreferredSize().width,
+                this.pouleList.size() * SizeData.POULE_HEIGHT + SizeData.GAP
+            ));
+            this.repaintFrame();
+        }
+        catch (Exception exc) {
+
+        }
     }
 
     public void clearAll() {

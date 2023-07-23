@@ -1,5 +1,6 @@
 package app.components.complex.other;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseListener;
@@ -9,9 +10,11 @@ import javax.swing.ImageIcon;
 import app.components.labels.XLabel;
 import app.components.panels.AbstractXPanel;
 import app.frame.XFrame;
+import support.appdata.AppearanceData;
 import support.appdata.AssetsData;
 import support.appdata.SizeData;
 import support.framework.appearances.BasicAppearance;
+import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 import support.util.Util;
 
@@ -36,7 +39,13 @@ public abstract class AbstractCheckbox extends AbstractXPanel implements MouseLi
             text, this.frame, BasicAppearance.BLACK);
 
         // Label for the check
-        this.checkLabel = new XLabel(SizeData.NARROW_BUTTON_DIMENSION, "", this.frame, BasicAppearance.BLACK_BORDERED);
+        this.checkLabel = new XLabel(SizeData.NARROW_BUTTON_DIMENSION, "", this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.red)
+                .addBorder(AppearanceData.GRAY_BORDER)
+                .addFont(AppearanceData.MAIN_FONT_B)
+                .build());
         this.checkLabel.addMouseListener(this);
 
         // Check icon
@@ -77,6 +86,14 @@ public abstract class AbstractCheckbox extends AbstractXPanel implements MouseLi
     public void unCheck() {
         this.checked = false;
         this.checkLabel.setIcon(null);
+    }
+
+    public XLabel getTextLabel() {
+        return this.textLabel;
+    }
+
+    public XLabel getCheckLabel() {
+        return this.checkLabel;
     }
 
     public String getText() {
