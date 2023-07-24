@@ -16,6 +16,15 @@ public abstract class AbstractFencer {
         this.index = index;
     }
 
+    protected AbstractFencer(String name, int wins, int ts, int tr, int index, int place) {
+        this.name = name;
+        this.wins = wins;
+        this.ts = ts;
+        this.tr = tr;
+        this.index = index;
+        this.place = place;
+    }
+
     public String getName() {
         return this.name;
     }

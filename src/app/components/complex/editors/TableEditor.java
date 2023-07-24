@@ -1,4 +1,3 @@
-// TODO: Create the functionality for the createButton
 package app.components.complex.editors;
 
 import java.awt.BorderLayout;
@@ -9,9 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import javax.swing.JComponent;
 
@@ -46,6 +47,13 @@ public final class TableEditor extends AbstractEditor implements MouseListener {
         this.createButton.getButton().setText("Next");
         // Remove gaps from the alignments
         this.centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+
+        this.createButton.addActionListener(e -> {
+            if (!this.getSelectedFencers().isEmpty()) {
+                this.frame.closeTableEditor();
+                this.frame.toggleTableOnlyCompetitionPanel(this.getSelectedFencers());
+            }
+        });
 
         // Check index
         this.fencerIndex = 1;
@@ -91,7 +99,23 @@ public final class TableEditor extends AbstractEditor implements MouseListener {
         this.footerPanel.addComponent(this.selectionPanel.getUncheckAllButton());
     }
 
+    public List<Fencer> getSelectedFencers() {
+        final List<Fencer> selectedFencerList = new LinkedList<>();
+
+        this.selectionPanel.getCheckboxList().forEach(checkbox -> {
+            if (checkbox.isChecked()) {
+                selectedFencerList.add(new Fencer(checkbox.getTextLabel().getText(), 0, 0, 0, 0,
+                    Integer.valueOf(checkbox.getCheckLabel().getText())));
+            }
+        });
+
+        return selectedFencerList.stream()
+            .sorted(Comparator.comparing(Fencer::getPlace))
+            .collect(Collectors.toList());
+    }
+
     public void readFencersFromFile() {
+        this.fencerIndex = 1;
         this.fencerList.clear();
         this.selectionPanel.removeAllFromScrollPanel();
 

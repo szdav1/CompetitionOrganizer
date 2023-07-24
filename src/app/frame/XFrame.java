@@ -93,8 +93,9 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
         this.extractComponent(this.tableEditor);
     }
 
-    public void toggleTableOnlyCompetitionPanel() {
+    public void toggleTableOnlyCompetitionPanel(final List<Fencer> fencerList) {
         if (!this.stateMap.get(XFrameConstants.ON_GOING_COMPETITION)) {
+            this.tableOnlyCompetitionPanel.generateStructure(fencerList);
             this.insertComponent(this.tableOnlyCompetitionPanel);
             this.setFrameState(XFrameConstants.ON_GOING_COMPETITION, true);
         }
