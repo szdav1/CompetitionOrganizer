@@ -3,7 +3,10 @@ package app.components.complex.fencing;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.JComponent;
 
@@ -15,11 +18,13 @@ import support.appdata.AppearanceData;
 import support.appdata.SizeData;
 import support.constants.PositionConstants;
 import support.framework.appearances.BasicAppearance;
-import support.framework.appearances.ColoredAppearance;
 import support.framework.builders.CustomAppearanceBuilder;
 import support.framework.interfaces.Appearance;
 
 public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
+    // List for the first column's inputs
+    private List<NumberedFencerLabel> numberedFencerLabelList = new ArrayList<>();
+
     public TableOnlyCompetitionPanel(XFrame frame, Appearance appearance) {
         super(frame, appearance);
 
@@ -35,23 +40,37 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
         this.scrollPanel.getViewPanel().removeAll();
         this.scrollPanel.getViewPanel().setPreferredSize(new Dimension(0, 0));
         final int fencerListSize = fencerList.size();
-        int tableSize = 8;
+        // File name
+        String correspondingFileName = "database/tableau8.csv";
+
+        // Starting table size
         int nPowerOf2 = 3;
+        int tableSize = (int) Math.pow(2, nPowerOf2);
+
+        // Fencer indexes
+        int lowFencerNumber = 1;
+        int highFencerNumber = fencerListSize;
 
         // Find the corresponding number for the table size
-        if (fencerListSize > Math.pow(2, nPowerOf2)) {
+        if (fencerListSize > 8) {
             while (Math.pow(2, nPowerOf2) < fencerListSize) {
                 nPowerOf2++;
             }
             tableSize = (int) Math.pow(2, nPowerOf2);
 
+            // Init the numberedFencerLabelList with the size of fencerList
+            this.numberedFencerLabelList = new ArrayList<>(tableSize);
+
             // Generate the first column with the corresponding table size
             for (int i = 0; i < tableSize; i++) {
                 final NumberedFencerLabel fencerLabel = new NumberedFencerLabel(SizeData.GAP, ((SizeData.BUTTON_HEIGHT) * (i) + (SizeData.BUTTON_HEIGHT * i)),
-                    String.valueOf(i + 1), "", this.frame, BasicAppearance.BLACK);
+                    "", "", this.frame, BasicAppearance.BLACK);
 
                 this.scrollPanel.addComponent(fencerLabel);
+                this.numberedFencerLabelList.add(fencerLabel);
             }
+
+            // Generate table of 8
             for (int y = 0; y < tableSize; y += 2) {
                 final XTextField fencerInputField = new XTextField(
                     SizeData.GAP + SizeData.NARROW_BUTTON_WIDTH + (SizeData.WIDE_BUTTON_WIDTH),
@@ -65,6 +84,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                 this.scrollPanel.addComponent(fencerInputField);
             }
 
+            // Generate table of 16
             if (tableSize >= 8) {
                 for (int y = 0; y < tableSize; y += 4) {
                     final XTextField fencerInputField = new XTextField(
@@ -79,7 +99,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                     this.scrollPanel.addComponent(fencerInputField);
                 }
             }
-
+            // Generate table of 32
             if (tableSize >= 16) {
                 for (int y = 0; y < tableSize; y += 8) {
                     final XTextField fencerInputField = new XTextField(
@@ -94,7 +114,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                     this.scrollPanel.addComponent(fencerInputField);
                 }
             }
-
+            // Generate table of 64
             if (tableSize >= 32) {
                 for (int y = 0; y < tableSize; y += 16) {
                     final XTextField fencerInputField = new XTextField(
@@ -109,7 +129,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                     this.scrollPanel.addComponent(fencerInputField);
                 }
             }
-
+            // Generate table of 128
             if (tableSize >= 64) {
                 for (int y = 0; y < tableSize; y += 32) {
                     final XTextField fencerInputField = new XTextField(
@@ -125,23 +145,8 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                 }
             }
 
-            if (tableSize >= 128) {
-                for (int y = 0; y < tableSize; y += 64) {
-                    final XTextField fencerInputField = new XTextField(
-                        SizeData.GAP + SizeData.NARROW_BUTTON_WIDTH + (SizeData.WIDE_BUTTON_WIDTH * 6),
-                        (SizeData.BUTTON_HEIGHT * (y + 32)) + (SizeData.BUTTON_HEIGHT * (y + 31)),
-                        SizeData.WIDE_BUTTON_WIDTH,
-                        SizeData.BUTTON_HEIGHT,
-                        this.frame,
-                        ColoredAppearance.RED_BORDERED
-                    );
-
-                    this.scrollPanel.addComponent(fencerInputField);
-                }
-            }
-
             // Create the gold medal bout's input
-            final XTextField fencerInputField = new XTextField(
+            final XTextField goldMedalInputField = new XTextField(
                 SizeData.GAP + SizeData.NARROW_BUTTON_WIDTH + (SizeData.WIDE_BUTTON_WIDTH * nPowerOf2),
                 SizeData.BUTTON_HEIGHT * (tableSize - 1),
                 SizeData.WIDE_BUTTON_WIDTH,
@@ -155,15 +160,56 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                     .build()
             );
 
-            this.scrollPanel.addComponent(fencerInputField);
+            this.scrollPanel.addComponent(goldMedalInputField);
+
+            // Find the corresponding filename
+            if (tableSize > 64) {
+                correspondingFileName = "database/tableau128.csv";
+            }
+            else if (tableSize > 32) {
+                correspondingFileName = "database/tableau64.csv";
+            }
+            else if (tableSize > 16) {
+                correspondingFileName = "database/tableau32.csv";
+            }
+            else if (tableSize > 8) {
+                correspondingFileName = "database/tableau16.csv";
+            }
+
+            // Give the first column's inputField's the corresponding number
+            try {
+                // Read in the line
+                final Scanner scanner = new Scanner(new File(correspondingFileName));
+                final String[] values = scanner.nextLine().split(";");
+                scanner.close();
+
+                for (int i = 0; i < this.numberedFencerLabelList.size(); i++) {
+                    this.numberedFencerLabelList.get(i).setNumber(values[i]);
+                }
+            }
+            catch (Exception exc) {
+                exc.printStackTrace();
+            }
+
+            // Fill the first column with the names
+            this.numberedFencerLabelList.forEach(numberedFencerLabel -> {
+                fencerList.forEach(fencer -> {
+                    if (String.valueOf(fencer.getPlace()).equalsIgnoreCase(numberedFencerLabel.getNumber())) {
+                        numberedFencerLabel.setFencer(fencer.getName());
+                    }
+                });
+            });
         }
         // Generate the whole table with a size of 8
         else {
+            this.numberedFencerLabelList = new ArrayList<>(tableSize);
+
             for (int i = 0; i < tableSize; i++) {
                 final NumberedFencerLabel fencerLabel = new NumberedFencerLabel(SizeData.GAP, ((SizeData.BUTTON_HEIGHT * i) + (SizeData.BUTTON_HEIGHT * i)),
-                    String.valueOf(i + 1), "", this.frame, BasicAppearance.BLACK);
+                    "", "", this.frame, BasicAppearance.BLACK);
 
                 this.scrollPanel.addComponent(fencerLabel);
+                this.numberedFencerLabelList.add(fencerLabel);
             }
 
             int yOffset = 1;
@@ -187,7 +233,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
             }
 
             // Create the gold medal bout's input
-            final XTextField fencerInputField = new XTextField(
+            final XTextField goldMedalInputField = new XTextField(
                 SizeData.GAP + SizeData.NARROW_BUTTON_WIDTH + (SizeData.WIDE_BUTTON_WIDTH * nPowerOf2),
                 SizeData.BUTTON_HEIGHT * (tableSize - 1),
                 SizeData.WIDE_BUTTON_WIDTH,
@@ -201,7 +247,33 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                     .build()
             );
 
-            this.scrollPanel.addComponent(fencerInputField);
+            this.scrollPanel.addComponent(goldMedalInputField);
+
+            // Give the first column's inputField's the corresponding number
+            try {
+                // Read in the line
+                final Scanner scanner = new Scanner(new File(correspondingFileName));
+                final String[] values = scanner.nextLine().split(";");
+
+                scanner.close();
+
+                for (int i = 0; i < this.numberedFencerLabelList.size(); i++) {
+                    this.numberedFencerLabelList.get(i).setNumber(values[i]);
+                }
+            }
+            catch (Exception exc) {
+                exc.printStackTrace();
+            }
+
+            // Fill the first column with the names
+            this.numberedFencerLabelList.forEach(numberedFencerLabel -> {
+                numberedFencerLabel.setFencer("----");
+                fencerList.forEach(fencer -> {
+                    if (String.valueOf(fencer.getPlace()).equalsIgnoreCase(numberedFencerLabel.getNumber())) {
+                        numberedFencerLabel.setFencer(fencer.getName());
+                    }
+                });
+            });
         }
     }
 

@@ -64,4 +64,20 @@ public abstract class AbstractNumberedFencerLabel extends AbstractXPanel {
         this.addComponent(this.numberLabel);
         this.addComponent(this.textInput);
     }
+
+    public String getNumber() {
+        return this.numberLabel.getText();
+    }
+
+    public void setNumber(String number) {
+        this.numberLabel.setText(number);
+    }
+
+    public void setNumber(int number) {
+        this.numberLabel.setText(String.valueOf(number));
+    }
+
+    public void setFencer(String fencerName) {
+        this.textInput.setText(fencerName);
+    }
 }
