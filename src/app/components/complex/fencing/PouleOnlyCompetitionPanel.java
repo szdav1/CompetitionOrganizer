@@ -51,38 +51,42 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
                         return;
                     }
                 }
-                this.finishButton.getButton().setText("Show Results");
+                this.finishButton.getButton().setText("Results");
             }
-            else if (this.finishButton.getButton().getText().equalsIgnoreCase("show results")) {
-                // Clear the fencer list
-                this.fencerList.clear();
-                // Collect the fencers into one big list
-                this.pouleList.forEach(poule -> this.fencerList.addAll(poule.getFencerList()));
-                // Sort the big fencer list based on place and then index
-                this.fencerList = this.fencerList.stream()
-                    .sorted(Comparator.comparing(Fencer::getPlace))
-                    .sorted(Comparator.comparing(Fencer::getIndex).reversed())
-                    .collect(Collectors.toList());
-                // Rewrite the place of the fencers
-                this.fencerList.forEach(fencer -> fencer.setPlace(this.fencerList.indexOf(fencer) + 1));
-
-                // Resize the resultsPanel
-                this.resultsPanel.setPreferredSize(new Dimension(SizeData.HALF_WIDTH + (SizeData.GAP * 2),
-                    (SizeData.BUTTON_HEIGHT * this.fencerList.size()) + (SizeData.GAP * (this.fencerList.size() + 1))));
-
-                // Add the fencers to the results panel
-                this.fencerList.forEach(fencer -> {
-                    this.resultsPanel.addComponent(new FencerDisplayLabel(fencer.getName(), String.valueOf(fencer.getPlace()),
-                        this.frame, BasicAppearance.BLACK));
-                });
-
-                // Remove the poules and add the results panel
-                this.pouleList.forEach(this.scrollPanel::removeComponent);
-                this.scrollPanel.addComponent(this.resultsPanel);
-
-                this.bottomSection.removeComponent(this.finishButton);
+            else if (this.finishButton.getButton().getText().equalsIgnoreCase("results")) {
+                this.calculateAndShowResults();
             }
         });
+    }
+
+    public void calculateAndShowResults() {
+        // Clear the fencer list
+        this.fencerList.clear();
+        // Collect the fencers into one big list
+        this.pouleList.forEach(poule -> this.fencerList.addAll(poule.getFencerList()));
+        // Sort the big fencer list based on place and then index
+        this.fencerList = this.fencerList.stream()
+            .sorted(Comparator.comparing(Fencer::getPlace))
+            .sorted(Comparator.comparing(Fencer::getIndex).reversed())
+            .collect(Collectors.toList());
+        // Rewrite the place of the fencers
+        this.fencerList.forEach(fencer -> fencer.setPlace(this.fencerList.indexOf(fencer) + 1));
+
+        // Resize the resultsPanel
+        this.resultsPanel.setPreferredSize(new Dimension(SizeData.HALF_WIDTH + (SizeData.GAP * 2),
+            (SizeData.BUTTON_HEIGHT * this.fencerList.size()) + (SizeData.GAP * (this.fencerList.size() + 1))));
+
+        // Add the fencers to the results panel
+        this.fencerList.forEach(fencer -> {
+            this.resultsPanel.addComponent(new FencerDisplayLabel(fencer.getName(), String.valueOf(fencer.getPlace()),
+                this.frame, BasicAppearance.BLACK));
+        });
+
+        // Remove the poules and add the results panel
+        this.pouleList.forEach(this.scrollPanel::removeComponent);
+        this.scrollPanel.addComponent(this.resultsPanel);
+
+        this.bottomSection.removeComponent(this.finishButton);
     }
 
     public void generatePoules(List<String> valueList, List<Fencer> fencerList) {
@@ -261,6 +265,14 @@ public final class PouleOnlyCompetitionPanel extends AbstractCompetitionPanel {
         this.scrollPanel.removeComponent(this.resultsPanel);
         this.pouleList.forEach(this::extractComponent);
         this.pouleList.clear();
+    }
+
+    public List<Poule> getPouleList() {
+        return this.pouleList;
+    }
+
+    public List<Fencer> getFencerList() {
+        return this.fencerList;
     }
 
     @Override

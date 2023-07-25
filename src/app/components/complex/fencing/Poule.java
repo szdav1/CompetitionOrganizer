@@ -208,8 +208,8 @@ public final class Poule extends AbstractPoule {
     public void actionPerformed(ActionEvent e) {
         final Object source = e.getSource();
         if (source.equals(this.insertButton.getButton())) {
-//            this.insertValues();
-            Random random = new Random();
+            this.insertValues();
+            /*Random random = new Random();
             for (int y = 1; y < this.amount + 1; y++) {
                 for (int x = 2; x < this.amount + 2; x++) {
                     if (this.boxArray[y][x].isEnabled()) {
@@ -223,7 +223,7 @@ public final class Poule extends AbstractPoule {
                         }
                     }
                 }
-            }
+            }*/
         }
     }
 

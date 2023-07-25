@@ -31,7 +31,8 @@ import support.framework.interfaces.Appearance;
 
 public final class PouleEditor extends AbstractEditor implements KeyListener {
     private boolean isErrorPresent;
-    private boolean isFromSelection;
+    private boolean fromSelection;
+    private String originOfSummon;
 
     // Title labels
     private final XLabel inputLabel;
@@ -65,13 +66,14 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
     // List of fencers
     private List<Fencer> fencerList = new ArrayList<>();
 
-    public PouleEditor(XFrame frame, Appearance appearance) {
-        super("Poule Editor", frame, appearance);
+    public PouleEditor(String originOfSummon, String title, XFrame frame, Appearance appearance) {
+        super(title, frame, appearance);
 
         this.closeButton.addActionListener(e -> this.frame.closePouleEditor());
 
         this.isErrorPresent = false;
-        this.isFromSelection = false;
+        this.fromSelection = false;
+        this.originOfSummon = originOfSummon;
 
         // Title labels
         this.inputLabel = new XLabel(new Dimension(this.getWidth() * 45 / 100, SizeData.BUTTON_HEIGHT), "Enter Values",
@@ -111,7 +113,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
                 .build());
         // Add the inputFields
         // The input with a * in its text must be filled
-        this.createInputFields(new String[] {"Round*", "Fencers/Poule", "Fencers*", "Date"});
+        this.createInputFields(new String[]{"Round*", "Fencers/Poule", "Fencers*", "Date"});
 
         // Preview scroll panel
         this.previewScrollPanel = new XScrollPanel(this.previewPanel.getPreferredSize(), this.frame, SizeData.GAP, SizeData.GAP,
@@ -180,7 +182,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
     }
 
     private void toggleSelectionPanel() {
-        this.isFromSelection = true;
+        this.fromSelection = true;
         // Read the fencers from the file
         this.readFencersFromFile();
 
@@ -189,7 +191,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
     }
 
     private void closeSelectionPanel() {
-        this.isFromSelection = false;
+        this.fromSelection = false;
         this.centerPanel.removeAll();
         this.selectionPanel.unSelectAll();
 
@@ -218,7 +220,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
             for (int i = 0; i < this.fencerList.size(); i++) {
                 final Checkbox checkbox = new Checkbox(SizeData.GAP, (SizeData.BUTTON_HEIGHT * i) + (SizeData.GAP * i),
                     this.selectionPanel.getPreferredSize().width - (SizeData.GAP * 2), SizeData.BUTTON_HEIGHT,
-                    this.fencerList.get(i).getName(), this.frame,BasicAppearance.BLACK_BORDERED);
+                    this.fencerList.get(i).getName(), this.frame, BasicAppearance.BLACK_BORDERED);
 
                 this.selectionPanel.addToScrollPanel(checkbox);
             }
@@ -279,7 +281,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
         return this.valueList;
     }
 
-    private void checkValues() {
+    public void checkValues() {
         this.isErrorPresent = false;
         this.valueList.clear();
         this.inputList.forEach(input -> {
@@ -290,7 +292,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
             }
 
             // Check for more errors
-            if (Arrays.asList(new String[] {"Round*", "Fencers*", "Fencers/Poule"}).contains(input.getDescription())) {
+            if (Arrays.asList(new String[]{"Round*", "Fencers*", "Fencers/Poule"}).contains(input.getDescription())) {
                 try {
                     if (!input.getText().isBlank()) {
                         int i = Integer.parseInt(input.getText());
@@ -369,21 +371,40 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(this.createButton.getButton()) && !this.isFromSelection) {
+        if (e.getSource().equals(this.createButton.getButton()) && !this.fromSelection) {
             this.checkValues();
-            this.frame.togglePouleOnlyCompetitionPanel(this.valueList, new ArrayList<>(0));
+            if (!this.isErrorPresent) {
+                if (this.originOfSummon.equalsIgnoreCase("pouleOnly")) {
+                    this.frame.togglePouleOnlyCompetitionPanel(this.valueList, new ArrayList<>(0));
+                }
+                else {
+                    this.frame.toggleCompetitionPanel(this.valueList, new ArrayList<>(0));
+                }
+            }
         }
-        else if (e.getSource().equals(this.createButton.getButton()) && this.isFromSelection) {
+        else if (e.getSource().equals(this.createButton.getButton()) && this.fromSelection) {
             final List<Fencer> selectedFencerList = this.selectionPanel.getSelectedFencers();
             if (selectedFencerList.size() < 4) {
                 return;
             }
 
-            this.frame.closePouleEditor();
-            this.frame.togglePouleOnlyCompetitionPanel(new ArrayList<>(Arrays.asList("1", "",
-                String.valueOf(selectedFencerList.size()), "")), selectedFencerList);
-            this.isFromSelection = false;
+            if (!this.isErrorPresent) {
+                this.frame.closePouleEditor();
+
+                if (this.originOfSummon.equalsIgnoreCase("pouleOnly")) {
+                    this.frame.togglePouleOnlyCompetitionPanel(new ArrayList<>(Arrays.asList("1", "",
+                        String.valueOf(selectedFencerList.size()), "")), selectedFencerList);
+                }
+                else {
+                    this.frame.toggleCompetitionPanel(new ArrayList<>(Arrays.asList("1", "",
+                        String.valueOf(selectedFencerList.size()), "")), selectedFencerList);
+                }
+            }
+
+            this.fromSelection = false;
         }
+
+        this.isErrorPresent = false;
     }
 
     @Override

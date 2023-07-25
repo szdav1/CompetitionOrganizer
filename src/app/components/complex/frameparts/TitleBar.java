@@ -34,9 +34,13 @@ public final class TitleBar extends AbstractTitleBar {
         }
         // Execute events
         if (fromCreateMenu) {
-            if (indexOfSourceButton == 1) {
+            if (indexOfSourceButton == 0) {
                 this.createMenuButton.setToggled(false);
-                this.frame.togglePouleEditor();
+                this.frame.togglePouleEditor("competition");
+            }
+            else if (indexOfSourceButton == 1) {
+                this.createMenuButton.setToggled(false);
+                this.frame.togglePouleEditor("pouleOnly");
             }
             else if (indexOfSourceButton == 2) {
                 this.createMenuButton.setToggled(false);

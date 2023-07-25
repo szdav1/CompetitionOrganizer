@@ -193,6 +193,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
 
             // Fill the first column with the names
             this.numberedFencerLabelList.forEach(numberedFencerLabel -> {
+                numberedFencerLabel.setFencer("----");
                 fencerList.forEach(fencer -> {
                     if (String.valueOf(fencer.getPlace()).equalsIgnoreCase(numberedFencerLabel.getNumber())) {
                         numberedFencerLabel.setFencer(fencer.getName());

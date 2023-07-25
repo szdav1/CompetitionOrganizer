@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.JLabel;
+
 import app.components.buttons.FCXButton;
 import app.components.labels.XLabel;
 import app.components.panels.AbstractXPanel;
@@ -60,8 +62,11 @@ public abstract class AbstractEditor extends AbstractXPanel implements ActionLis
         this.titleBarInnerContainer = new XPanel(new Dimension(this.getWidth() - SizeData.NARROW_BUTTON_WIDTH - 10, SizeData.BUTTON_HEIGHT),
             new FlowLayout(FlowLayout.LEADING, 0, 0), this.frame, this.titleBar.getAppearance());
         // Add the icon and the title to the editor
-        this.titleBarInnerContainer.addComponent(new XLabel(SizeData.WIDE_BUTTON_DIMENSION,
-            Util.loadBigIcon(AssetsData.LABEL_ICONS.concat("create")), title, this.frame, BasicAppearance.OPAQUE));
+        final XLabel titleLabel = new XLabel(new Dimension(SizeData.WIDE_BUTTON_WIDTH * 2, SizeData.BUTTON_HEIGHT),
+            Util.loadBigIcon(AssetsData.LABEL_ICONS.concat("create")), title, this.frame, BasicAppearance.OPAQUE);
+        titleLabel.setHorizontalAlignment(JLabel.LEFT);
+
+        this.titleBarInnerContainer.addComponent(titleLabel);
 
         this.closeButton = new FCXButton(SizeData.NARROW_BUTTON_DIMENSION, "X", this.frame,
             new CustomAppearanceBuilder()
@@ -97,5 +102,13 @@ public abstract class AbstractEditor extends AbstractXPanel implements ActionLis
         this.addComponent(this.titleBar, BorderLayout.NORTH);
         this.addComponent(this.centerPanel, BorderLayout.CENTER);
         this.addComponent(this.footerPanel, BorderLayout.SOUTH);
+    }
+
+    public FCXButton getCloseButton() {
+        return this.closeButton;
+    }
+
+    public FCXButton getCreateButton() {
+        return this.createButton;
     }
 }
