@@ -142,7 +142,7 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
     }
 
     public void togglePouleEditor(String originOfSummon) {
-        this.pouleEditor = new PouleEditor(originOfSummon, "Poule Editor", this,
+        this.pouleEditor = new PouleEditor(originOfSummon, originOfSummon.equalsIgnoreCase("competition") ? "Competition: Poule Editor" : "Poule Editor", this,
             new CustomAppearanceBuilder()
                 .addMainBackground(Color.black)
                 .addBorder(AppearanceData.RED_BORDER)

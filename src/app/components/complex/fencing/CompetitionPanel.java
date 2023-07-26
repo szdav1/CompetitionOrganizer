@@ -35,7 +35,7 @@ public final class CompetitionPanel extends AbstractCompetitionPanel {
 
         // Center panel
         this.centerPanel = new XPanel(new Dimension(this.getWidth(), this.getHeight()),
-            null, this.frame, BasicAppearance.GRAY);
+            null, this.frame, BasicAppearance.BLACK);
 
         this.finishButton.addActionListener(e -> {
             if (this.finishButton.getButton().getText().equalsIgnoreCase("finish all")) {
