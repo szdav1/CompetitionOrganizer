@@ -39,7 +39,11 @@ public final class CompetitionPanel extends AbstractCompetitionPanel {
 
         this.finishButton.addActionListener(e -> {
             if (this.finishButton.getButton().getText().equalsIgnoreCase("finish all")) {
-                this.poulePanel.getPouleList().forEach(Poule::calculateFencerData);
+                for (Poule poule : this.poulePanel.getPouleList()) {
+                    if (poule.calculateFencerData()) {
+                        return;
+                    }
+                }
                 this.finishButton.getButton().setText("Results");
             }
             else if (this.finishButton.getButton().getText().equalsIgnoreCase("results")) {
@@ -47,6 +51,8 @@ public final class CompetitionPanel extends AbstractCompetitionPanel {
                 this.finishButton.getButton().setText("Continue");
             }
             else {
+                this.finishButton.getButton().setText("Removed");
+
                 this.centerPanel.removeComponent(this.poulePanel);
                 this.tablePanel.generateStructure(this.poulePanel.getFencerList());
                 this.centerPanel.addComponent(this.tablePanel);
@@ -65,6 +71,12 @@ public final class CompetitionPanel extends AbstractCompetitionPanel {
     }
 
     public void reset() {
+        if (this.finishButton.getButton().getText().equalsIgnoreCase("removed")) {
+            this.bottomSection.removeComponent(this.closeButton);
+            this.finishButton.getButton().setText("Finish All");
+            this.bottomSection.addComponent(this.finishButton);
+            this.bottomSection.addComponent(this.closeButton);
+        }
         this.centerPanel.removeAll();
         this.poulePanel.clearAll();
     }

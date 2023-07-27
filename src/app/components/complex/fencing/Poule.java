@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.Random;
 
 import javax.swing.JComponent;
 
@@ -208,21 +209,6 @@ public final class Poule extends AbstractPoule {
         final Object source = e.getSource();
         if (source.equals(this.insertButton.getButton())) {
             this.insertValues();
-//            Random random = new Random();
-//            for (int y = 1; y < this.amount + 1; y++) {
-//                for (int x = 2; x < this.amount + 2; x++) {
-//                    if (this.boxArray[y][x].isEnabled() && this.boxArray[x - 1][y + 1].isEnabled()) {
-//                        if (random.nextBoolean()) {
-//                            this.boxArray[y][x].setText(String.valueOf(random.nextInt(5)));
-//                            this.boxArray[x - 1][y + 1].setText("V");
-//                        }
-//                        else {
-//                            this.boxArray[y][x].setText("V");
-//                            this.boxArray[x - 1][y + 1].setText(String.valueOf(random.nextInt(5)));
-//                        }
-//                    }
-//                }
-//            }
         }
     }
 
@@ -284,6 +270,30 @@ public final class Poule extends AbstractPoule {
 
             if (indexX >= 1 && indexX < this.amount + 2 && indexY >= 1 && indexY < this.amount + 1) {
                 this.boxArray[indexX - 1][indexY + 1].requestFocusInWindow();
+            }
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_F12) {
+            final Random random = new Random();
+            for (int y = 1; y < this.amount + 1; y++) {
+                for (int x = 2; x < this.amount + 2; x++) {
+                    if (this.boxArray[y][x].isFocusable() && this.boxArray[x - 1][y + 1].isFocusable()) {
+                        if (random.nextBoolean()) {
+                            this.boxArray[y][x].setText(String.valueOf(random.nextInt(5)));
+                            this.boxArray[x - 1][y + 1].setText("V");
+                        }
+                        else {
+                            this.boxArray[y][x].setText("V");
+                            this.boxArray[x - 1][y + 1].setText(String.valueOf(random.nextInt(5)));
+                        }
+                    }
+                }
+            }
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_F11) {
+            for (int y = 1; y < this.amount + 1; y++) {
+                for (int x = 2; x < this.amount + 2; x++) {
+                    this.boxArray[y][x].setText("");
+                }
             }
         }
     }

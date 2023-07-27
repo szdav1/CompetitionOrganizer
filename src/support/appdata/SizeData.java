@@ -15,6 +15,7 @@ public final class SizeData {
     // Half size
     public static final int HALF_WIDTH = SizeData.WIDTH / 2;
     public static final int HALF_HEIGHT = SizeData.HEIGHT / 2;
+    public static final Dimension HALF_WINDOW_SIZE = new Dimension(SizeData.HALF_WIDTH, SizeData.HALF_HEIGHT);
     // Half dimension
     public static final Dimension HALF_DIMENSION = new Dimension(SizeData.HALF_WIDTH, SizeData.HALF_HEIGHT);
 

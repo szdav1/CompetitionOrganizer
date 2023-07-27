@@ -9,6 +9,7 @@ import app.components.labels.XLabel;
 import app.components.panels.AbstractXPanel;
 import app.components.textcontainers.XTextField;
 import app.frame.XFrame;
+import app.other.Fencer;
 import support.appdata.AppearanceData;
 import support.appdata.SizeData;
 import support.framework.appearances.BasicAppearance;
@@ -65,6 +66,10 @@ public abstract class AbstractNumberedFencerLabel extends AbstractXPanel {
         this.addComponent(this.textInput);
     }
 
+    public void setTextColor(Color color) {
+        this.textInput.setForeground(color);
+    }
+
     public String getNumber() {
         return this.numberLabel.getText();
     }
@@ -75,6 +80,10 @@ public abstract class AbstractNumberedFencerLabel extends AbstractXPanel {
 
     public void setNumber(int number) {
         this.numberLabel.setText(String.valueOf(number));
+    }
+
+    public String getFencer() {
+        return this.textInput.getText();
     }
 
     public void setFencer(String fencerName) {

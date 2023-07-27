@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 import app.components.complex.other.NumberedFencerLabel;
 import app.components.textcontainers.XTextField;
@@ -22,6 +23,7 @@ import support.framework.interfaces.Appearance;
 public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
     // List for the first column's inputs
     private List<NumberedFencerLabel> numberedFencerLabelList = new ArrayList<>();
+    private List<XTextField> table8InputList = new ArrayList<>();
 
     // Strings for the first column's numbers
     private final String tableau8;
@@ -90,8 +92,10 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                     this.frame,
                     BasicAppearance.BLACK_BORDERED
                 );
+                fencerInputField.setHorizontalAlignment(JLabel.CENTER);
 
                 this.scrollPanel.addComponent(fencerInputField);
+                this.table8InputList.add(fencerInputField);
             }
 
             // Generate table of 16
@@ -105,6 +109,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                         this.frame,
                         BasicAppearance.BLACK_BORDERED
                     );
+                    fencerInputField.setHorizontalAlignment(JLabel.CENTER);
 
                     this.scrollPanel.addComponent(fencerInputField);
                 }
@@ -120,6 +125,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                         this.frame,
                         BasicAppearance.BLACK_BORDERED
                     );
+                    fencerInputField.setHorizontalAlignment(JLabel.CENTER);
 
                     this.scrollPanel.addComponent(fencerInputField);
                 }
@@ -135,6 +141,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                         this.frame,
                         BasicAppearance.BLACK_BORDERED
                     );
+                    fencerInputField.setHorizontalAlignment(JLabel.CENTER);
 
                     this.scrollPanel.addComponent(fencerInputField);
                 }
@@ -150,6 +157,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                         this.frame,
                         BasicAppearance.BLACK_BORDERED
                     );
+                    fencerInputField.setHorizontalAlignment(JLabel.CENTER);
 
                     this.scrollPanel.addComponent(fencerInputField);
                 }
@@ -169,6 +177,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                     .addFont(AppearanceData.MAIN_FONT_B)
                     .build()
             );
+            goldMedalInputField.setHorizontalAlignment(JLabel.CENTER);
 
             this.scrollPanel.addComponent(goldMedalInputField);
 
@@ -196,12 +205,28 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
             // Fill the first column with the names
             this.numberedFencerLabelList.forEach(numberedFencerLabel -> {
                 numberedFencerLabel.setFencer("----");
+                numberedFencerLabel.setTextColor(Color.red);
                 fencerList.forEach(fencer -> {
                     if (String.valueOf(fencer.getPlace()).equalsIgnoreCase(numberedFencerLabel.getNumber())) {
                         numberedFencerLabel.setFencer(fencer.getName());
+                        numberedFencerLabel.setTextColor(Color.white);
                     }
                 });
             });
+
+            // Put the fencers who don't have an opponent to the next round
+            int table8Index = 0;
+
+            for (int i = 0; i < this.numberedFencerLabelList.size() - 1; i += 2) {
+                // Check if the lower input field is empty
+                if (this.numberedFencerLabelList.get(i + 1).getFencer().equalsIgnoreCase("----")) {
+                    this.table8InputList.get(table8Index).setText(this.numberedFencerLabelList.get(i).getFencer());
+                }
+                else if (this.numberedFencerLabelList.get(i).getFencer().equalsIgnoreCase("----")){
+                    this.table8InputList.get(table8Index).setText(this.numberedFencerLabelList.get(i + 1).getFencer());
+                }
+                table8Index++;
+            }
         }
         // Generate the whole table with a size of 8
         else {
@@ -228,8 +253,11 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                         this.frame,
                         BasicAppearance.BLACK_BORDERED
                     );
+                    fencerInputField.setHorizontalAlignment(JLabel.CENTER);
+
                     yOffset += 4 * x;
                     this.scrollPanel.addComponent(fencerInputField);
+                    this.table8InputList.add(fencerInputField);
                 }
                 tempTableSize /= 2;
                 yOffset = 3;
@@ -249,6 +277,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                     .addFont(AppearanceData.MAIN_FONT_B)
                     .build()
             );
+            goldMedalInputField.setHorizontalAlignment(JLabel.CENTER);
 
             this.scrollPanel.addComponent(goldMedalInputField);
 
@@ -259,15 +288,30 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel {
                 columnIndex++;
             }
 
-            // Fill the first column with the names
             this.numberedFencerLabelList.forEach(numberedFencerLabel -> {
                 numberedFencerLabel.setFencer("----");
+                numberedFencerLabel.setTextColor(Color.red);
                 fencerList.forEach(fencer -> {
                     if (String.valueOf(fencer.getPlace()).equalsIgnoreCase(numberedFencerLabel.getNumber())) {
                         numberedFencerLabel.setFencer(fencer.getName());
+                        numberedFencerLabel.setTextColor(Color.white);
                     }
                 });
             });
+
+            // Put the fencers who don't have an opponent to the next round
+            int table8Index = 0;
+
+            for (int i = 0; i < this.numberedFencerLabelList.size() - 1; i += 2) {
+                // Check if the lower input field is empty
+                if (this.numberedFencerLabelList.get(i + 1).getFencer().equalsIgnoreCase("----")) {
+                    this.table8InputList.get(table8Index).setText(this.numberedFencerLabelList.get(i).getFencer());
+                }
+                else if (this.numberedFencerLabelList.get(i).getFencer().equalsIgnoreCase("----")){
+                    this.table8InputList.get(table8Index).setText(this.numberedFencerLabelList.get(i + 1).getFencer());
+                }
+                table8Index++;
+            }
         }
     }
 

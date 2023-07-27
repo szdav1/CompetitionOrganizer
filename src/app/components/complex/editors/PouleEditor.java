@@ -69,11 +69,14 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
     public PouleEditor(String originOfSummon, String title, XFrame frame, Appearance appearance) {
         super(title, frame, appearance);
 
-        this.closeButton.addActionListener(e -> this.frame.closePouleEditor());
-
         this.isErrorPresent = false;
         this.fromSelection = false;
         this.originOfSummon = originOfSummon;
+
+        this.closeButton.addActionListener(e -> {
+            this.frame.closePouleEditor();
+            this.frame.closeCompetitionPanel();
+        });
 
         // Title labels
         this.inputLabel = new XLabel(new Dimension(this.getWidth() * 45 / 100, SizeData.BUTTON_HEIGHT), "Enter Values",

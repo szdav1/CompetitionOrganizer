@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 
 import app.components.buttons.FCXButton;
@@ -37,6 +36,8 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
     private final XLabel scrollPanelLabel;
     // For the input
     private final XLabel inputLabel;
+    // For the total amount of fencers display
+    private final XLabel totalAmountOfFencersLabel;
     // Selection panel that will display the fencers in the database
     private final SelectionPanel selectionPanel;
     // Inner container for the fencerNameInput
@@ -59,7 +60,17 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
         this.scrollPanelLabel = new XLabel(new Dimension(this.getPreferredSize().width / 2 - SizeData.GAP, SizeData.BUTTON_HEIGHT),
             "Remove Fencers", this.frame, BasicAppearance.BLACK);
 
+        // For the input
         this.inputLabel = new XLabel(this.scrollPanelLabel.getPreferredSize(), "Insert Fencers", this.frame, BasicAppearance.BLACK);
+
+        // For the total amount of fencers display
+        this.totalAmountOfFencersLabel = new XLabel(new Dimension(SizeData.WIDE_BUTTON_WIDTH * 2, SizeData.BUTTON_HEIGHT),
+            "Number of Fencers: ", this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.red)
+                .addFont(AppearanceData.MAIN_FONT_B)
+                .build());
 
         // Selection panel that will display the fencers in the database
         this.selectionPanel = new SelectionPanel(new Dimension(this.getWidth() / 2 - SizeData.GAP,
@@ -100,6 +111,7 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
 
         // Add components to the innerContainer
         this.innerContainer.addComponent(this.fencerNameInput);
+        this.innerContainer.addComponent(this.totalAmountOfFencersLabel);
 
         // Add components to the editor
         this.centerPanel.addComponent(this.inputLabel);
@@ -170,6 +182,7 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
 
             this.appendFencerCheckboxToScrollPanel(fencerName);
             this.fencerNameInput.clearText();
+            this.totalAmountOfFencersLabel.setText("Number of Fencers: " + this.selectionPanel.getCheckboxList().size());
         }
         catch (Exception exc) {
             exc.printStackTrace();
@@ -223,6 +236,8 @@ public final class DatabaseEditor extends AbstractEditor implements KeyListener 
 
                 this.selectionPanel.addToScrollPanel(fencerCheckbox);
             }
+
+            this.totalAmountOfFencersLabel.setText("Number of Fencers: " + this.selectionPanel.getCheckboxList().size());
         }
         catch (Exception exc) {
             exc.printStackTrace();
