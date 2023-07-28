@@ -5,7 +5,7 @@
 > It tries to achieve this by offering simple, easy to use UI, an offline "database" system where fencers can be stored
 > and minimal system requirements so that it can run well on an older device too.
 ---
-## The softwre features:
+## The software features:
 - Poules
 - Tables
 - Whole competitions
@@ -18,5 +18,5 @@
 > Fencing associations that do home competitions usually use paper for it. Paper costs money, and every data needs to be calculated by someone.
 > This takes time and the person who manages the poules and tables must have some experience, and know how fencing competitions work.
 > But the user of this software only needs to know how the software works.
-> Entering  data into the poules, calculating the data after a poule ends, sorting the fencers and than puting them into a table, all this is done
+> Entering  data into the poules, calculating the data after a poule ends, sorting the fencers and then putting them into a table, all this is done
 > by the software.
