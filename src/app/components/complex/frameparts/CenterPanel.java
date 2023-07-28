@@ -16,7 +16,7 @@ public final class CenterPanel extends AbstractCenterPanel {
 
         // Background label
         final XLabel backgroundLabel = new XLabel(1, 1, this.getWidth() - 1, this.getHeight() - 1,
-            Util.loadIcon(AssetsData.BACKGROUNDS.concat("mainBackground3"), this.getWidth(), this.getHeight()), this.frame,
+            Util.loadIcon(AssetsData.BACKGROUNDS.concat("mainBackgroundVersion09"), this.getWidth(), this.getHeight()), this.frame,
             BasicAppearance.OPAQUE);
 
         this.addComponent(backgroundLabel, PositionConstants.BACKGROUND_POS);

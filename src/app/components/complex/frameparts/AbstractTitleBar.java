@@ -145,6 +145,10 @@ public abstract class AbstractTitleBar extends AbstractXPanel implements ActionL
                     .build());
             optionButton.addActionListener(this);
 
+            if (i > 0) {
+                optionButton.getButton().setEnabled(false);
+            }
+
             this.utilMenuButton.addOption(optionButton);
         }
     }
