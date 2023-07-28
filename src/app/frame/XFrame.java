@@ -18,7 +18,6 @@ import app.components.complex.fencing.TableOnlyCompetitionPanel;
 import app.components.complex.frameparts.CenterPanel;
 import app.components.complex.frameparts.ContentPanel;
 import app.components.complex.frameparts.TitleBar;
-import app.components.complex.frameparts.WelcomePage;
 import app.other.Fencer;
 import support.appdata.AppearanceData;
 import support.constants.PositionConstants;
@@ -27,8 +26,6 @@ import support.framework.builders.CustomAppearanceBuilder;
 
 public final class XFrame extends AbstractXFrame implements KeyListener {
     // Frame parts
-    // Welcome page
-    private final WelcomePage welcomePage;
     // Content panel
     private final ContentPanel contentPanel;
     // Title bar
@@ -53,8 +50,6 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
         this.addKeyListener(this);
 
         // Frame parts
-        // Welcom page
-        this.welcomePage = new WelcomePage(this, BasicAppearance.BLACK_BORDERED);
         // Content panel
         this.contentPanel = new ContentPanel(this, BasicAppearance.BLACK);
         // Set the contentPanel as the content pane of the frame
@@ -79,9 +74,6 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
         this.pouleOnlyCompetitionPanel = new PouleOnlyCompetitionPanel(this, BasicAppearance.BLACK);
         this.tableOnlyCompetitionPanel = new TableOnlyCompetitionPanel(this, BasicAppearance.BLACK);
         this.competitionPanel = new CompetitionPanel(this, BasicAppearance.BLACK);
-
-        // Add components to the frame
-//        this.insertComponent(this.welcomePage);
 
         // Set the visibility of the frame
         this.setVisible(true);
