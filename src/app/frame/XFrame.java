@@ -40,7 +40,7 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
 
     // Competition panels
     private final PouleOnlyCompetitionPanel pouleOnlyCompetitionPanel;
-    private final TableOnlyCompetitionPanel tableOnlyCompetitionPanel;
+    private  TableOnlyCompetitionPanel tableOnlyCompetitionPanel;
     private final CompetitionPanel competitionPanel;
 
     public XFrame(Image iconImage, String title) {
@@ -111,6 +111,8 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
 
     public void toggleTableOnlyCompetitionPanel(final List<Fencer> fencerList) {
         if (!this.stateMap.get(XFrameConstants.ON_GOING_COMPETITION)) {
+            this.tableOnlyCompetitionPanel = new TableOnlyCompetitionPanel(this, BasicAppearance.BLACK);
+
             this.tableOnlyCompetitionPanel.generateStructure(fencerList);
             this.insertComponent(this.tableOnlyCompetitionPanel);
             this.setFrameState(XFrameConstants.ON_GOING_COMPETITION, true);
@@ -119,7 +121,6 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
 
     public void closeTableOnlyCompetitionPanel() {
         this.requestFocusInWindow();
-        this.pouleOnlyCompetitionPanel.clearAll();
         this.setFrameState(XFrameConstants.ON_GOING_COMPETITION, false);
         this.extractComponent(this.tableOnlyCompetitionPanel);
     }

@@ -15,7 +15,7 @@ import support.framework.interfaces.Appearance;
 
 public final class CompetitionPanel extends AbstractCompetitionPanel {
     // Competition panels - poule, table
-    private final TableOnlyCompetitionPanel tablePanel;
+    private TableOnlyCompetitionPanel tablePanel;
     private final PouleOnlyCompetitionPanel poulePanel;
 
     // Center panel
@@ -50,13 +50,21 @@ public final class CompetitionPanel extends AbstractCompetitionPanel {
                 this.poulePanel.calculateAndShowResults();
                 this.finishButton.getButton().setText("Continue");
             }
-            else {
-                this.finishButton.getButton().setText("Removed");
+            else if (this.finishButton.getButton().getText().equalsIgnoreCase("continue")) {
+                this.finishButton.getButton().setText("Finish Table");
 
                 this.centerPanel.removeComponent(this.poulePanel);
+
+                this.tablePanel = new TableOnlyCompetitionPanel(this.frame, BasicAppearance.BLACK);
                 this.tablePanel.generateStructure(this.poulePanel.getFencerList());
+
                 this.centerPanel.addComponent(this.tablePanel);
-                this.bottomSection.removeComponent(this.finishButton);
+            }
+            else if (this.finishButton.getButton().getText().equalsIgnoreCase("finish table")) {
+                if (this.tablePanel.isEverythingIn()) {
+                    this.tablePanel.finishTable();
+                    this.finishButton.getButton().setEnabled(false);
+                }
             }
         });
 
@@ -71,12 +79,8 @@ public final class CompetitionPanel extends AbstractCompetitionPanel {
     }
 
     public void reset() {
-        if (this.finishButton.getButton().getText().equalsIgnoreCase("removed")) {
-            this.bottomSection.removeComponent(this.closeButton);
-            this.finishButton.getButton().setText("Finish All");
-            this.bottomSection.addComponent(this.finishButton);
-            this.bottomSection.addComponent(this.closeButton);
-        }
+        this.finishButton.getButton().setText("Finish All");
+        this.finishButton.getButton().setEnabled(true);
         this.centerPanel.removeAll();
         this.poulePanel.clearAll();
     }

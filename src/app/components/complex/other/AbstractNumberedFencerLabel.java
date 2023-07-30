@@ -66,6 +66,28 @@ public abstract class AbstractNumberedFencerLabel extends AbstractXPanel {
         this.addComponent(this.textInput);
     }
 
+    protected AbstractNumberedFencerLabel(int x, int y, String number, String text, XFrame frame, Appearance appearance, Appearance secondaryAppearance) {
+        super(x, y, SizeData.WIDE_BUTTON_WIDTH + SizeData.NARROW_BUTTON_WIDTH, SizeData.BUTTON_HEIGHT, null, frame, appearance);
+
+        // Number label
+        this.numberLabel = new XLabel(0, 0, SizeData.NARROW_BUTTON_WIDTH, SizeData.BUTTON_HEIGHT, number, this.frame,
+            new CustomAppearanceBuilder()
+                .addMainBackground(Color.black)
+                .addMainForeground(Color.red)
+                .addBorder(AppearanceData.RED_BORDER)
+                .addFont(AppearanceData.MAIN_FONT_B)
+                .build());
+
+        this.textInput = new XTextField(this.numberLabel.getWidth(), 0, SizeData.WIDE_BUTTON_WIDTH, SizeData.BUTTON_HEIGHT,
+            this.frame, secondaryAppearance);
+        this.textInput.setHorizontalAlignment(JTextField.CENTER);
+        this.textInput.setText(text);
+
+        // Add the components
+        this.addComponent(this.numberLabel);
+        this.addComponent(this.textInput);
+    }
+
     public void setTextColor(Color color) {
         this.textInput.setForeground(color);
     }
@@ -88,5 +110,9 @@ public abstract class AbstractNumberedFencerLabel extends AbstractXPanel {
 
     public void setFencer(String fencerName) {
         this.textInput.setText(fencerName);
+    }
+
+    public XTextField getTextInput() {
+        return this.textInput;
     }
 }

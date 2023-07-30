@@ -17,6 +17,11 @@ public final class NumberedFencerLabel extends AbstractNumberedFencerLabel {
         super(x, y, number, text, frame, appearance);
     }
 
+    public NumberedFencerLabel(int x, int y, String number, String text, XFrame frame, Appearance appearance, Appearance secondaryAppearance) {
+        super(x, y, number, text, frame, appearance, secondaryAppearance);
+    }
+
+
     @Override
     public void addComponent(JComponent component, PositionConstants positionConstants) {
         this.add(component, positionConstants.getzIndex());
