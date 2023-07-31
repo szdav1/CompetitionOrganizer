@@ -1,8 +1,8 @@
 # Fence!
-> A basic, minimal software that helps to conduct fencing competitions.
+> A basic, minimal software that helps in conducting fencing competitions.
 ---
 > The goal of the project is to **help smaller fencing associations by making it easier for them to do a home competition.**
-> It tries to achieve this by offering simple, easy to use UI, an offline "database" system where fencers can be stored
+> It tries to achieve this by offering simple, easy-to-use UI, an offline "database" system where fencers can be stored
 > and minimal system requirements so that it can run well on an older device too.
 ---
 ## The software features:
