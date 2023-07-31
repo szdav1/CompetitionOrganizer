@@ -778,6 +778,7 @@ public final class TableOnlyCompetitionPanel extends AbstractCompetitionPanel im
             }
         }
 
+        this.finishButton.getButton().setEnabled(false);
         this.displayResults();
     }
 
