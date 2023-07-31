@@ -1,9 +1,12 @@
 package support.framework.interfaces;
 
+import support.appdata.SizeData;
+
 import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;

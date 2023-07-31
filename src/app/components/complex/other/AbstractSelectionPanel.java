@@ -73,6 +73,8 @@ public abstract class AbstractSelectionPanel extends AbstractXPanel {
                 .addMainBackground(Color.black)
                 .addMainForeground(Color.darkGray)
                 .build());
+        this.scrollPanel.getVerticalScrollBar().setUnitIncrement(SizeData.BUTTON_HEIGHT * 2);
+        this.scrollPanel.getHorizontalScrollBar().setUnitIncrement(SizeData.BUTTON_HEIGHT * 2);
 
         // Quick access buttons
         this.checkAllButton = new FCXButton(SizeData.BUTTON_DIMENSION, "Select All", this.frame,

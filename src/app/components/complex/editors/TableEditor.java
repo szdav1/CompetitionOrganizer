@@ -43,8 +43,6 @@ public final class TableEditor extends AbstractEditor implements MouseListener {
 
         // Add functionality to the closeButton
         this.closeButton.addActionListener(e -> this.frame.closeTableEditor());
-        // Rewrite the text on the createButton
-        this.createButton.getButton().setText("Next");
         // Remove gaps from the alignments
         this.centerPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 

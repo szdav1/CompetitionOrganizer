@@ -125,6 +125,7 @@ public final class PouleEditor extends AbstractEditor implements KeyListener {
                 .addMainBackground(Color.black)
                 .addMainForeground(Color.darkGray)
                 .build());
+        this.previewScrollPanel.getHorizontalScrollBar().setUnitIncrement(SizeData.BUTTON_HEIGHT * 2);
         // Add the previewPoule
         this.previewScrollPanel.addComponent(this.previewPoule);
 

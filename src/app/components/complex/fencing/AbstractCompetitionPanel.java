@@ -45,6 +45,8 @@ public abstract class AbstractCompetitionPanel extends AbstractXPanel {
                 .addMainBackground(Color.black)
                 .addMainForeground(Color.red)
                 .build());
+        this.scrollPanel.getVerticalScrollBar().setUnitIncrement(SizeData.BUTTON_HEIGHT * 2);
+        this.scrollPanel.getHorizontalScrollBar().setUnitIncrement(SizeData.BUTTON_HEIGHT * 2);
 
         // Inner container for the bottom section
         this.bottomSection = new XPanel(new Dimension(this.getWidth(), SizeData.BUTTON_HEIGHT),
