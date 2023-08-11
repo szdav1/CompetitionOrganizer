@@ -6,6 +6,6 @@ import support.util.Util;
 
 public final class App {
     public static void main(String[] args) {
-        new XFrame(Util.loadIcon(AssetsData.APP_ICONS.concat("mainIcon")).getImage(), "Project1_20230501");
+        new XFrame(Util.loadIcon(AssetsData.APP_ICONS.concat("mainIcon")).getImage(), "Competition Organizer");
     }
 }
