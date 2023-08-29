@@ -1,4 +1,4 @@
-# Fence!
+# Competition Organizer
 > A basic, minimal software that helps in conducting fencing competitions.
 ---
 > The goal of the project is to **help smaller fencing associations by making it easier for them to do a home competition.**
