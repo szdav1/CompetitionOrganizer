@@ -23,7 +23,7 @@ import support.appdata.AppearanceData;
 import support.constants.PositionConstants;
 import support.framework.appearances.BasicAppearance;
 import support.framework.builders.CustomAppearanceBuilder;
-
+// Main frame of the application
 public final class XFrame extends AbstractXFrame implements KeyListener {
     // Frame parts
     // Content panel
