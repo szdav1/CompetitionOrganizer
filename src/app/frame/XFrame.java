@@ -40,7 +40,7 @@ public final class XFrame extends AbstractXFrame implements KeyListener {
 
     // Competition panels
     private final PouleOnlyCompetitionPanel pouleOnlyCompetitionPanel;
-    private  TableOnlyCompetitionPanel tableOnlyCompetitionPanel;
+    private TableOnlyCompetitionPanel tableOnlyCompetitionPanel;
     private final CompetitionPanel competitionPanel;
 
     public XFrame(Image iconImage, String title) {
