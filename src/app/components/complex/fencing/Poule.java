@@ -15,348 +15,372 @@ import support.constants.PositionConstants;
 import support.framework.interfaces.Appearance;
 
 public final class Poule extends AbstractPoule {
-    public Poule(XFrame frame, int amount, Appearance appearance) {
-        super(frame, amount, appearance);
-    }
+	public Poule(XFrame frame, int amount, Appearance appearance) {
+		super(frame, amount, appearance);
+	}
 
-    public Poule(int x, int y, XFrame frame, int amount, Appearance appearance) {
-        super(x, y, frame, amount, appearance);
-    }
+	public Poule(int x, int y, XFrame frame, int amount, Appearance appearance) {
+		super(x, y, frame, amount, appearance);
+	}
 
-    public void insertValues() {
-        boolean isErrorPresent = false;
+	public void insertValues() {
+		boolean isErrorPresent = false;
 
-        try {
-            if (this.fencer1TouchInput.getText().isBlank()) {
-                throw new Exception("Invalid touch1");
-            }
+		try {
+			if (this.fencer1TouchInput.getText().isBlank()) {
+				throw new Exception("Invalid touch1");
+			}
 
-            if (this.fencer2TouchInput.getText().isBlank()) {
-                throw new Exception("Invalid touch2");
-            }
+			if (this.fencer2TouchInput.getText().isBlank()) {
+				throw new Exception("Invalid touch2");
+			}
 
-            int fencer1 = Integer.parseInt(this.fencer1NameInput.getText());
-            int fencer2 = Integer.parseInt(this.fencer2NameInput.getText());
-            int touch1 = Integer.parseInt(this.fencer1TouchInput.getText());
-            int touch2 = Integer.parseInt(this.fencer2TouchInput.getText());
+			int fencer1 = Integer.parseInt(this.fencer1NameInput.getText());
+			int fencer2 = Integer.parseInt(this.fencer2NameInput.getText());
+			int touch1 = this.fencer1TouchInput.getText().equalsIgnoreCase("v") ? 5 : Integer.parseInt(this.fencer1TouchInput.getText());
+			int touch2 = this.fencer2TouchInput.getText().equalsIgnoreCase("v") ? 5 : Integer.parseInt(this.fencer2TouchInput.getText());
 
-            if (fencer1 > this.amount) {
-                this.fencer1NameInput.displayError();
-                isErrorPresent = true;
-            }
+			if (fencer1 > this.amount || fencer1 < 0) {
+				this.fencer1NameInput.displayError();
+				isErrorPresent = true;
+			}
 
-            if (fencer2 > this.amount) {
-                this.fencer2NameInput.displayError();
-                isErrorPresent = true;
-            }
+			if (fencer2 > this.amount || fencer2 < 0) {
+				this.fencer2NameInput.displayError();
+				isErrorPresent = true;
+			}
 
-            if (fencer1 == fencer2) {
-                this.fencer1NameInput.displayError();
-                this.fencer2NameInput.displayError();
-                isErrorPresent = true;
-            }
+			if (fencer1 == fencer2) {
+				this.fencer1NameInput.displayError();
+				this.fencer2NameInput.displayError();
+				isErrorPresent = true;
+			}
 
-            if (touch1 < 0 || touch1 > 5) {
-                throw new Exception("Invalid touch1");
-            }
+			if (touch1 < 0 || touch1 > 5) {
+				throw new Exception("Invalid touch1");
+			}
 
-            if (touch2 < 0 || touch2 > 5) {
-                throw new Exception("Invalid touch2");
-            }
+			if (touch2 < 0 || touch2 > 5) {
+				throw new Exception("Invalid touch2");
+			}
 
-            if (touch1 == touch2) {
-                this.fencer1TouchInput.displayError();
-                this.fencer2TouchInput.displayError();
-                isErrorPresent = true;
-            }
+			if (touch1 == touch2) {
+				this.fencer1TouchInput.displayError();
+				this.fencer2TouchInput.displayError();
+				isErrorPresent = true;
+			}
 
-            if (touch1 < 5 && touch2 < 5) {
-                this.fencer1TouchInput.displayError();
-                this.fencer2TouchInput.displayError();
-                isErrorPresent = true;
-            }
+			if (touch1 < 5 && touch2 < 5) {
+				this.fencer1TouchInput.displayError();
+				this.fencer2TouchInput.displayError();
+				isErrorPresent = true;
+			}
 
-            if (isErrorPresent) {
-                return;
-            }
+			if (isErrorPresent) {
+				return;
+			}
 
-            // Insert fencer1's touch to its row
-            this.boxArray[fencer1][fencer2 + 1].setText(touch1 == 5 ? "V" : String.valueOf(touch1));
-            // Insert fencer2's touch to its row
-            this.boxArray[fencer2][fencer1 + 1].setText(touch2 == 5 ? "V" : String.valueOf(touch2));
+			// Insert fencer1's touch to its row
+			this.boxArray[fencer1][fencer2+1].setText(touch1 == 5 ? "V" : String.valueOf(touch1));
+			// Insert fencer2's touch to its row
+			this.boxArray[fencer2][fencer1+1].setText(touch2 == 5 ? "V" : String.valueOf(touch2));
 
-            this.fencer1NameInput.clearText();
-            this.fencer2NameInput.clearText();
-            this.fencer1TouchInput.clearText();
-            this.fencer2TouchInput.clearText();
-        }
-        catch (Exception exc) {
-            if (exc.getMessage().equals("Invalid touch1")) {
-                this.fencer1TouchInput.displayError();
-            }
-            else if (exc.getMessage().equals("Invalid touch2")) {
-                this.fencer2TouchInput.displayError();
-            }
-            else {
-                String fencer1 = this.fencer1NameInput.getText();
-                String fencer2 = this.fencer2NameInput.getText();
-                int touch1 = Integer.parseInt(this.fencer1TouchInput.getText());
-                int touch2 = Integer.parseInt(this.fencer2TouchInput.getText());
+			this.fencer1NameInput.clearText();
+			this.fencer2NameInput.clearText();
+			this.fencer1TouchInput.clearText();
+			this.fencer2TouchInput.clearText();
+		}
+		catch (Exception exc) {
+			if (exc.getMessage().equals("Invalid touch1")) {
+				this.fencer1TouchInput.displayError();
+			}
+			else if (exc.getMessage().equals("Invalid touch2")) {
+				this.fencer2TouchInput.displayError();
+			}
+			else {
+				String fencer1 = this.fencer1NameInput.getText();
+				String fencer2 = this.fencer2NameInput.getText();
+				int touch1 = 0;
+				int touch2 = 0;
 
-                if (touch1 < 0 || touch1 > 5) {
-                    this.fencer1TouchInput.displayError();
-                    return;
-                }
+				try {
+					touch1 = this.fencer1TouchInput.getText().equalsIgnoreCase("v") ? 5 : Integer.parseInt(this.fencer1TouchInput.getText());
+					touch2 = this.fencer2TouchInput.getText().equalsIgnoreCase("v") ? 5 : Integer.parseInt(this.fencer2TouchInput.getText());
+				}
+				catch (Exception exception) {
+					this.fencer1TouchInput.displayError();
+					this.fencer2TouchInput.displayError();
+				}
 
-                if (touch2 < 0 || touch2 > 5) {
-                    this.fencer2TouchInput.displayError();
-                    return;
-                }
+				if (touch1 < 0 || touch1 > 5) {
+					this.fencer1TouchInput.displayError();
+					return;
+				}
 
-                if (touch1 == 5 && touch2 == 5) {
-                    this.fencer1TouchInput.displayError();
-                    this.fencer2TouchInput.displayError();
-                    return;
-                }
+				if (touch2 < 0 || touch2 > 5) {
+					this.fencer2TouchInput.displayError();
+					return;
+				}
 
-                // Search for the fencers by name
-                int fencer1Index = 0;
-                int fencer2Index = 0;
-                for (int i = 1; i < this.amount + 1; i++) {
-                    if (this.boxArray[i][0].getText().equalsIgnoreCase(fencer1)) {
-                        fencer1Index = i;
-                    }
-                    else if (this.boxArray[i][0].getText().equalsIgnoreCase(fencer2)) {
-                        fencer2Index = i;
-                    }
-                }
+				if (touch1 == 5 && touch2 == 5) {
+					this.fencer1TouchInput.displayError();
+					this.fencer2TouchInput.displayError();
+					return;
+				}
 
-                if (fencer1Index > 0 && fencer2Index > 0 && fencer1Index != fencer2Index) {
-                    // Insert fencer1's touch to its row
-                    this.boxArray[fencer1Index][fencer2Index + 1].setText(touch1 == 5 ? "V" : String.valueOf(touch1));
-                    // Insert fencer2's touch to its row
-                    this.boxArray[fencer2Index][fencer1Index + 1].setText(touch2 == 5 ? "V" : String.valueOf(touch2));
+				// Search for the fencers by name
+				int fencer1Index = 0;
+				int fencer2Index = 0;
+				for (int i = 1; i < this.amount+1; i++) {
+					if (this.boxArray[i][0].getText().equalsIgnoreCase(fencer1)) {
+						fencer1Index = i;
+					}
+					else if (this.boxArray[i][0].getText().equalsIgnoreCase(fencer2)) {
+						fencer2Index = i;
+					}
+				}
 
-                    this.fencer1NameInput.clearText();
-                    this.fencer2NameInput.clearText();
-                    this.fencer1TouchInput.clearText();
-                    this.fencer2TouchInput.clearText();
-                }
-                else if (fencer1Index == 0) {
-                    this.fencer1NameInput.displayError();
-                }
-                else if (fencer2Index == 0) {
-                    this.fencer2NameInput.displayError();
-                }
-                else if (fencer1Index == fencer2Index) {
-                    this.fencer1NameInput.displayError();
-                    this.fencer2NameInput.displayError();
-                }
-            }
-        }
-    }
+				if (fencer1Index > 0 && fencer2Index > 0 && fencer1Index != fencer2Index) {
+					// Insert fencer1's touch to its row
+					this.boxArray[fencer1Index][fencer2Index+1].setText(touch1 == 5 ? "V" : String.valueOf(touch1));
+					// Insert fencer2's touch to its row
+					this.boxArray[fencer2Index][fencer1Index+1].setText(touch2 == 5 ? "V" : String.valueOf(touch2));
 
-    public void setNumber(String number) {
-        this.pouleNumberLabel.setText(this.pouleNumberLabel.getText().concat(number));
-    }
+					this.fencer1NameInput.clearText();
+					this.fencer2NameInput.clearText();
+					this.fencer1TouchInput.clearText();
+					this.fencer2TouchInput.clearText();
+				}
+				else if (fencer1Index == 0) {
+					this.fencer1NameInput.displayError();
+				}
+				else if (fencer2Index == 0) {
+					this.fencer2NameInput.displayError();
+				}
+				else if (fencer1Index == fencer2Index) {
+					this.fencer1NameInput.displayError();
+					this.fencer2NameInput.displayError();
+				}
+			}
+		}
+	}
 
-    @Override
-    public void addComponent(JComponent component, PositionConstants positionConstants) {
-        this.add(component, positionConstants.getzIndex());
-        this.repaintFrame();
-    }
+	public void setNumber(String number) {
+		this.pouleNumberLabel.setText(this.pouleNumberLabel.getText().concat(number));
+	}
 
-    @Override
-    public void addComponent(JComponent component, String borderLayoutPosition) {
-        if (this.getLayout() instanceof BorderLayout) {
-            this.add(component, borderLayoutPosition);
-            this.repaintFrame();
-        }
-    }
+	@Override
+	public void addComponent(JComponent component, PositionConstants positionConstants) {
+		this.add(component, positionConstants.getzIndex());
+		this.repaintFrame();
+	}
 
-    @Override
-    public void addComponent(JComponent component) {
-        this.addComponent(component, PositionConstants.MID_POS);
-        this.repaintFrame();
-    }
+	@Override
+	public void addComponent(JComponent component, String borderLayoutPosition) {
+		if (this.getLayout() instanceof BorderLayout) {
+			this.add(component, borderLayoutPosition);
+			this.repaintFrame();
+		}
+	}
 
-    @Override
-    public JComponent removeComponent(JComponent component) {
-        this.remove(component);
-        this.repaintFrame();
-        return component;
-    }
+	@Override
+	public void addComponent(JComponent component) {
+		this.addComponent(component, PositionConstants.MID_POS);
+		this.repaintFrame();
+	}
 
-    @Override
-    public void repaintFrame() {
-        if (this.frame != null) {
-            this.frame.repaint();
-        }
-    }
+	@Override
+	public JComponent removeComponent(JComponent component) {
+		this.remove(component);
+		this.repaintFrame();
+		return component;
+	}
 
-    @Override
-    public Appearance getAppearance() {
-        return this.appearance;
-    }
+	@Override
+	public void repaintFrame() {
+		if (this.frame != null) {
+			this.frame.repaint();
+		}
+	}
 
-    @Override
-    public XFrame getFrame() {
-        return this.frame;
-    }
+	@Override
+	public Appearance getAppearance() {
+		return this.appearance;
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        final Object source = e.getSource();
-        if (source.equals(this.insertButton.getButton())) {
-            this.insertValues();
-        }
-    }
+	@Override
+	public XFrame getFrame() {
+		return this.frame;
+	}
 
-    @Override
-    public void keyTyped(KeyEvent e) {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		final Object source = e.getSource();
+		if (source.equals(this.insertButton.getButton())) {
+			this.insertValues();
+		}
+	}
 
-    }
+	@Override
+	public void keyTyped(KeyEvent e) {
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            this.insertValues();
-        }
-    }
+	}
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        final Object source = e.getSource();
-        int indexX = 0;
-        int indexY = 0;
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			this.insertValues();
+		}
+	}
 
-        for (int y = 1; y < this.amount + 1; y++) {
-            for (int x = 2; x < this.amount + 2; x++) {
-                if (e.getSource().equals(this.boxArray[y][x])) {
-                    if (Arrays.asList(new Integer[] {KeyEvent.VK_0, KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3,
-                        KeyEvent.VK_4, KeyEvent.VK_V}).contains(e.getKeyCode())) {
-                        this.boxArray[y][x].setText(String.valueOf(e.getKeyChar()).toUpperCase());
+	@Override
+	public void keyReleased(KeyEvent e) {
+		final Object source = e.getSource();
+		int indexX = 0;
+		int indexY = 0;
 
-                        if (this.boxArray[x - 1][y + 1].getText().equalsIgnoreCase(this.boxArray[y][x].getText())) {
-                            this.boxArray[y][x].setText("");
-                        }
-                        else if (!this.boxArray[x - 1][y + 1].getText().equalsIgnoreCase("v") & Arrays.asList("1", "2", "3", "4").contains(this.boxArray[y][x].getText())) {
-                            this.boxArray[x - 1][y + 1].setText("");
-                        }
-                        else if (!this.boxArray[y][y].getText().equalsIgnoreCase("v") & Arrays.asList("1", "2", "3", "4").contains(this.boxArray[x - 1][y + 1].getText())) {
-                            this.boxArray[y][x].setText("");
-                        }
-                    }
-                    else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                        this.boxArray[y][x].setText(this.boxArray[y][x].getText().replace(" ", ""));
-                    }
-                    else {
-                        this.boxArray[y][x].setText("");
-                    }
-                }
-            }
-        }
+		for (int y = 1; y < this.amount+1; y++) {
+			for (int x = 2; x < this.amount+2; x++) {
+				if (e.getSource().equals(this.boxArray[y][x])) {
+					if (Arrays.asList(new Integer[]{KeyEvent.VK_0, KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3,
+						KeyEvent.VK_4, KeyEvent.VK_V}).contains(e.getKeyCode())) {
+						this.boxArray[y][x].setText(String.valueOf(e.getKeyChar()).toUpperCase());
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            for (int y = 1; y < this.amount + 1; y++) {
-                for (int x = 2; x < this.amount + 2; x++) {
-                    if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
-                        indexX = x;
-                        indexY = y;
-                        break;
-                    }
-                }
-            }
+						if (this.boxArray[x-1][y+1].getText().equalsIgnoreCase(this.boxArray[y][x].getText())) {
+							this.boxArray[y][x].setText("");
+						}
+						else if (!this.boxArray[y][x].getText().equalsIgnoreCase("v") && !this.boxArray[y][x].getText().isBlank()) {
+							if (!this.boxArray[x-1][y+1].getText().equalsIgnoreCase("v")) {
+								this.boxArray[x-1][y+1].setText("");
+								this.boxArray[x-1][y+1].setBackground(Color.red);
+							}
+						}
 
-            if (indexX >= 1 && indexX < this.amount + 2 && indexY >= 1 && indexY < this.amount + 1) {
-                this.boxArray[indexX - 1][indexY + 1].requestFocusInWindow();
-            }
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_F12) {
-            final Random random = new Random();
-            for (int y = 1; y < this.amount + 1; y++) {
-                for (int x = 2; x < this.amount + 2; x++) {
-                    if (this.boxArray[y][x].isFocusable() && this.boxArray[x - 1][y + 1].isFocusable()) {
-                        if (random.nextBoolean()) {
-                            this.boxArray[y][x].setText(String.valueOf(random.nextInt(5)));
-                            this.boxArray[x - 1][y + 1].setText("V");
-                        }
-                        else {
-                            this.boxArray[y][x].setText("V");
-                            this.boxArray[x - 1][y + 1].setText(String.valueOf(random.nextInt(5)));
-                        }
-                    }
-                }
-            }
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_F11) {
-            for (int y = 1; y < this.amount + 1; y++) {
-                for (int x = 2; x < this.amount + 2; x++) {
-                    this.boxArray[y][x].setText("");
-                }
-            }
-        }
-    }
+//						if (!this.boxArray[y][y].getText().equalsIgnoreCase("v")) {
+//							if (this.boxArray[x-1][x+1].getText().isBlank()) {
+//
+//							}
+//							else if (Arrays.asList("1", "2", "3", "4").contains(this.boxArray[x-1][y+1].getText())) {
+//								this.boxArray[x-1][y+1].setText("");
+//							}
+//						}
+					}
+					else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+						this.boxArray[y][x].setText(this.boxArray[y][x].getText().replace(" ", ""));
+					}
+					else {
+						this.boxArray[y][x].setText("");
+					}
+				}
+			}
+		}
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			for (int y = 1; y < this.amount+1; y++) {
+				for (int x = 2; x < this.amount+2; x++) {
+					if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
+						indexX = x;
+						indexY = y;
+						break;
+					}
+				}
+			}
 
-    }
+			if (indexX >= 1 && indexX < this.amount+2 && indexY >= 1 && indexY < this.amount+1) {
+				this.boxArray[indexX-1][indexY+1].requestFocusInWindow();
+			}
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_F12) {
+			final Random random = new Random();
+			for (int y = 1; y < this.amount+1; y++) {
+				for (int x = 2; x < this.amount+2; x++) {
+					if (this.boxArray[y][x].isFocusable() && this.boxArray[x-1][y+1].isFocusable()) {
+						if (random.nextBoolean()) {
+							this.boxArray[y][x].setText(String.valueOf(random.nextInt(5)));
+							this.boxArray[x-1][y+1].setText("V");
+						}
+						else {
+							this.boxArray[y][x].setText("V");
+							this.boxArray[x-1][y+1].setText(String.valueOf(random.nextInt(5)));
+						}
+					}
+				}
+			}
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_F11) {
+			for (int y = 1; y < this.amount+1; y++) {
+				for (int x = 2; x < this.amount+2; x++) {
+					this.boxArray[y][x].setText("");
+				}
+			}
+		}
+	}
 
-    @Override
-    public void mousePressed(MouseEvent e) {
+	@Override
+	public void mouseClicked(MouseEvent e) {
 
-    }
+	}
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
+	@Override
+	public void mousePressed(MouseEvent e) {
 
-    }
+	}
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        final Object source = e.getSource();
-        int indexX = 0;
-        int indexY = 0;
+	@Override
+	public void mouseReleased(MouseEvent e) {
 
-        for (int y = 1; y < this.amount + 1; y++) {
-            for (int x = 2; x < this.amount + 2; x++) {
-                if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
-                    this.boxArray[y][x].setBackground(Color.lightGray);
-                    this.boxArray[y][x].requestFocusInWindow();
-                    indexX = x;
-                    indexY = y;
-                    break;
-                }
-            }
-        }
+	}
 
-        if (indexX >= 1 && indexX < this.amount + 2 && indexY >= 1 && indexY < this.amount + 1) {
-            this.boxArray[indexX - 1][indexY + 1].setBackground(Color.lightGray);
-        }
-    }
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		final Object source = e.getSource();
+		int indexX = 0;
+		int indexY = 0;
 
-    @Override
-    public void mouseExited(MouseEvent e) {
-        final Object source = e.getSource();
-        int indexX = 0;
-        int indexY = 0;
+		for (int y = 1; y < this.amount+1; y++) {
+			for (int x = 2; x < this.amount+2; x++) {
+				if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
+					this.boxArray[y][x].setBackground(Color.lightGray);
+					this.boxArray[y][x].requestFocusInWindow();
+					indexX = x;
+					indexY = y;
+					break;
+				}
+			}
+		}
 
-        for (int y = 1; y < this.amount + 1; y++) {
-            for (int x = 2; x < this.amount + 2; x++) {
-                if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
-                    if (this.boxArray[y][x].isEnabled()) {
-                        this.boxArray[y][x].setBackground(Color.black);
-                        indexX = x;
-                        indexY = y;
-                        break;
-                    }
-                }
-            }
-        }
+		if (indexX >= 1 && indexX < this.amount+2 && indexY >= 1 && indexY < this.amount+1) {
+			this.boxArray[indexX-1][indexY+1].setBackground(Color.lightGray);
 
-        if (indexX >= 1 && indexX < this.amount + 2 && indexY >= 1 && indexY < this.amount + 1) {
-            this.boxArray[indexX - 1][indexY + 1].setBackground(Color.black);
-        }
-    }
+			this.boxArray[indexY][0].setBackground(Color.lightGray);
+			this.boxArray[indexX-1][0].setBackground(Color.lightGray);
+		}
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		final Object source = e.getSource();
+		int indexX = 0;
+		int indexY = 0;
+
+		for (int y = 1; y < this.amount+1; y++) {
+			for (int x = 2; x < this.amount+2; x++) {
+				if (source.equals(this.boxArray[y][x]) && this.boxArray[y][x].isEnabled() && this.boxArray[y][x].isFocusable()) {
+					if (this.boxArray[y][x].isEnabled()) {
+						this.boxArray[y][x].setBackground(Color.black);
+						indexX = x;
+						indexY = y;
+						break;
+					}
+				}
+			}
+		}
+
+		if (indexX >= 1 && indexX < this.amount+2 && indexY >= 1 && indexY < this.amount+1) {
+			this.boxArray[indexX-1][indexY+1].setBackground(Color.black);
+
+			this.boxArray[indexY][0].setBackground(Color.black);
+			this.boxArray[indexX-1][0].setBackground(Color.black);
+		}
+	}
 }
